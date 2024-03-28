@@ -1,0 +1,16 @@
+---
+- name: Install zsh
+  become: true
+  ansible.builtin.apt:
+    name: zsh
+    state: present
+    update_cache: true
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Copy zshrc config
+  ansible.builtin.copy:
+    src: zshrc
+    dest: ~/.zshrc
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- ansible.builtin.include_tasks: oh-my-zsh.yml

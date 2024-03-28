@@ -1,0 +1,5 @@
+---
+- name: Configure shell
+  hosts: localhost
+  roles:
+    - term
