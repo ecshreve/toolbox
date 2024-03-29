@@ -2,11 +2,14 @@
 
 ## Todo
 
-- [ ] Add `docker` role
 - [ ] Add `aliases` to .zshrc
-- [ ] Configure `charm` server to run via docker, back it up to NAS
-- [ ] Use `skate` to handle secrets
+- [/] Configure `charm` server to run via docker, back it up to NAS
+- [/] Use `skate` to handle secrets
 - [ ] Bake all of this into a docker image
+- [ ] Take a few cycles to clean up the `golang` role.
+- [ ] Audit .yml vs .yaml file extensions
+- [?] Add `tmux` configuration
+- [?] Add `docker` role
 
 ## Usage
 
@@ -40,7 +43,7 @@ The roles are defined in the `ansible/roles` directory, and the playbook
 - Installs `zsh-autosuggestions`, `zsh-completions`, `zsh-syntax-highlighting` 
   for enhanced shell functionality.
 
-#### `golang`
+**`golang`**:
 
 - Handles downloading and installing Golang 1.21.8, along with additional tools 
   and executables.
@@ -48,5 +51,5 @@ The roles are defined in the `ansible/roles` directory, and the playbook
 - Installs executables under `$HOME/.local/bin`
 - Version to install and packages to install are defined in `roles/config-vars.yml`
 
-> [!NOTE]
-> This task is buggy right now and doesn't handle updating existing installations.
+    > [!NOTE]
+    > This task is buggy right now and doesn't handle updating existing installations.

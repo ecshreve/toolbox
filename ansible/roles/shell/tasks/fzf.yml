@@ -25,7 +25,7 @@
   register: fzf_installed
 
 - name: Remove existing FZF installation
-  when: fzf_installed.stat.exists
+  when: not fzf_installed.stat.exists
   tags: clean
   block:
     - name: Uninstall FZF
@@ -45,6 +45,6 @@
     depth: 1
     version: d579e335b5aa30e98a2ec046cb782bbb02bc28ad
 
-- name: Install fzf
+- name: Run fzf installation script
   ansible.builtin.command: "{{ ansible_env.HOME }}/.fzf/install"
-  when_changed: fzf_installed.stat.exists
+  changed_when: fzf_installed.stat.exists
