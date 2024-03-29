@@ -1,7 +1,7 @@
 ---
 - name: Golang - check for install...
   ansible.builtin.stat:
-    path: '{{ ansible_env.HOME }}/{{ go_parent_dir }}/{{ go_ver }}'
+    path: '{{ ansible_env.HOME }}/.local/go/bin/go'
   changed_when: false
   register: go_install_path
 
@@ -26,13 +26,13 @@
         src: /tmp/{{ go_tgz }}
         dest: '/tmp/go/extracted'
         creates: '/tmp/go/extracted/go'
-    - name: Ensure go_parent_dir exists
+    - name: Ensure the parent dir exists
       ansible.builtin.file:
-        path: "{{ ansible_env.HOME }}/{{ go_parent_dir }}"
+        path: "{{ ansible_env.HOME }}/.local"
         state: directory
         mode: '0755'
-    - name: Move to location
-      ansible.builtin.raw: mv /tmp/go/extracted/go {{ ansible_env.HOME }}/{{ go_parent_dir }}/{{ go_ver }}
+    - name: Move go to location
+      ansible.builtin.raw: mv /tmp/go/extracted/go {{ ansible_env.HOME }}/.local/go
       changed_when: go_install_path.stat.exists
   always:
     - name: Cleanup
@@ -43,17 +43,10 @@
         - "{{ go_tgz }}"
         - go
 
-- name: Link go version ...
-  ansible.builtin.file:
-    src: '{{ ansible_env.HOME }}/{{ go_parent_dir }}/{{ go_ver }}'
-    dest: '{{ ansible_env.HOME }}/{{ go_parent_dir }}/current'
-    state: link
-  ignore_errors: "{{ ansible_check_mode }}"
-
 - name: Install go packages
-  ansible.builtin.command: "{{ ansible_env.HOME }}/{{ go_parent_dir }}/current/bin/go install {{ item.name }}"
+  ansible.builtin.command: "{{ ansible_env.HOME }}/.local/go/bin/go install {{ item.name }}"
   environment:
-    GOPATH: "{{ ansible_env.HOME }}/{{ go_parent_dir }}/current"
+    GOBIN: "{{ ansible_env.HOME }}/.local/bin"
   loop: "{{ go_packages }}"
   changed_when: false
   ignore_errors: "{{ ansible_check_mode }}"
