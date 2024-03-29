@@ -1,6 +1,6 @@
 ---
-- name: Configure shell
+- name: Configure development environment
   hosts: localhost
   roles:
-    # - term
+    - term
     - go
