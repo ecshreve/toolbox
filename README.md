@@ -10,25 +10,35 @@
 
 ## Usage
 
-```shell
-$ cd /path/to/toolbox
-$ ./install.sh
-$ cd ansible && ansible-playbook main.yml
-```
+### Install script
 
-## Ansible Roles
+- Installs python3 and pip via `apt`
+- Installs ansible via `pip`
+- Clones this repository to `$HOME/.toolbox`
+- Runs the ansible playbook
 
-### `term`
+### Ansible Roles
 
-Handles initial basic setup of terminal environment. The tasks in this role
+#### `shell`
+
+Handles initial basic setup of shell environment. The tasks in this role
 prepare to use ansible to install and configure the rest of the environment.
 
-- python3 and pip
-- ansible and ansible-lint
 - zsh and oh-my-zsh
-- zsh plugins; most importantly fzf and forgit
+- zsh plugins
+    - zsh-syntax-highlighting
+    - zsh-autosuggestions
+    - zsh-completions
+    - git
+    - forgit
+    - fzf
+- install Powerlevel10k theme
+- copy powerlevel10k configuration and .zshrc to `$HOME`
 
-### `go`
+#### `golang`
 
-- Go 1.21.8
-- A handful of go tools
+Installs Golang and sets up the environment. Configurable via the `golang`
+section of `config-vars.yml` file.
+
+- Installs Golang to `$HOME/.local/go`
+- Installs executables to `$HOME/.local/bin`

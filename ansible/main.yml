@@ -1,6 +1,8 @@
 ---
 - name: Configure development environment
   hosts: localhost
+  vars_files:
+    - config-vars.yml
   roles:
-    - term
-    - go
+    - shell
+    - golang

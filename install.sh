@@ -1,4 +1,27 @@
 #!/bin/sh
+#!/bin/bash
+
+# Stop on errors
+set -e
+
+# Update system package list
+sudo apt-get update
+
+# Install Python3, pip, and other utilities
+sudo apt-get install -y python3 python3-pip python3-venv git
+
+# Upgrade pip and install virtualenv
+python3 -m pip install --upgrade pip
+python3 -m pip install virtualenv
+
+# Install Ansible
+pip install ansible
+
+# Run an Ansible playbook
+ansible-playbook dev_setup.yml
+
+echo "Installation complete!"
+
 
 export DEBIAN_FRONTEND=noninteractive
 sudo apt update -y
@@ -13,30 +36,9 @@ sudo apt install \
 python3 -m pip install --upgrade pip
 pip install --user ansible ansible-lint
 
-# Install basic dependencies
-sudo apt install \
-    git \
-    fd-find \
-    ripgrep \
-    tmux
-sudo ln -s /usr/bin/fdfind /usr/bin/fd
-
-# Check fzf installation, remove it if it exists
-if [ -d $HOME/.fzf ]; then
-    echo "FZF is already installed. Uninstalling existing FZF..."
-    $HOME/.fzf/uninstall
-    rm -rf $HOME/.fzf
-fi
-
-echo "Installing FZF from git..."
-git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
-$HOME/.fzf/install
-
-# Run ansible playbook
+# Run an Ansible playbook
 cd ansible
-ansible-playbook main.yml
-cd
+ansible-playbook dev_setup.yml
+cd ..
 
 echo "Installation complete!"
-
-

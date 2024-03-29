@@ -1,19 +1,20 @@
 ---
-- name: Golang - check for install...
+- name: Golang - check for existing install...
   ansible.builtin.stat:
     path: '{{ ansible_env.HOME }}/.local/go/bin/go'
   changed_when: false
-  register: go_install_path
+  register: golang_install_path
 
+# TODO: Add support for updating Go
 - name: Golang - install specific version
-  when: not go_install_path.stat.exists
+  when: not golang_install_path.stat.exists
   ignore_errors: "{{ ansible_check_mode }}"
   block:
     - name: Download go archive...
       ansible.builtin.get_url:
-        url: '{{ go_tgz_url }}'
-        dest: /tmp/{{ go_tgz }}
-        checksum: '{{ go_checksum }}'
+        url: '{{ golang_tgz_url }}'
+        dest: /tmp/{{ golang_tgz }}
+        checksum: '{{ golang_checksum }}'
         mode: '0644'
     - name: Create temp directory ...
       ansible.builtin.file:
@@ -23,7 +24,7 @@
     - name: Unarchive go
       ansible.builtin.unarchive:
         copy: false
-        src: /tmp/{{ go_tgz }}
+        src: /tmp/{{ golang_tgz }}
         dest: '/tmp/go/extracted'
         creates: '/tmp/go/extracted/go'
     - name: Ensure the parent dir exists
@@ -33,20 +34,20 @@
         mode: '0755'
     - name: Move go to location
       ansible.builtin.raw: mv /tmp/go/extracted/go {{ ansible_env.HOME }}/.local/go
-      changed_when: go_install_path.stat.exists
+      changed_when: golang_install_path.stat.exists
   always:
     - name: Cleanup
       ansible.builtin.file:
         path: /tmp/{{ item }}
         state: absent
       loop:
-        - "{{ go_tgz }}"
+        - "{{ golang_tgz }}"
         - go
 
 - name: Install go packages
   ansible.builtin.command: "{{ ansible_env.HOME }}/.local/go/bin/go install {{ item.name }}"
   environment:
     GOBIN: "{{ ansible_env.HOME }}/.local/bin"
-  loop: "{{ go_packages }}"
+  loop: "{{ golang_packages }}"
   changed_when: false
   ignore_errors: "{{ ansible_check_mode }}"

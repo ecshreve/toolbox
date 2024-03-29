@@ -1,0 +1,49 @@
+---
+- name: Install base fzf dependencies
+  ansible.builtin.apt:
+    name:
+      - git
+      - fd-find
+      - ripgrep
+      - git
+      - tmux
+    state: present
+    update_cache: true
+
+- name: Create symbolic link for fd
+  ansible.builtin.file:
+    src: /usr/bin/fdfind
+    dest: /usr/bin/fd
+    state: link
+    force: true  # This will replace the link if it already exists
+
+- name: Check if FZF is already installed
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.fzf"
+  register: fzf_installed
+
+- name: Remove existing FZF installation
+  when: fzf_installed.stat.exists
+  tags: clean
+  block:
+    - name: Uninstall FZF
+      ansible.builtin.command: "{{ ansible_env.HOME }}/.fzf/uninstall"
+      args:
+        removes: "{{ ansible_env.HOME }}/.fzf"
+
+    - name: Remove FZF directory
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.fzf"
+        state: absent
+
+- name: Install latest FZF via git
+  ansible.builtin.git:
+    repo: https://github.com/junegunn/fzf.git
+    dest: "{{ ansible_env.HOME }}/.fzf"
+    depth: 1
+  notify:
+    - install fzf
+
+  handlers:
+    - name: install fzf
+      ansible.builtin.command: "{{ ansible_env.HOME }}/.fzf/install"

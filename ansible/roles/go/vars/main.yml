@@ -1,5 +1,0 @@
----
-go_name: 'go{{ go_ver }}.{{ go_platform }}'
-go_tgz: '{{ go_name }}.tar.gz'
-go_tgz_url: https://go.dev/dl/{{ go_tgz }}
-go_checksum: '{{ go_checksums[go_ver][go_platform] }}'
