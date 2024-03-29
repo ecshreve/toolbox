@@ -1,0 +1,12 @@
+---
+go_ver: '1.21.8'
+go_platform: 'linux-amd64'
+go_parent_dir: '.local/go'
+go_checksums:
+  '1.21.8':
+    linux-amd64: 'sha256:538b3b143dc7f32b093c8ffe0e050c260b57fc9d57a12c4140a639a8dd2b4e4f'
+go_packages:
+  - name: github.com/amonks/run/cmd/run@latest
+  - name: github.com/charmbracelet/glow@latest
+  - name: github.com/charmbracelet/mods@latest
+  - name: github.com/charmbracelet/skate@latest

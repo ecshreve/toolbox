@@ -7,10 +7,60 @@
     update_cache: true
   ignore_errors: "{{ ansible_check_mode }}"
 
+- name: Install oh my zsh
+  ansible.builtin.git:
+    repo: https://github.com/ohmyzsh/ohmyzsh.git
+    dest: ~/.oh-my-zsh
+    version: 8e088ded8289a9db2a9f2c03cab618d6dd017dd7
+
+- name: Install zsh-syntax-highlighting plugin
+  ansible.builtin.git:
+    repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+    dest: ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+    version: db085e4661f6aafd24e5acb5b2e17e4dd5dddf3e
+
+- name: Install zsh-autosuggestions plugin
+  ansible.builtin.git:
+    repo: https://github.com/zsh-users/zsh-autosuggestions
+    dest: ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+    version: a411ef3e0992d4839f0732ebeb9823024afaaaa8
+
+- name: Install zsh-completions plugin
+  ansible.builtin.git:
+    repo: https://github.com/zsh-users/zsh-completions
+    dest: ~/.oh-my-zsh/custom/plugins/zsh-completions
+    version: 67921bc12502c1e7b0f156533fbac2cb51f6943d
+
+- name: Install forgit plugin
+  ansible.builtin.git:
+    repo: https://github.com/wfxr/forgit
+    dest: ~/.oh-my-zsh/custom/plugins/forgit
+    version: d582f2aa0b5bf7948d78aca05c55a974e68f4884
+
+- name: Install powerlevel prompt
+  ansible.builtin.git:
+    repo: https://github.com/romkatv/powerlevel10k.git
+    dest: ~/.oh-my-zsh/custom/themes/powerlevel10k
+    version: 35833ea15f14b71dbcebc7e54c104d8d56ca5268
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Enable powerlevel theme
+  ansible.builtin.file:
+    src: ~/.oh-my-zsh/custom/themes/powerlevel10k/powerlevel10k.zsh-theme
+    dest: ~/.oh-my-zsh/custom/themes/powerlevel10k.zsh-theme
+    state: link
+  ignore_errors: "{{ ansible_check_mode }}"
+
 - name: Copy zshrc config
   ansible.builtin.copy:
     src: zshrc
     dest: ~/.zshrc
+    mode: '0644'
   ignore_errors: "{{ ansible_check_mode }}"
 
-- ansible.builtin.include_tasks: oh-my-zsh.yml
+- name: Copy powerlevel config
+  ansible.builtin.copy:
+    src: p10k.zsh
+    dest: ~/.p10k.zsh
+    mode: '0644'
+  ignore_errors: "{{ ansible_check_mode }}"

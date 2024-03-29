@@ -1,9 +1,8 @@
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/.local/go/current/bin:$HOME/bin:/usr/local/bin:$PATH
 export FZF_BASE='$HOME/.fzf/bin/fzf'
 export FZF_DEFAULT_OPTS='--cycle --layout=reverse --border --height=90% --preview="head -$LINES {}" --preview-window=nowrap --marker="*"'
 
 export ZSH=$HOME/.oh-my-zsh
-# source $ZSH/oh-my-zsh.sh
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
 DISABLE_AUTO_UPDATE="true"
@@ -11,18 +10,29 @@ DISABLE_AUTO_UPDATE="true"
 plugins=(
     git
     forgit
-    fzf
     zsh-autosuggestions
     zsh-completions
     zsh-syntax-highlighting
+    fzf
 )
 
 source $ZSH/oh-my-zsh.sh
-[[ ! -f $HOME/.p10k.zsh ]] || source $HOME/.p10k.zsh
 
 # ctrl+space accepts the suggestion
 bindkey '^ ' autosuggest-accept
 
+zle -N fzf-file-widget
 bindkey -M emacs '^ff' fzf-file-widget
 bindkey -M vicmd '^ff' fzf-file-widget
 bindkey -M viins '^ff' fzf-file-widget
+
+# Set history size
+HISTSIZE=10000
+SAVEHIST=10000
+# Do not put commands in history if they begin with a SPACE
+setopt HIST_IGNORE_SPACE
+# Trim excessive whitespace from commands before adding to history
+setopt HIST_REDUCE_BLANKS
+
+[ -f $HOME/.p10k.zsh ] && source $HOME/.p10k.zsh
+[ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
