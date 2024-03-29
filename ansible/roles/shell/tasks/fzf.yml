@@ -1,5 +1,6 @@
 ---
 - name: Install base fzf dependencies
+  become: true
   ansible.builtin.apt:
     name:
       - git
@@ -11,6 +12,7 @@
     update_cache: true
 
 - name: Create symbolic link for fd
+  become: true
   ansible.builtin.file:
     src: /usr/bin/fdfind
     dest: /usr/bin/fd
@@ -41,9 +43,8 @@
     repo: https://github.com/junegunn/fzf.git
     dest: "{{ ansible_env.HOME }}/.fzf"
     depth: 1
-  notify:
-    - install fzf
+    version: d579e335b5aa30e98a2ec046cb782bbb02bc28ad
 
-  handlers:
-    - name: install fzf
-      ansible.builtin.command: "{{ ansible_env.HOME }}/.fzf/install"
+- name: Install fzf
+  ansible.builtin.command: "{{ ansible_env.HOME }}/.fzf/install"
+  when_changed: fzf_installed.stat.exists

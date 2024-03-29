@@ -12,33 +12,41 @@
 
 ### Install script
 
-- Installs python3 and pip via `apt`
+- Installs `python3` and `pip` via `apt`
 - Installs ansible via `pip`
 - Clones this repository to `$HOME/.toolbox`
-- Runs the ansible playbook
+- Runs the `ansible` playbook
 
 ### Ansible Roles
 
-#### `shell`
+I use `ansible` to manage most of the dotfiles and configurations on my system. 
+The roles are defined in the `ansible/roles` directory, and the playbook 
+`dev_setup.yml` is responsible for running them.
 
-Handles initial basic setup of shell environment. The tasks in this role
-prepare to use ansible to install and configure the rest of the environment.
+**`shell`**
 
-- zsh and oh-my-zsh
-- zsh plugins
-    - zsh-syntax-highlighting
-    - zsh-autosuggestions
-    - zsh-completions
-    - git
-    - forgit
-    - fzf
-- install Powerlevel10k theme
-- copy powerlevel10k configuration and .zshrc to `$HOME`
+- Handles the installation and configuration of `zsh` and `oh-my-zsh`, as well 
+  as a few plugins and utilities.
+
+- Configuration for `zsh` is defined in `roles/shell/files/zshrc`, which is 
+  copied to `$HOME/.zshrc` after installation. 
+  
+    > [!IMPORTANT]
+    > The `.zshrc` configuration defines a keybinding override to use `^ff` 
+    instead of `^t` to trigger `fzf` from the command line.
+
+- Uses `powerlevel10k` for prompt styling.
+- Installs `fzf` and `forgit` for fuzzy searching and git integration.
+- Installs `zsh-autosuggestions`, `zsh-completions`, `zsh-syntax-highlighting` 
+  for enhanced shell functionality.
 
 #### `golang`
 
-Installs Golang and sets up the environment. Configurable via the `golang`
-section of `config-vars.yml` file.
+- Handles downloading and installing Golang 1.21.8, along with additional tools 
+  and executables.
+- Installs go under `$HOME/.local/go`
+- Installs executables under `$HOME/.local/bin`
+- Version to install and packages to install are defined in `roles/config-vars.yml`
 
-- Installs Golang to `$HOME/.local/go`
-- Installs executables to `$HOME/.local/bin`
+> [!NOTE]
+> This task is buggy right now and doesn't handle updating existing installations.
