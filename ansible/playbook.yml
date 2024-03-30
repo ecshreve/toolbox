@@ -3,14 +3,6 @@
   hosts: localhost
   roles:
     - shell
-  
-- name: Copy dotfiles to home directory
-  hosts: localhost
-  roles: 
-    - { role: config, src: zshrc, dest: .zshrc }
-    - { role: config, src: p10k.zsh, dest: .p10k.zsh }
-    - { role: config, src: mods-config.yml, dest: .config/mods/mods.yml }
-    - { role: config, src: navi-config.yml, dest: .config/navi/config.yaml }
 
 - name: Configure Go for development environment
   hosts: localhost
@@ -30,3 +22,10 @@
       mods: github.com/charmbracelet/mods@latest
       skate: github.com/charmbracelet/skate@latest
       gum: github.com/charmbracelet/gum@latest
+
+- name: Copy dotfiles to home directory
+  hosts: localhost
+  roles: 
+    - { role: config, src: zshrc, dest: .zshrc }
+    - { role: config, src: p10k.zsh, dest: .p10k.zsh }
+    - { role: config, src: mods.yml, dest: .config/mods/mods.yml }

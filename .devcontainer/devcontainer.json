@@ -7,14 +7,18 @@
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
-		"ghcr.io/devcontainers/features/docker-outside-of-docker": {}
+		"ghcr.io/devcontainers/features/docker-outside-of-docker": {},
+		"ghcr.io/devcontainers/features/python": {
+			"version": "3.11"
+		}
 	},
 	"customizations": {
 		"vscode": {
 			"extensions": [
 				"redhat.ansible",
 				"ms-azuretools.vscode-docker",
-				"yzhang.markdown-all-in-one"
+				"yzhang.markdown-all-in-one",
+				"ms-python.python",
 			]
 		}
 	}

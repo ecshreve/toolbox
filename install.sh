@@ -22,7 +22,7 @@ pip install ansible ansible-lint
 
 # Run the playbook
 cd ansible
-ansible-playbook dev_setup.yml
+ansible-playbook playbook.yml
 cd ..
 
 echo "Installation complete!"

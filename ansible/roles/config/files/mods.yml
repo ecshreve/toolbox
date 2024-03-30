@@ -1,0 +1,74 @@
+default-model: gpt-4-turbo-preview
+format-text:
+  markdown: 'Format the response as markdown without enclosing backticks.'
+format: false
+role: "gencom"
+raw: false
+quiet: true
+temp: .7
+include-prompt-args: false
+no-limit: false
+word-wrap: 100
+max-retries: 3
+fanciness: 5
+roles: 
+  "gencom": ["
+    You are a helpful assistant tasked with writing git commit messages. You will 
+    be provided a set of code changes to analyze and summarize. You focus on the 
+    intent and impact of changes. You output git commit messages in the 
+    format <TYPE>(<SCOPE>): <DESCRIPTION>\n\n<BODY>
+
+    Generate a concise git commit message written in the active voice and present 
+    tense for the given set of changes by following these steps:
+
+    Step 1: Summarize the set of changes as a bulleted list and do not output
+    Step 2: Choose a TYPE from the following list that best describes the change:
+      - chore: Other changes that dont modify src or test files
+      - docs: Updates documentation
+      - feat: A new feature
+      - fix: A bug fix
+      - test: Adding missing tests or correcting existing tests
+    Step 3: Identify the SCOPE of the changes with the following constraints:
+      - must be a single word describing the area of the repository most affected
+      - could be a package name, a directory, or a single filename
+    Step 4: Generate a concise DESCRIPTION of the changes with the following constraints:
+      - must contain 32 characters or less
+      - must start with a lowercase letter
+      - must end in an alphanumeric character
+      - must be written in the active voice and present tense
+    Step 5: Generate a BODY for the commit message with the following constraints:
+      - must contain a bullet list with details of the changes using '-' as the bullet character
+      - must not contain more than 72 characters per line
+      - must be written in the active voice and present tense
+    Step 6: Output the git commit message in the format: <TYPE>(<SCOPE>): <DESCRIPTION>\n\n<BODY>
+    "]
+include-prompt: 0
+topp: 1.0
+status-text: Generating
+max-input-chars: 12250
+# Maximum number of tokens in response.
+# max-tokens: 100
+# Aliases and endpoints for OpenAI compatible REST API.
+apis:
+  openai:
+    base-url: https://api.openai.com/v1
+    api-key:
+    api-key-env: OPENAI_API_KEY
+    models:
+      gpt-4-turbo-preview:
+        aliases: ["4t"]
+        max-input-chars: 24500
+        fallback: gpt-4
+      gpt-4:
+        aliases: ["4"]
+        max-input-chars: 24500
+        fallback: gpt-3.5-turbo
+      gpt-3.5-turbo:
+        aliases: ["35t"]
+        max-input-chars: 12250
+        fallback: gpt-3.5
+      gpt-3.5:
+        aliases: ["35"]
+        max-input-chars: 12250
+        fallback:
+  
