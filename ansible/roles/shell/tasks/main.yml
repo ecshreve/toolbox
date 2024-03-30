@@ -1,9 +1,11 @@
 ---
-- ansible.builtin.include_tasks: zsh.yml
-- ansible.builtin.include_tasks: omz.yml
-- ansible.builtin.include_tasks: p10k.yml
-- ansible.builtin.include_tasks: fzf.yml
-- ansible.builtin.include_tasks: navi.yml
-- name: Source zshrc
-  ansible.builtin.shell: zsh -i -c "source ~/.zshrc"
-  ignore_errors: "{{ ansible_check_mode }}"
+- name: Include zsh tasks
+  ansible.builtin.include_tasks: zsh.yml
+- name: Include oh my zsh tasks
+  ansible.builtin.include_tasks: omz.yml
+- name: Include powerlevel10k tasks
+  ansible.builtin.include_tasks: p10k.yml
+- name: Include fzf tasks
+  ansible.builtin.include_tasks: fzf.yml
+- name: Include navi tasks
+  ansible.builtin.include_tasks: navi.yml

@@ -13,9 +13,3 @@
     state: link
   ignore_errors: "{{ ansible_check_mode }}"
 
-- name: Copy powerlevel config
-  ansible.builtin.copy:
-    src: p10k.zsh
-    dest: ~/.p10k.zsh
-    mode: '0644'
-  ignore_errors: "{{ ansible_check_mode }}"

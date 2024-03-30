@@ -1,0 +1,32 @@
+---
+- name: Configure shell development environment
+  hosts: localhost
+  roles:
+    - shell
+  
+- name: Copy dotfiles to home directory
+  hosts: localhost
+  roles: 
+    - { role: config, src: zshrc, dest: .zshrc }
+    - { role: config, src: p10k.zsh, dest: .p10k.zsh }
+    - { role: config, src: mods-config.yml, dest: .config/mods/mods.yml }
+    - { role: config, src: navi-config.yml, dest: .config/navi/config.yaml }
+
+- name: Configure Go for development environment
+  hosts: localhost
+  become: true
+  roles:
+    - golang
+  vars:
+    go_version: "1.21.8"
+    go_platform: linux
+    go_arch: arm64
+    go_tarball: go{{ go_version }}.{{ go_platform }}-{{ go_arch }}.tar.gz
+    go_download_url: https://dl.google.com/go/{{ go_tarball }}
+    go_checksum: '3c19113c686ffa142e9159de1594c952dee64d5464965142d222eab3a81f1270'
+    go_packages:
+      run: github.com/amonks/run/cmd/run@latest
+      glow: github.com/charmbracelet/glow@latest
+      mods: github.com/charmbracelet/mods@latest
+      skate: github.com/charmbracelet/skate@latest
+      gum: github.com/charmbracelet/gum@latest

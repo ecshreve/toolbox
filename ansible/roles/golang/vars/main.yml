@@ -1,8 +1,0 @@
----
-# These variables are derived from values set in the main configuration file.
-# They are used to download and install the Go programming language with a
-# specific version and platform.
-golang_name: 'go{{ golang_version }}.{{ golang_platform }}'
-golang_tgz: '{{ golang_name }}.tar.gz'
-golang_tgz_url: https://go.dev/dl/{{ golang_tgz }}
-golang_checksum: '{{ golang_checksums[golang_version][golang_platform] }}'

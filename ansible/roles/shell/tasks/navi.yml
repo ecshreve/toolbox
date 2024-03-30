@@ -20,10 +20,3 @@
     state: directory
     mode: '0755'
   ignore_errors: "{{ ansible_check_mode }}"
-
-- name: Copy navi config file
-  ansible.builtin.copy:
-    src: navi-config.yaml
-    dest: "{{ ansible_env.HOME }}/.config/navi/config.yaml"
-    mode: '0644'
-  ignore_errors: "{{ ansible_check_mode }}"

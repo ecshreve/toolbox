@@ -4,6 +4,9 @@
 # Stop on errors
 set -e
 
+export TOOLBOX_PATH=$HOME/.toolbox
+export TOOLBOX_BIN_PATH=$TOOLBOX_PATH/bin
+
 # Update system package list
 sudo apt-get update
 

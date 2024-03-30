@@ -1,53 +1,52 @@
 ---
-- name: Golang - check for existing install...
-  ansible.builtin.stat:
-    path: '{{ ansible_env.HOME }}/.local/go/bin/go'
+- name: Check if Go is already installed.
+  command: /usr/local/go/bin/go version
+  ignore_errors: true
+  register: go_version_result
   changed_when: false
-  register: golang_install_path
 
-# TODO: Add support for updating Go
-- name: Golang - install specific version
-  when: not golang_install_path.stat.exists
+- name: Remove current installation.
+  file:
+    state: absent
+    path: /usr/local/go
+  when:
+    - go_version_result is succeeded
+    - go_version not in go_version_result.stdout
   ignore_errors: "{{ ansible_check_mode }}"
-  block:
-    - name: Download go archive...
-      ansible.builtin.get_url:
-        url: '{{ golang_tgz_url }}'
-        dest: /tmp/{{ golang_tgz }}
-        checksum: '{{ golang_checksum }}'
-        mode: '0644'
-    - name: Create temp directory ...
-      ansible.builtin.file:
-        path: /tmp/go/extracted
-        state: directory
-        mode: '0755'
-    - name: Unarchive go
-      ansible.builtin.unarchive:
-        copy: false
-        src: /tmp/{{ golang_tgz }}
-        dest: '/tmp/go/extracted'
-        creates: '/tmp/go/extracted/go'
-    - name: Ensure the parent dir exists
-      ansible.builtin.file:
-        path: "{{ ansible_env.HOME }}/.local"
-        state: directory
-        mode: '0755'
-    - name: Move go to location
-      ansible.builtin.raw: mv /tmp/go/extracted/go {{ ansible_env.HOME }}/.local/go
-      changed_when: golang_install_path.stat.exists
-  always:
-    - name: Cleanup
-      ansible.builtin.file:
-        path: /tmp/{{ item }}
-        state: absent
-      loop:
-        - "{{ golang_tgz }}"
-        - go
 
-- name: Install go packages
-  ansible.builtin.command: "{{ ansible_env.HOME }}/.local/go/bin/go install {{ item.name }}"
+- name: Download Go.
+  get_url:
+    url: "{{ go_download_url }}"
+    dest: /usr/local/src/{{ go_tarball }}
+    checksum: "sha256:{{ go_checksum }}"
+  when: go_version_result is failed
+        or go_version not in go_version_result.stdout
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Extract Go.
+  unarchive:
+    src: /usr/local/src/{{ go_tarball }}
+    dest: /usr/local
+    copy: no
+  when: go_version_result is failed
+        or go_version not in go_version_result.stdout
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Add Go to to system-wide $PATH.
+  copy:
+    dest: /etc/profile.d/go-path.sh
+    content: |-
+      export PATH=$PATH:/usr/local/go/bin
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Reload shell.
+  shell: source /etc/profile.d/go-path.sh
+  args:
+    executable: /bin/bash
+
+- name: Install go packages with go install.
+  shell: /usr/local/go/bin/go install {{ item.value }}
   environment:
-    GOBIN: "{{ ansible_env.HOME }}/.local/bin"
-  loop: "{{ golang_packages }}"
-  changed_when: false
-  ignore_errors: "{{ ansible_check_mode }}"
+    GOPATH: /usr/local/go
+  loop: "{{ go_packages | dict2items }}"
+

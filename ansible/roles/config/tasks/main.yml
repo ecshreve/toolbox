@@ -1,0 +1,20 @@
+---
+- name: Check if the file exists
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/{{ dest }}"
+  register: file_exists
+    
+- name: Backup the original file
+  ansible.builtin.copy:
+    src: "{{ ansible_env.HOME }}/{{ dest }}"
+    dest: "{{ ansible_env.HOME }}/{{ dest }}.bak"
+    remote_src: true
+  when: file_exists.stat.exists
+  changed_when: false
+
+- name: Copy the new file
+  ansible.builtin.copy:
+    src: "{{ src }}"
+    dest: "{{ ansible_env.HOME }}/{{ dest }}"
+    force: true
+

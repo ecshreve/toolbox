@@ -47,7 +47,7 @@ The roles are defined in the `ansible/roles` directory, and the playbook
 
 - Handles downloading and installing Golang 1.21.8, along with additional tools 
   and executables.
-- Installs go under `$HOME/.local/go`
+- Installs go under `$HOME/go/`
 - Installs executables under `$HOME/.local/bin`
 - Version to install and packages to install are defined in `roles/config-vars.yml`
 

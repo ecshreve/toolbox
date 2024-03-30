@@ -1,4 +1,4 @@
-export PATH=$HOME/bin:$HOME/.local/bin:$HOME/.local/go/bin:/usr/local/bin:$PATH
+# export PATH=$HOME/bin:$HOME/.local/bin:$HOME/go/bin:/usr/local/bin:/usr/local/go/bin:$PATH
 export FZF_BASE='$HOME/.fzf/bin/fzf'
 export FZF_DEFAULT_OPTS='--cycle --layout=reverse --border --height=90% --preview="head -$LINES {}" --preview-window=nowrap --marker="*"'
 export ZSH=$HOME/.oh-my-zsh
@@ -26,8 +26,8 @@ bindkey -M vicmd '^ff' fzf-file-widget
 bindkey -M viins '^ff' fzf-file-widget
 
 # Set history size
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=50000
+SAVEHIST=50000
 # Do not put commands in history if they begin with a SPACE
 setopt HIST_IGNORE_SPACE
 # Trim excessive whitespace from commands before adding to history
@@ -35,4 +35,4 @@ setopt HIST_REDUCE_BLANKS
 
 [ -f $HOME/.p10k.zsh ] && source $HOME/.p10k.zsh
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
-[ -f $HOME/.local/bin/navi ] && eval "$(navi widget zsh)"
+# [ -f $HOME/go/bin/navi ] && eval "$(navi widget zsh)"
