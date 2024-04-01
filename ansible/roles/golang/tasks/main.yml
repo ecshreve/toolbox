@@ -1,52 +1,49 @@
 ---
 - name: Check if Go is already installed.
-  command: /usr/local/go/bin/go version
+  ansible.builtin.command: /usr/local/go/bin/go version
   ignore_errors: true
   register: go_version_result
   changed_when: false
 
-- name: Remove current installation.
-  file:
-    state: absent
-    path: /usr/local/go
+- name: Clean install
   when:
     - go_version_result is succeeded
     - go_version not in go_version_result.stdout
-  ignore_errors: "{{ ansible_check_mode }}"
+    - clean_install
+  block:
+    - name: Remove current installation.
+      ansible.builtin.file:
+        state: absent
+        path: "{{ go_root }}"
+      ignore_errors: "{{ ansible_check_mode }}"
 
-- name: Download Go.
-  get_url:
-    url: "{{ go_download_url }}"
-    dest: /usr/local/src/{{ go_tarball }}
-    checksum: "sha256:{{ go_checksum }}"
-  when: go_version_result is failed
-        or go_version not in go_version_result.stdout
-  ignore_errors: "{{ ansible_check_mode }}"
+    - name: Download Go.
+      ansible.builtin.get_url:
+        url: "{{ go_download_url }}"
+        dest: /usr/local/src/{{ go_tarball }}
+        checksum: "sha256:{{ go_checksum }}"
+        mode: '0644'
+      ignore_errors: "{{ ansible_check_mode }}"
 
-- name: Extract Go.
-  unarchive:
-    src: /usr/local/src/{{ go_tarball }}
-    dest: /usr/local
-    copy: no
-  when: go_version_result is failed
-        or go_version not in go_version_result.stdout
-  ignore_errors: "{{ ansible_check_mode }}"
+    - name: Extract Go.
+      ansible.builtin.unarchive:
+        src: /usr/local/src/{{ go_tarball }}
+        dest: /usr/local
+        copy: false
+      ignore_errors: "{{ ansible_check_mode }}"
+
 
 - name: Add Go to to system-wide $PATH.
-  copy:
+  ansible.builtin.copy:
     dest: /etc/profile.d/go-path.sh
     content: |-
       export PATH=$PATH:/usr/local/go/bin
+    mode: '0644'
   ignore_errors: "{{ ansible_check_mode }}"
 
-- name: Reload shell.
-  shell: source /etc/profile.d/go-path.sh
-  args:
-    executable: /bin/bash
-
 - name: Install go packages with go install.
-  shell: /usr/local/go/bin/go install {{ item.value }}
+  ansible.builtin.command: "{{ go_root }}/bin/go install {{ item.value }}"
   environment:
     GOPATH: /usr/local/go
   loop: "{{ go_packages | dict2items }}"
-
+  changed_when: false

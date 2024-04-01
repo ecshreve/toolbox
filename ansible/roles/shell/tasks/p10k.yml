@@ -12,4 +12,3 @@
     dest: ~/.oh-my-zsh/custom/themes/powerlevel10k.zsh-theme
     state: link
   ignore_errors: "{{ ansible_check_mode }}"
-

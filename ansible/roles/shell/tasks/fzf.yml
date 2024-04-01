@@ -20,25 +20,26 @@
     force: true  # This will replace the link if it already exists
 
 - name: Check if FZF is already installed
-  ansible.builtin.stat:
-    path: "{{ ansible_env.HOME }}/.fzf"
-  register: fzf_installed
+  ansible.builtin.command: which fzf
+  register: fzf_exists
+  failed_when: fzf_exists.rc > 1
+  changed_when: false
 
-- name: Remove existing FZF installation
-  when: not fzf_installed.stat.exists
+- name: Uninstall FZF
+  when: fzf_exists.rc == 0 and clean_install
+  ansible.builtin.command: "{{ ansible_env.HOME }}/.fzf/uninstall"
+  args:
+    removes: "{{ ansible_env.HOME }}/.fzf/bin/fzf"
+
+- name: Remove FZF directory
   tags: clean
-  block:
-    - name: Uninstall FZF
-      ansible.builtin.command: "{{ ansible_env.HOME }}/.fzf/uninstall"
-      args:
-        removes: "{{ ansible_env.HOME }}/.fzf"
+  when: fzf_exists.rc == 0 and clean_install
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.fzf"
+    state: absent
 
-    - name: Remove FZF directory
-      ansible.builtin.file:
-        path: "{{ ansible_env.HOME }}/.fzf"
-        state: absent
-
-- name: Install latest FZF via git
+- name: Download latest FZF via git
+  when: fzf_exists.rc == 0 and clean_install
   ansible.builtin.git:
     repo: https://github.com/junegunn/fzf.git
     dest: "{{ ansible_env.HOME }}/.fzf"
@@ -46,5 +47,6 @@
     version: d579e335b5aa30e98a2ec046cb782bbb02bc28ad
 
 - name: Run fzf installation script
-  ansible.builtin.command: "{{ ansible_env.HOME }}/.fzf/install"
-  changed_when: fzf_installed.stat.exists
+  ansible.builtin.command:
+    cmd: "{{ ansible_env.HOME }}/.fzf/install"
+    creates: "{{ ansible_env.HOME }}/.fzf/bin/fzf"

@@ -3,6 +3,8 @@
   hosts: localhost
   roles:
     - shell
+  vars:
+    clean_install: false
 
 - name: Configure Go for development environment
   hosts: localhost
@@ -10,12 +12,14 @@
   roles:
     - golang
   vars:
+    clean_install: false
     go_version: "1.21.8"
     go_platform: linux
     go_arch: arm64
     go_tarball: go{{ go_version }}.{{ go_platform }}-{{ go_arch }}.tar.gz
     go_download_url: https://dl.google.com/go/{{ go_tarball }}
     go_checksum: '3c19113c686ffa142e9159de1594c952dee64d5464965142d222eab3a81f1270'
+    go_root: /usr/local/go
     go_packages:
       run: github.com/amonks/run/cmd/run@latest
       glow: github.com/charmbracelet/glow@latest
@@ -25,7 +29,7 @@
 
 - name: Copy dotfiles to home directory
   hosts: localhost
-  roles: 
-    - { role: config, src: zshrc, dest: .zshrc }
-    - { role: config, src: p10k.zsh, dest: .p10k.zsh }
-    - { role: config, src: mods.yml, dest: .config/mods/mods.yml }
+  roles:
+    - { role: config, config_src: zshrc, config_dest: .zshrc }
+    - { role: config, config_src: p10k.zsh, config_dest: .p10k.zsh }
+    - { role: config, config_src: mods.yml, config_dest: .config/mods/mods.yml }
