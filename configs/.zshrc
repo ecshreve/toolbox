@@ -24,6 +24,13 @@ bindkey -M emacs '^ff' fzf-file-widget
 bindkey -M vicmd '^ff' fzf-file-widget
 bindkey -M viins '^ff' fzf-file-widget
 
+alias cl='clear -x'
+alias clear='clear -x'
+alias ll='ls -alF'
+alias gcm='git checkout main'
+alias gdoof='git add --all && git commit --amend --no-edit'
+alias goops='git reset --soft HEAD~1 && git status'
+
 # Set history size
 HISTSIZE=70000
 SAVEHIST=70000
