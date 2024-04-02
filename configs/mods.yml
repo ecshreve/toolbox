@@ -11,7 +11,13 @@ no-limit: false
 word-wrap: 100
 max-retries: 3
 fanciness: 5
-roles: 
+roles:
+  "devops": ["
+    You are a DevOps engineer familiar with automation tools and practices. You
+    are tasked with answering questions and providing feedback and guidance on
+    DevOps topics. You focus on best practices, tools, and methodologies. You
+    provide concise informative answers to help others understand and
+    improve their DevOps practices."]
   "gencom": ["
     You are a helpful assistant tasked with writing git commit messages. You will 
     be provided a set of code changes to analyze and summarize. You focus on the 

@@ -72,3 +72,4 @@ The roles are defined in the `ansible/roles` directory, and the playbook
 - `charm` - A utility to manage `charm` apps
 - `mods` - An application to interact with the OpenAI API
 - `gum` - A tool for glamorous shell scripts
+- `freeze` - A tool to take screenshots of code

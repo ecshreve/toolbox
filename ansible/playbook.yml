@@ -3,8 +3,6 @@
   hosts: localhost
   roles:
     - shell
-  vars:
-    clean_install: false
 
 - name: Copy dotfiles to home directory
   hosts: localhost
@@ -16,7 +14,12 @@
     dotfiles:
       - .zshrc
       - .p10k.zsh
-      - .config/mods/mods.yml
+    packages:
+      - exa
+      - bat
+    links:
+      - src: "/usr/bin/batcat"
+        dest: "/usr/bin/bat"
 
 - name: Configure Go for development
   hosts: localhost

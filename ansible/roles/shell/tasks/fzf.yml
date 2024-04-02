@@ -6,10 +6,10 @@
       - git
       - fd-find
       - ripgrep
-      - git
       - tmux
     state: present
     update_cache: true
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Create symbolic link for fd
   become: true
@@ -26,20 +26,19 @@
   changed_when: false
 
 - name: Uninstall FZF
-  when: fzf_exists.rc == 0 and clean_install
+  when: fzf_exists.rc == 0
   ansible.builtin.command: "{{ ansible_env.HOME }}/.fzf/uninstall"
   args:
     removes: "{{ ansible_env.HOME }}/.fzf/bin/fzf"
 
 - name: Remove FZF directory
   tags: clean
-  when: fzf_exists.rc == 0 and clean_install
+  when: fzf_exists.rc == 0
   ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.fzf"
     state: absent
 
 - name: Download latest FZF via git
-  when: fzf_exists.rc == 0 and clean_install
   ansible.builtin.git:
     repo: https://github.com/junegunn/fzf.git
     dest: "{{ ansible_env.HOME }}/.fzf"

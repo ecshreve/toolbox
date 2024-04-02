@@ -1,0 +1,23 @@
+---
+- name: Update apt cache
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Install required packages
+  become: true
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages }}"
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Create specified links
+  become: true
+  ansible.builtin.file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: link
+  loop: "{{ links }}"
+  ignore_errors: "{{ ansible_check_mode }}"

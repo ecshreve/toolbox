@@ -1,37 +1,31 @@
 ---
 - name: Check if Go is already installed.
-  ansible.builtin.command: /usr/local/go/bin/go version
-  ignore_errors: true
-  register: go_version_result
+  ansible.builtin.stat: 
+    path: "{{ ansible_GOROOT }}/bin/go"
   changed_when: false
+  register: go_stat
 
-- name: Clean install
-  when:
-    - go_version_result is succeeded
-    - go_version not in go_version_result.stdout
-    - clean_install
-  block:
-    - name: Remove current installation.
-      ansible.builtin.file:
-        state: absent
-        path: "{{ ansible_GOROOT }}"
-      ignore_errors: "{{ ansible_check_mode }}"
+- name: Remove current installation.
+  ansible.builtin.file:
+    state: absent
+    path: "{{ ansible_GOROOT }}"
+  ignore_errors: "{{ ansible_check_mode }}"
+  when: go_stat.stat.exists
 
-    - name: Download Go.
-      ansible.builtin.get_url:
-        url: "{{ go_download_url }}"
-        dest: /usr/local/src/{{ go_tarball }}
-        checksum: "sha256:{{ go_checksum }}"
-        mode: '0644'
-      ignore_errors: "{{ ansible_check_mode }}"
+- name: Download Go.
+  ansible.builtin.get_url:
+    url: "{{ go_download_url }}"
+    dest: /usr/local/src/{{ go_tarball }}
+    checksum: "sha256:{{ go_checksum }}"
+    mode: '0644'
+  ignore_errors: "{{ ansible_check_mode }}"
 
-    - name: Extract Go.
-      ansible.builtin.unarchive:
-        src: /usr/local/src/{{ go_tarball }}
-        dest: /usr/local
-        copy: false
-      ignore_errors: "{{ ansible_check_mode }}"
-
+- name: Extract Go.
+  ansible.builtin.unarchive:
+    src: /usr/local/src/{{ go_tarball }}
+    dest: /usr/local
+    copy: false
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Add Go to to system-wide $PATH.
   ansible.builtin.copy:
@@ -47,3 +41,21 @@
     GOPATH: /usr/local/go
   loop: "{{ go_packages | dict2items }}"
   changed_when: false
+
+- name: Ensure config directories exist
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.config/{{ item}}"
+    state: directory
+    mode: '0755'
+  loop: 
+    - "mods"
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Copy config files for go apps
+  ansible.builtin.copy:
+    src: "{{ toolbox_path }}/configs/{{ item | basename }}"
+    dest: "{{ home_dir }}/{{ item }}"
+    mode: '0644'
+  loop:
+    - ".config/mods/mods.yml"
+  ignore_errors: "{{ ansible_check_mode }}"

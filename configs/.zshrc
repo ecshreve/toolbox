@@ -1,4 +1,4 @@
-export FZF_BASE='$HOME/.fzf/bin/fzf'
+export FZF_BASE=$HOME/.fzf/bin/fzf
 export FZF_DEFAULT_OPTS='--cycle --layout=reverse --border --height=90% --preview="head -$LINES {}" --preview-window=nowrap --marker="*"'
 export ZSH=$HOME/.oh-my-zsh
 
@@ -24,9 +24,11 @@ bindkey -M emacs '^ff' fzf-file-widget
 bindkey -M vicmd '^ff' fzf-file-widget
 bindkey -M viins '^ff' fzf-file-widget
 
+alias cat='bat'
+alias ls='exa --icons'
+alias ll='ls -alF'
 alias cl='clear -x'
 alias clear='clear -x'
-alias ll='ls -alF'
 alias gcm='git checkout main'
 alias gdoof='git add --all && git commit --amend --no-edit'
 alias goops='git reset --soft HEAD~1 && git status'
