@@ -1,3 +1,4 @@
+export PATH=/usr/local/go/bin:$PATH
 export FZF_BASE=$HOME/.fzf/bin/fzf
 export FZF_DEFAULT_OPTS='--cycle --layout=reverse --border --height=90% --preview="head -$LINES {}" --preview-window=nowrap --marker="*"'
 export ZSH=$HOME/.oh-my-zsh

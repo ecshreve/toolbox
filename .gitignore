@@ -2,3 +2,6 @@
 __pycache__/
 .vscode/
 *.log
+playbook-artifact*
+artifacts/
+logs/

@@ -57,6 +57,17 @@ The roles are defined in the `ansible/roles` directory, and the playbook
 - Installs executables under `/usr/local/go/bin`
 - Install path is defined in `hosts` file under localhost 
 
+### Ansible Tools
+
+#### ansible-navigator
+
+> A text-based user interface (TUI) for Ansible.
+
+Installed via `pip` as part of the `shell` role.
+
+[repo](https://github.com/ansible/ansible-navigator)
+[docs](https://ansible.readthedocs.io/projects/navigator/)
+
 ### General CLI Tools
 
 - `exa` - A modern replacement for `ls`

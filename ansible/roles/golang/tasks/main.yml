@@ -1,6 +1,6 @@
 ---
 - name: Check if Go is already installed.
-  ansible.builtin.stat: 
+  ansible.builtin.stat:
     path: "{{ ansible_GOROOT }}/bin/go"
   changed_when: false
   register: go_stat
@@ -44,11 +44,11 @@
 
 - name: Ensure config directories exist
   ansible.builtin.file:
-    path: "{{ home_dir }}/.config/{{ item}}"
+    path: "{{ home_dir }}/.config/{{ item }}"
     state: directory
     mode: '0755'
-  loop: 
-    - "mods"
+  loop:
+    - mods
   ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Copy config files for go apps
