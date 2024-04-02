@@ -14,7 +14,7 @@
     - name: Remove current installation.
       ansible.builtin.file:
         state: absent
-        path: "{{ go_root }}"
+        path: "{{ ansible_GOROOT }}"
       ignore_errors: "{{ ansible_check_mode }}"
 
     - name: Download Go.
@@ -42,7 +42,7 @@
   ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Install go packages with go install.
-  ansible.builtin.command: "{{ go_root }}/bin/go install {{ item.value }}"
+  ansible.builtin.command: "{{ ansible_GOROOT }}/bin/go install {{ item.value }}"
   environment:
     GOPATH: /usr/local/go
   loop: "{{ go_packages | dict2items }}"

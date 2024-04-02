@@ -6,8 +6,8 @@
 - [/] Configure `charm` server to run via docker, back it up to NAS
 - [/] Use `skate` to handle secrets
 - [ ] Bake all of this into a docker image
-- [ ] Take a few cycles to clean up the `golang` role.
-- [ ] Audit .yml vs .yaml file extensions
+- [x] Take a few cycles to clean up the `golang` role.
+- [x] Audit .yml vs ~~.yaml~~ file extensions
 - [?] Add `tmux` configuration
 - [?] Add `docker` role
 
@@ -15,6 +15,7 @@
 
 ### Install script
 
+- Checks the TOOLBOX_PATH environment variable
 - Installs `python3` and `pip` via `apt`
 - Installs ansible via `pip`
 - Clones this repository to `$HOME/.toolbox`
@@ -22,14 +23,19 @@
 
 ### Ansible Roles
 
-I use `ansible` to manage most of the dotfiles and configurations on my system. 
+I use `ansible` to manage dotfiles and configurations on my system. 
 The roles are defined in the `ansible/roles` directory, and the playbook 
-`dev_setup.yml` is responsible for running them.
+`playbook.yml` is responsible for running them.
+
+**`config`**
+
+- Handles copying dotfiles and other configuration files to the appropriate 
+  locations on the system.
 
 **`shell`**
 
 - Handles the installation and configuration of `zsh` and `oh-my-zsh`, as well 
-  as a few plugins and utilities.
+  as plugins and utilities.
 
 - Configuration for `zsh` is defined in `roles/shell/files/zshrc`, which is 
   copied to `$HOME/.zshrc` after installation. 
@@ -47,12 +53,9 @@ The roles are defined in the `ansible/roles` directory, and the playbook
 
 - Handles downloading and installing Golang 1.21.8, along with additional tools 
   and executables.
-- Installs go under `$HOME/go/`
-- Installs executables under `$HOME/.local/bin`
-- Version to install and packages to install are defined in `roles/config-vars.yml`
-
-    > [!NOTE]
-    > This task is buggy right now and doesn't handle updating existing installations.
+- Installs go under `/usr/local/go`
+- Installs executables under `/usr/local/go/bin`
+- Install path is defined in `hosts` file under localhost 
 
 ### General CLI Tools
 

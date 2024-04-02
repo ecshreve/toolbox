@@ -1,13 +1,25 @@
 ---
+- name: Check if the file exists
+  ansible.builtin.stat:
+    path: "{{ dest_dir }}/{{ item }}"
+  register: file_stat
+
+- name: Create the file if it doesn't exist
+  ansible.builtin.file:
+    path: "{{ dest_dir }}/{{ item }}"
+    state: touch
+    mode: '0644'
+  when: not file_stat.stat.exists
+
 - name: Backup the original file
   ansible.builtin.copy:
-    src: "{{ item.value }}"
-    dest: "{{ item.value }}.bak"
-    remote_src: true
+    src: "{{ dest_dir }}/{{ item }}"
+    dest: "{{ dest_dir }}/{{ item }}.bak"
     mode: '0644'
+  when: file_stat.stat.exists
 
 - name: Copy the new file
   ansible.builtin.copy:
-    src: "{{ item.key }}"
-    dest: "{{ item.value }}"
+    src: "{{ src_dir }}/{{ item | basename }}"
+    dest: "{{ dest_dir }}/{{ item }}"
     mode: '0644'

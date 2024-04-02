@@ -7,5 +7,3 @@
   ansible.builtin.include_tasks: p10k.yml
 - name: Include fzf tasks
   ansible.builtin.include_tasks: fzf.yml
-# - name: Include navi tasks
-#   ansible.builtin.include_tasks: navi.yml
