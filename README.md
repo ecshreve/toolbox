@@ -53,3 +53,19 @@ The roles are defined in the `ansible/roles` directory, and the playbook
 
     > [!NOTE]
     > This task is buggy right now and doesn't handle updating existing installations.
+
+### General CLI Tools
+
+- `exa` - A modern replacement for `ls`
+- `bat` - A modern replacement for `cat`
+- `fd` - A modern replacement for `find`
+- `fzf` - A fuzzy finder for the command line
+- `forgit` - A `fzf` wrapper for `git` commands
+- `tldr` - A streamlined `man` page replacement
+
+### Go CLI Tools
+- `run` - A utility to run commands in a new shell
+- `skate` - A utility to manage secrets
+- `charm` - A utility to manage `charm` apps
+- `mods` - An application to interact with the OpenAI API
+- `gum` - A tool for glamorous shell scripts

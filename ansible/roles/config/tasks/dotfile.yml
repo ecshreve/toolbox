@@ -1,0 +1,13 @@
+---
+- name: Backup the original file
+  ansible.builtin.copy:
+    src: "{{ item.value }}"
+    dest: "{{ item.value }}.bak"
+    remote_src: true
+    mode: '0644'
+
+- name: Copy the new file
+  ansible.builtin.copy:
+    src: "{{ item.key }}"
+    dest: "{{ item.value }}"
+    mode: '0644'
