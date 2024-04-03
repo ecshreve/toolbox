@@ -96,10 +96,10 @@ ansible-navigator:
 
 #   mode: stdout
 #
-#   playbook-artifact:
-#     enable: True
-#     replay: /tmp/test_artifact.json
-#     save-as: /tmp/test_artifact.json
+  playbook-artifact:
+    enable: True
+    # replay: ./artifact/test_artifact.json
+    save-as: /{playbook_dir}/artifact/playbook-{playbook_status}-{time_stamp}.json
 #
 #   settings:
 #     effective: False

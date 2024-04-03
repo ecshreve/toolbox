@@ -1,11 +1,32 @@
 ---
-- name: Include zsh tasks
-  ansible.builtin.include_tasks: zsh.yml
-- name: Include oh my zsh tasks
+- name: Root installation tasks
+  become: true
+  block:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+      ignore_errors: "{{ ansible_check_mode }}"
+
+    - name: Install apt packages
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ apt_packages }}"
+      ignore_errors: "{{ ansible_check_mode }}"
+
+    - name: Create symbolic links
+      ansible.builtin.file:
+        src: "{{ item.value }}"
+        dest: "{{ item.value | dirname }}/{{ item.key }}"
+        state: link
+        force: true  # This will replace the link if it already exists
+      loop: "{{ symlinks | dict2items }}"
+      ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Oh My Zsh Install
   ansible.builtin.include_tasks: omz.yml
-- name: Include powerlevel10k tasks
-  ansible.builtin.include_tasks: p10k.yml
-- name: Include fzf tasks
+  when: omz_install
+
+- name: FZF Install
   ansible.builtin.include_tasks: fzf.yml
-- name: Include ansible-navigator tasks
-  ansible.builtin.include_tasks: navigator.yml
+  when: fzf_install

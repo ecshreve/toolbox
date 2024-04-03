@@ -1,33 +1,52 @@
 ---
 - name: Configure shell development environment
+  tags: shell
   hosts: localhost
   roles:
     - shell
-
-- name: Copy dotfiles to home directory
-  hosts: localhost
-  roles:
-    - config
   vars:
-    src_dir: "{{ toolbox_path }}/configs"
-    dest_dir: "{{ ansible_env.HOME }}"
-    dotfiles:
-      - .zshrc
-      - .p10k.zsh
-    packages:
+    apt_packages:
+      - zsh
+      - tmux
       - exa
       - bat
-    links:
-      - src: "/usr/bin/batcat"
-        dest: "/usr/bin/bat"
+      - fd-find
+      - ripgrep
+      - git
+    symlinks:
+      bat: /usr/bin/batcat
+      fd: /usr/bin/fdfind
+    fzf_install: true
+    fzf_uninstall: false
+    omz_install: true
+    omz_root: "{{ ansible_env.HOME }}/.oh-my-zsh"
+    omz_version: 8e088ded8289a9db2a9f2c03cab618d6dd017dd7
+    p10k_version: 35833ea15f14b71dbcebc7e54c104d8d56ca5268
+    omz_plugins:
+      - repo: "zsh-users/zsh-autosuggestions"
+        version: a411ef3e0992d4839f0732ebeb9823024afaaaa8
+      - repo: "zsh-users/zsh-syntax-highlighting"
+        version: db085e4661f6aafd24e5acb5b2e17e4dd5dddf3e
+      - repo: "zsh-users/zsh-completions"
+        version: 67921bc12502c1e7b0f156533fbac2cb51f6943d
+      - repo: "wfxr/forgit"
+        version: d582f2aa0b5bf7948d78aca05c55a974e68f4884
+
+- name: Copy dotfiles to home directory
+  tags: shell
+  hosts: localhost
+  roles:
+    - { role: dotfile, dotfile_name: .zshrc }
+    - { role: dotfile, dotfile_name: .p10k.zsh }
+    - { role: dotfile, dotfile_name: .tmux.conf }
+    - { role: dotfile, dotfile_name: .tmux.conf.local }
 
 - name: Configure Go for development
   hosts: localhost
-  become: true
   roles:
     - golang
   vars:
-    clean_install: false
+    go_update: false
     go_version: "1.21.8"
     go_platform: linux
     go_arch: arm64
@@ -41,3 +60,4 @@
       skate: github.com/charmbracelet/skate@latest
       gum: github.com/charmbracelet/gum@latest
       freeze: github.com/charmbracelet/freeze@latest
+  tags: golang

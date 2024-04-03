@@ -1,8 +1,0 @@
----
-- name: Install zsh
-  become: true
-  ansible.builtin.apt:
-    name: zsh
-    state: present
-    update_cache: true
-  ignore_errors: "{{ ansible_check_mode }}"

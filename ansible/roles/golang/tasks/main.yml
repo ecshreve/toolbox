@@ -2,7 +2,6 @@
 - name: Check if Go is already installed.
   ansible.builtin.stat:
     path: "{{ ansible_GOROOT }}/bin/go"
-  changed_when: false
   register: go_stat
 
 - name: Remove current installation.
@@ -10,22 +9,25 @@
     state: absent
     path: "{{ ansible_GOROOT }}"
   ignore_errors: "{{ ansible_check_mode }}"
-  when: go_stat.stat.exists
+  when: go_stat.stat.exists and go_update
 
-- name: Download Go.
-  ansible.builtin.get_url:
-    url: "{{ go_download_url }}"
-    dest: /usr/local/src/{{ go_tarball }}
-    checksum: "sha256:{{ go_checksum }}"
-    mode: '0644'
-  ignore_errors: "{{ ansible_check_mode }}"
+- name: Install Go
+  when: not go_stat.stat.exists and go_update
+  block:
+    - name: Download Go.
+      ansible.builtin.get_url:
+        url: "{{ go_download_url }}"
+        dest: /usr/local/src/{{ go_tarball }}
+        checksum: "sha256:{{ go_checksum }}"
+        mode: '0644'
+      ignore_errors: "{{ ansible_check_mode }}"
 
-- name: Extract Go.
-  ansible.builtin.unarchive:
-    src: /usr/local/src/{{ go_tarball }}
-    dest: /usr/local
-    copy: false
-  ignore_errors: "{{ ansible_check_mode }}"
+    - name: Extract Go.
+      ansible.builtin.unarchive:
+        src: /usr/local/src/{{ go_tarball }}
+        dest: /usr/local
+        copy: false
+      ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Add Go to to system-wide $PATH.
   ansible.builtin.copy:
@@ -36,11 +38,13 @@
   ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Install go packages with go install.
-  ansible.builtin.command: "{{ ansible_GOROOT }}/bin/go install {{ item.value }}"
+  ansible.builtin.command:
+    cmd: "{{ ansible_GOROOT }}/bin/go install {{ item.value }}"
+    creates: "{{ ansible_GOROOT }}/bin/{{ item.key }}"
   environment:
     GOPATH: /usr/local/go
   loop: "{{ go_packages | dict2items }}"
-  changed_when: false
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Ensure config directories exist
   ansible.builtin.file:

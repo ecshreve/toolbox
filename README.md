@@ -2,7 +2,9 @@
 
 ## Todo
 
-- [ ] Add `aliases` to .zshrc
+- [ ] Add `soft serve` git server
+- [ ] Add `run` configuration
+- [/] Add `aliases` to .zshrc
 - [/] Configure `charm` server to run via docker, back it up to NAS
 - [/] Use `skate` to handle secrets
 - [ ] Bake all of this into a docker image

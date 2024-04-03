@@ -1,0 +1,19 @@
+---
+- name: Check if the dotfile exists
+  ansible.builtin.stat:
+    path: "{{ home_dir }}/{{ dotfile_name }}"
+  register: file_stat
+
+- name: Backup the original dotfile
+  ansible.builtin.copy:
+    src: "{{ home_dir }}/{{ dotfile_name }}"
+    dest: "{{ home_dir }}/{{ dotfile_name }}.bak"
+    mode: '0644'
+  when: file_stat.stat.exists
+
+- name: Copy the new dotfile
+  ansible.builtin.copy:
+    src: "{{ toolbox_path }}/configs/{{ dotfile_name }}"
+    dest: "{{ home_dir }}/{{ dotfile_name }}"
+    mode: '0644'
+  ignore_errors: "{{ ansible_check_mode }}"
