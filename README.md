@@ -1,18 +1,5 @@
 # toolbox
 
-## Todo
-
-- [ ] Add `soft serve` git server
-- [ ] Add `run` configuration
-- [/] Add `aliases` to .zshrc
-- [/] Configure `charm` server to run via docker, back it up to NAS
-- [/] Use `skate` to handle secrets
-- [ ] Bake all of this into a docker image
-- [x] Take a few cycles to clean up the `golang` role.
-- [x] Audit .yml vs ~~.yaml~~ file extensions
-- [?] Add `tmux` configuration
-- [?] Add `docker` role
-
 ## Usage
 
 ### Install script
@@ -29,13 +16,14 @@ I use `ansible` to manage dotfiles and configurations on my system.
 The roles are defined in the `ansible/roles` directory, and the playbook 
 `playbook.yml` is responsible for running them.
 
-**`config`**
+**`dotfile`**
 
-- Handles copying dotfiles and other configuration files to the appropriate 
-  locations on the system.
+- Really this role just handles backing up and copying a file. Could be
+  generalized later if needed.
 
 **`shell`**
 
+- Installs apt packages.
 - Handles the installation and configuration of `zsh` and `oh-my-zsh`, as well 
   as plugins and utilities.
 
@@ -50,6 +38,7 @@ The roles are defined in the `ansible/roles` directory, and the playbook
 - Installs `fzf` and `forgit` for fuzzy searching and git integration.
 - Installs `zsh-autosuggestions`, `zsh-completions`, `zsh-syntax-highlighting` 
   for enhanced shell functionality.
+- Installs `tmux`.
 
 **`golang`**:
 
@@ -86,3 +75,18 @@ Installed via `pip` as part of the `shell` role.
 - `mods` - An application to interact with the OpenAI API
 - `gum` - A tool for glamorous shell scripts
 - `freeze` - A tool to take screenshots of code
+
+## Ongoing
+
+maybe
+- [ ] Add `soft serve` git server
+- [ ] Add `run` configuration
+- [ ] Use `skate` to handle secrets
+- [ ] Bake all of this into a docker image
+
+done
+- [x] Take a few cycles to clean up the `golang` role.
+- [x] Audit .yml vs ~~.yaml~~ file extensions
+- [x] Add `tmux` configuration
+- [x] Add `aliases` to .zshrc
+- [x] Configure `charm` server to run via docker
