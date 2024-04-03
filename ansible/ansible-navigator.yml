@@ -32,7 +32,7 @@ ansible-navigator:
     artifact-dir: ./artifacts
     rotate-artifacts-count: 10
     timeout: 300
-    job-events: false
+    # job-events: false
 #
 #   app: run
 #
@@ -97,7 +97,7 @@ ansible-navigator:
 #   mode: stdout
 #
   playbook-artifact:
-    enable: True
+    enable: true
     # replay: ./artifact/test_artifact.json
     save-as: /{playbook_dir}/artifact/playbook-{playbook_status}-{time_stamp}.json
 #

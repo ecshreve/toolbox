@@ -15,14 +15,14 @@
   ansible.builtin.command:
     cmd: "{{ ansible_GOROOT }}/bin/go version"
   register: go_version
-  changed_when: false
+  changed_when: go_version.stdout.find(go_version_target) == -1
   when: go_stat.stat.exists
 
 - name: Download Go.
   ansible.builtin.get_url:
     url: "{{ go_download_url }}"
     dest: /usr/local/src/{{ go_tarball }}
-    checksum: "sha256:{{ go_checksum }}"
+    checksum: "sha256:{{ go_checksums[go_version_target][go_platform][go_arch] }}"
     mode: '0644'
   when: not go_stat.stat.exists or go_version.stdout.find(go_version_target) == -1
   ignore_errors: "{{ ansible_check_mode }}"
@@ -40,6 +40,7 @@
     content: |-
       export PATH=$PATH:/usr/local/go/bin
     mode: '0644'
+  when: ansible_os_family != "Darwin"
   ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Install go packages with go install.
@@ -60,11 +61,11 @@
     - mods
   ignore_errors: "{{ ansible_check_mode }}"
 
-- name: Copy config files for go apps
-  ansible.builtin.copy:
-    src: "{{ toolbox_path }}/configs/{{ item | basename }}"
-    dest: "{{ home_dir }}/{{ item }}"
-    mode: '0644'
-  loop:
-    - ".config/mods/mods.yml"
-  ignore_errors: "{{ ansible_check_mode }}"
+# - name: Copy config files for go apps
+#   ansible.builtin.copy:
+#     src: "{{ toolbox_path }}/configs/{{ item | basename }}"
+#     dest: "{{ home_dir }}/{{ item }}"
+#     mode: '0644'
+#   loop:
+#     - ".config/mods/mods.yml"
+#   ignore_errors: "{{ ansible_check_mode }}"

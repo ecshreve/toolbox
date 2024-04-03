@@ -1,5 +1,6 @@
 ---
 - name: Root installation tasks
+  when: ansible_os_family == 'Debian'
   become: true
   block:
     - name: Update apt cache
@@ -22,6 +23,14 @@
         force: true  # This will replace the link if it already exists
       loop: "{{ symlinks | dict2items }}"
       ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Macports port installs
+  community.general.macports:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ ports }}"
+  when: ansible_os_family == 'Darwin'
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Oh My Zsh Install
   ansible.builtin.include_tasks: omz.yml

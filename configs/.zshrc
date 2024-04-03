@@ -25,14 +25,28 @@ bindkey -M emacs '^ff' fzf-file-widget
 bindkey -M vicmd '^ff' fzf-file-widget
 bindkey -M viins '^ff' fzf-file-widget
 
+# General
 alias cat='bat'
 alias ls='exa --icons'
 alias ll='ls -alF'
-alias cl='clear -x'
+alias cl='clear -x && ls -alF'
 alias clear='clear -x'
+
+# Git
 alias gcm='git checkout main'
+alias gco='git checkout'
+alias ffb='forgit::checkout::branch'
+alias ffcp='forgit::cherry::pick::from::branch'
 alias gdoof='git add --all && git commit --amend --no-edit'
 alias goops='git reset --soft HEAD~1 && git status'
+
+# N etwork
+alias nett='netstat -tulnp | grep LISTEN'
+alias snett='sudo netstat -tulnp | grep LISTEN'
+
+# Ansible
+alias nav-play='ansible-navigator run'
+alias nav-ans='ansible-navigator'
 
 # Set history size
 HISTSIZE=70000

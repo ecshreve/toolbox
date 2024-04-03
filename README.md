@@ -78,6 +78,19 @@ Installed via `pip` as part of the `shell` role.
 
 ## Ongoing
 
+todo
+- [ ] play around with tmux config
+- [ ] figure out copy/paste from cli
+- [ ] write docs for assistant
+- [ ] helper scripts
+- [ ] fzf run tasks helper
+- [ ] move config values out of playbook
+- [ ] add mods roles and helper scripts
+- [ ] alias ansible to use ansible-navigator?
+- [ ] upgrade to go 1.22
+- [ ] handle vscode config file
+
+
 maybe
 - [ ] Add `soft serve` git server
 - [ ] Add `run` configuration

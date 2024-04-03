@@ -1,15 +1,15 @@
 ---
 - name: Run FZF uninstall script
-  ansible.builtin.command: "{{ ansible_env.HOME }}/.fzf/uninstall"
+  ansible.builtin.command: "{{ home_dir }}/.fzf/uninstall"
   args:
-    removes: "{{ ansible_env.HOME }}/.fzf/bin/fzf"
+    removes: "{{ home_dir }}/.fzf/bin/fzf"
   when: clean
   ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Download latest FZF via git
   ansible.builtin.git:
     repo: https://github.com/junegunn/fzf.git
-    dest: "{{ ansible_env.HOME }}/.fzf"
+    dest: "{{ home_dir }}/.fzf"
     depth: 1
     update: true
     version: master
@@ -17,6 +17,6 @@
 
 - name: Run fzf installation script
   ansible.builtin.command:
-    cmd: "{{ ansible_env.HOME }}/.fzf/install"
-    creates: "{{ ansible_env.HOME }}/.fzf/bin/fzf"
+    cmd: "{{ home_dir }}/.fzf/install"
+    creates: "{{ home_dir }}/.fzf/bin/fzf"
   ignore_errors: "{{ ansible_check_mode }}"

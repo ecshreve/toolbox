@@ -3,7 +3,6 @@
   ansible.builtin.git:
     repo: https://github.com/ohmyzsh/ohmyzsh.git
     dest: "{{ omz_root }}"
-    version: "{{ omz_version }}"
   ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Install omz plugins

@@ -5,3 +5,4 @@ __pycache__/
 playbook-artifact*
 **/artifact
 logs/
+.python-version
