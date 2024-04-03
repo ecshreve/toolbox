@@ -1,0 +1,42 @@
+{
+    "editor.fontFamily": "Hack Nerd Font",
+    "editor.fontSize": 14,
+    "editor.inlineSuggest.enabled": true,
+    "editor.rulers": [
+        120,
+        80
+    ],
+    "[go]": {
+        "editor.defaultFormatter": "golang.go"
+    },
+    "ansible.python.interpreterPath": "/usr/local/python/current/bin/python",
+    "workbench.colorTheme": "Gruvbox Dark (Soft)",
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#414141",
+        "activityBar.background": "#414141",
+        "activityBar.foreground": "#e7e7e7",
+        "activityBar.inactiveForeground": "#e7e7e799",
+        "activityBarBadge.background": "#000000",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "commandCenter.border": "#e7e7e799",
+        "editorGroup.border": "#414141",
+        "panel.border": "#414141",
+        "sash.hoverBorder": "#414141",
+        "sideBar.border": "#414141",
+        "statusBar.background": "#282828",
+        "statusBar.border": "#282828",
+        "statusBar.debuggingBackground": "#282828",
+        "statusBar.debuggingBorder": "#282828",
+        "statusBar.debuggingForeground": "#e7e7e7",
+        "statusBar.foreground": "#e7e7e7",
+        "statusBarItem.hoverBackground": "#414141",
+        "statusBarItem.remoteBackground": "#282828",
+        "statusBarItem.remoteForeground": "#e7e7e7",
+        "tab.activeBorder": "#414141",
+        "titleBar.activeBackground": "#282828",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.border": "#282828",
+        "titleBar.inactiveBackground": "#28282899",
+        "titleBar.inactiveForeground": "#e7e7e799"
+    }
+}
