@@ -42,11 +42,13 @@
     - { role: dotfile, dotfile_name: .tmux.conf.local }
 
 - name: Configure Go for development
+  tags: golang
+  become: true
   hosts: localhost
   roles:
     - golang
   vars:
-    go_update: false
+    go_update: true
     go_version: "1.21.8"
     go_platform: linux
     go_arch: arm64
@@ -60,4 +62,3 @@
       skate: github.com/charmbracelet/skate@latest
       gum: github.com/charmbracelet/gum@latest
       freeze: github.com/charmbracelet/freeze@latest
-  tags: golang

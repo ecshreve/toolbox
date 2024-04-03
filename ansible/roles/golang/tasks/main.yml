@@ -12,7 +12,7 @@
   when: go_stat.stat.exists and go_update
 
 - name: Install Go
-  when: not go_stat.stat.exists and go_update
+  when: go_update
   block:
     - name: Download Go.
       ansible.builtin.get_url:

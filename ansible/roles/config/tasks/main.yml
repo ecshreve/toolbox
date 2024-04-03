@@ -1,6 +1,0 @@
----
-- name: Install dotfiles
-  ansible.builtin.include_tasks: dotfile.yml
-  loop: "{{ dotfiles }}"
-- name: Install apt packages
-  ansible.builtin.include_tasks: general.yml
