@@ -3,7 +3,7 @@
   ansible.builtin.command: "{{ ansible_env.HOME }}/.fzf/uninstall"
   args:
     removes: "{{ ansible_env.HOME }}/.fzf/bin/fzf"
-  when: fzf_uninstall
+  when: clean
   ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Download latest FZF via git

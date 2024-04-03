@@ -5,6 +5,7 @@
   roles:
     - shell
   vars:
+    clean: false
     apt_packages:
       - zsh
       - tmux
@@ -17,9 +18,8 @@
       bat: /usr/bin/batcat
       fd: /usr/bin/fdfind
     fzf_install: true
-    fzf_uninstall: false
     omz_install: true
-    omz_root: "{{ ansible_env.HOME }}/.oh-my-zsh"
+    omz_root: "{{ home_dir }}/.oh-my-zsh"
     omz_version: 8e088ded8289a9db2a9f2c03cab618d6dd017dd7
     p10k_version: 35833ea15f14b71dbcebc7e54c104d8d56ca5268
     omz_plugins:
@@ -41,18 +41,18 @@
     - { role: dotfile, dotfile_name: .tmux.conf }
     - { role: dotfile, dotfile_name: .tmux.conf.local }
 
-- name: Configure Go for development
+- name: Configure Go environment
   tags: golang
   become: true
   hosts: localhost
   roles:
     - golang
   vars:
-    go_update: true
-    go_version: "1.21.8"
+    clean: false
+    go_version_target: "1.21.8"
     go_platform: linux
     go_arch: arm64
-    go_tarball: go{{ go_version }}.{{ go_platform }}-{{ go_arch }}.tar.gz
+    go_tarball: go{{ go_version_target }}.{{ go_platform }}-{{ go_arch }}.tar.gz
     go_download_url: https://dl.google.com/go/{{ go_tarball }}
     go_checksum: '3c19113c686ffa142e9159de1594c952dee64d5464965142d222eab3a81f1270'
     go_packages:
