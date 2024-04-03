@@ -6,6 +6,7 @@
     - name: Update apt cache
       ansible.builtin.apt:
         update_cache: true
+      check_mode: false
       ignore_errors: "{{ ansible_check_mode }}"
 
     - name: Install apt packages

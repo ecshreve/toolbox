@@ -1,30 +1,22 @@
 ---
-- name: Remove current installation.
-  ansible.builtin.file:
-    state: absent
-    path: "{{ ansible_GOROOT }}"
-  ignore_errors: "{{ ansible_check_mode }}"
-  when: clean
-
 - name: Check if Go is already installed.
   ansible.builtin.stat:
     path: "{{ ansible_GOROOT }}/bin/go"
   register: go_stat
 
-- name: Check if installation is up to date.
-  ansible.builtin.command:
-    cmd: "{{ ansible_GOROOT }}/bin/go version"
-  register: go_version
-  changed_when: go_version.stdout.find(go_version_target) == -1
-  when: go_stat.stat.exists
+- name: Remove current installation.
+  ansible.builtin.file:
+    state: absent
+    path: "{{ ansible_GOROOT }}"
+  ignore_errors: "{{ ansible_check_mode }}"
+  when: go_stat.stat.exists and clean
 
 - name: Download Go.
   ansible.builtin.get_url:
-    url: "{{ go_download_url }}"
+    url: "{{ go_tarball_url }}"
     dest: /usr/local/src/{{ go_tarball }}
-    checksum: "sha256:{{ go_checksums[go_version_target][go_platform][go_arch] }}"
+    checksum: "sha256:{{ golang_checksums[go_version_target][go_platform][go_arch] }}"
     mode: '0644'
-  when: not go_stat.stat.exists or go_version.stdout.find(go_version_target) == -1
   ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Extract Go.
@@ -40,19 +32,17 @@
     content: |-
       export PATH=$PATH:/usr/local/go/bin
     mode: '0644'
-  when: ansible_os_family != "Darwin"
+  when: go_platform == 'linux'
   ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Install go packages with go install.
   ansible.builtin.command:
     cmd: "{{ ansible_GOROOT }}/bin/go install {{ item.value }}"
     creates: "{{ ansible_GOROOT }}/bin/{{ item.key }}"
-  environment:
-    GOPATH: /usr/local/go
   loop: "{{ go_packages | dict2items }}"
   ignore_errors: "{{ ansible_check_mode }}"
 
-- name: Ensure config directories exist
+- name: Ensure config directories exist.
   ansible.builtin.file:
     path: "{{ home_dir }}/.config/{{ item }}"
     state: directory

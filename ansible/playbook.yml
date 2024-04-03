@@ -28,6 +28,7 @@
       fd: /usr/bin/fdfind
     fzf_install: true
     omz_install: true
+    omz_version: HEAD
     omz_root: "{{ home_dir }}/.oh-my-zsh"
     p10k_version: 35833ea15f14b71dbcebc7e54c104d8d56ca5268
     omz_plugins:
@@ -58,10 +59,10 @@
   vars:
     clean: false
     go_version_target: "1.22.2"
-    go_platform: "{{ ansible_os_family | lower }}"
-    go_arch: "{{ ansible_machine }}"
-    go_tarball: go{{ go_version_target }}.{{ go_platform }}-{{ go_arch }}.tar.gz
-    go_download_url: https://dl.google.com/go/{{ go_tarball }}
+    go_platform: "{{ ansible_os_family | lower | regex_replace('darwin', 'macos') | regex_replace('debian', 'linux') }}"
+    go_arch: "{{ ansible_machine | lower | regex_replace('aarch64', 'arm64') }}"
+    go_tarball: "go{{ go_version_target }}.{{ go_platform }}-{{ go_arch }}.tar.gz"
+    go_tarball_url: "https://golang.org/dl/{{ go_tarball }}"
     go_packages:
       run: github.com/amonks/run/cmd/run@v1.0.0-beta.24
       glow: github.com/charmbracelet/glow@latest
