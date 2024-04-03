@@ -1,0 +1,6 @@
+[[task]]
+  id = "strapp"
+  description = "Run the assistant streamlit app"
+  type = "long"
+  watch = ["assistant/*.py"]
+  cmd = "streamlit run assistant/client.py"
