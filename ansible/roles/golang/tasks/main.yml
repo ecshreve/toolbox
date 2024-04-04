@@ -39,6 +39,9 @@
   ansible.builtin.command:
     cmd: "{{ ansible_GOROOT }}/bin/go install {{ item.value }}"
     creates: "{{ ansible_GOROOT }}/bin/{{ item.key }}"
+  environment:
+    GOPATH: "{{ ansible_GOROOT }}"
+    GOROOT: "{{ ansible_GOROOT }}"
   loop: "{{ go_packages | dict2items }}"
   ignore_errors: "{{ ansible_check_mode }}"
 
@@ -59,3 +62,10 @@
 #   loop:
 #     - ".config/mods/mods.yml"
 #   ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Change ownership of go directories.
+  ansible.builtin.file:
+    path: "{{ ansible_GOROOT }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  ignore_errors: "{{ ansible_check_mode }}"

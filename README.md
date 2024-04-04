@@ -49,6 +49,28 @@ See the [assistant README](assistant/README.md) for more information.
 > [!NOTE]
 > Probably don't run the install script unless you're me. But, I'm not the boss of you.
 
+### Playbook
+
+The `playbook.yml` file is the main entry point for the `ansible` configuration. It handles running the roles defined in the `ansible/roles` directory with the variables defined in `config_vars.yml`.
+
+The playbook can be run with the following command to  see the output in the terminal and log it to a file:
+
+    $ ansible-playbook playbook.yml -v | tee ansible/logs/ansible.log
+
+With ansible-navigator installed, the playbook can be run with the following command to open the TUI:
+
+    $ ansible-navigator run playbook.yml -v 
+
+### Configuration
+
+`./config_vars.yml` 
+  - Contains the variables used in `playbook.yml`.
+  - Things like packages to install, language and tool versions, etc
+  
+`ansible/hosts` 
+  - Defines the `localhost` host and some specific variables related to the env
+  - This file only contains the `localhost` host, as all roles are run locally.
+  
 ### Ansible Roles
 
 For environment setup `ansible` is used to manage dotfiles and configurations. 
@@ -105,11 +127,12 @@ The roles are defined in the `ansible/roles` directory, and the playbook
 - `mods` - An application to interact with the OpenAI API
 - `gum` - A tool for glamorous shell scripts
 - `freeze` - A tool to take screenshots of code
+- `wishlist` - An SSH directory app
 
 ## Ideas
 
 todo
-- [ ] refactor playbook vars
+- [x] refactor playbook vars
 - [ ] play around with tmux config
 - [-] figure out copy/paste from cli
 - [x] write docs for assistant
