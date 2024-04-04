@@ -1,6 +1,27 @@
-# toolbox
+#  toolbox 
 
 A collection of tools and configurations for my development environment.
+
+
+## Current Status
+
+- MacOS 13.0 / Ubuntu 22.04.
+- Go: 1.22.2
+- Python: 3.11.8
+
+### Why Toolbox?
+
+- I was tired of having do extra work to integrate things with my old `fish` setup. 
+- Time to update some tools and look at new ones.
+- Wanted to move to ansible for configuration management rather than rely on just an install script and the VSCode dotfiles settings.
+- Its fun.
+
+### Highlights
+- reliable `zsh` configuration, with plugins and utilities covering almost all of what `fish` was doing for me.
+- `mods` configuration to interact with AI models from CLI 
+- chatbot to interact with the repository via OpenAI Embeddings, LangChain, and Pinecone
+- `gencom` to generate commit messages based on currently staged changes (powered by `mods`)
+  
 
 ## Toolbox Chat
 
@@ -30,33 +51,28 @@ See the [assistant README](assistant/README.md) for more information.
 
 ### Ansible Roles
 
-I use `ansible` to manage dotfiles and configurations on my system. 
+For environment setup `ansible` is used to manage dotfiles and configurations. 
 The roles are defined in the `ansible/roles` directory, and the playbook 
 `playbook.yml` is responsible for running them.
-
-**`dotfile`**
-
-- Really this role just handles backing up and copying a file. Could be
-  generalized later if needed.
 
 **`shell`**
 
 - Installs apt packages.
 - Handles the installation and configuration of `zsh` and `oh-my-zsh`, as well 
   as plugins and utilities.
-
 - Configuration for `zsh` is defined in `roles/shell/files/zshrc`, which is 
   copied to `$HOME/.zshrc` after installation. 
-  
-    > [!IMPORTANT]
-    > The `.zshrc` configuration defines a keybinding override to use `^ff` 
-    instead of `^t` to trigger `fzf` from the command line.
-
 - Uses `powerlevel10k` for prompt styling.
 - Installs `fzf` and `forgit` for fuzzy searching and git integration.
 - Installs `zsh-autosuggestions`, `zsh-completions`, `zsh-syntax-highlighting` 
   for enhanced shell functionality.
 - Installs `tmux`.
+- Copies dotfiles to home directory
+
+> [!IMPORTANT]
+> The `.zshrc` configuration defines a keybinding override to use `^ff` instead of `^t` to trigger `fzf` from the command line.
+
+
 
 **`golang`**:
 
@@ -68,14 +84,10 @@ The roles are defined in the `ansible/roles` directory, and the playbook
 
 ### Ansible Tools
 
-#### ansible-navigator
+**`ansible-navigator`**
 
-> A text-based user interface (TUI) for Ansible.
-
-Installed via `pip` as part of the `shell` role.
-
-[repo](https://github.com/ansible/ansible-navigator) |
-[docs](https://ansible.readthedocs.io/projects/navigator/)
+- A text-based user interface (TUI) for Ansible.
+- Installed via `pip` as part of the `navigator` role.
 
 ### General CLI Tools
 
@@ -94,7 +106,7 @@ Installed via `pip` as part of the `shell` role.
 - `gum` - A tool for glamorous shell scripts
 - `freeze` - A tool to take screenshots of code
 
-## Ongoing
+## Ideas
 
 todo
 - [ ] refactor playbook vars
@@ -108,7 +120,6 @@ todo
 - [x] upgrade to go 1.22
 - [ ] handle vscode config file
 
-
 maybe
 - [ ] Add `soft serve` git server
 - [ ] Add `run` configuration
@@ -121,3 +132,11 @@ done
 - [x] Add `tmux` configuration
 - [x] Add `aliases` to .zshrc
 - [x] Configure `charm` server to run via docker
+
+## Links
+
+- [charmbracelet](https://charm.sh/)
+- [ansible](https://docs.ansible.com/ansible/latest/index.html)
+- [ansible-navigator](https://github.com/ansible/ansible-navigator) |
+[docs](https://ansible.readthedocs.io/projects/navigator/)
+- [golang](https://golang.org/doc/) | [go installation](https://golang.org/doc/install)

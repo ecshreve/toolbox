@@ -30,6 +30,7 @@ alias cat='bat'
 alias ls='exa --icons'
 alias ll='ls -alF'
 alias cl='clear -x && ls -alF'
+alias cll='clear -x && ll'
 alias clear='clear -x'
 
 # Git
