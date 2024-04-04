@@ -1,7 +1,10 @@
-#!/bin/sh
+#!/usr/bin/env bash
+# This script installs Ansible and runs the playbook to configure the system.
+# It is intended to be run on a fresh Ubuntu 22.04 installation.
+#
+# For updates or MacOS it's better to use the playbook or roles directly.
 
-# Stop on errors
-set -e
+set -e      # Exit on error
 
 # Check if TOOLBOX_PATH is set
 if [ -z "$TOOLBOX_PATH" ]; then
@@ -22,8 +25,6 @@ python3 -m pip install --upgrade pip
 pip install ansible ansible-lint
 
 # Run the playbook
-cd ansible
-ansible-playbook playbook.yml -vv | tee ansible.log
-cd ..
+ansible-playbook playbook.yml -vv | tee ansible/logs/ansible.log
 
 echo "Installation complete!"

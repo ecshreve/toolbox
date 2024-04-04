@@ -3,8 +3,7 @@
   tags: system
   hosts: localhost
   vars_files:
-    - vars/system.yml
-    - vars/zshell.yml
+    - config_vars.yml
   roles:
     - shell
   vars:
@@ -19,7 +18,7 @@
   roles:
     - golang
   vars_files:
-    - vars/golang.yml
+    - config_vars.yml
   vars:
     clean: false
-    go_version_target: 1.22.2
+    golang_install: true
