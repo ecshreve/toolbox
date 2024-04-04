@@ -1,6 +1,21 @@
 # toolbox
 
-## Usage
+A collection of tools and configurations for my development environment.
+
+## Toolbox Chat
+
+Toolbox Chat is a Streamlit-based web application designed to facilitate interactive conversations powered by LangChain and OpenAI's GPT models.
+
+It is integrated with Pinecone, a vector database, and LangChain's information retrieval tools to provide a conversational interface to the contents of the repository itself.
+
+<div align="center">
+  <img src="./assets/toolchat.png" width="70%">
+</div>
+
+<br>
+See the [assistant README](assistant/README.md) for more information.
+
+## Environment Setup and Configuration
 
 ### Install script
 
@@ -9,6 +24,9 @@
 - Installs ansible via `pip`
 - Clones this repository to `$HOME/.toolbox`
 - Runs the `ansible` playbook
+
+> [!NOTE]
+> Probably don't run the install script unless you're me. But, I'm not the boss of you.
 
 ### Ansible Roles
 
@@ -56,7 +74,7 @@ The roles are defined in the `ansible/roles` directory, and the playbook
 
 Installed via `pip` as part of the `shell` role.
 
-[repo](https://github.com/ansible/ansible-navigator)
+[repo](https://github.com/ansible/ansible-navigator) |
 [docs](https://ansible.readthedocs.io/projects/navigator/)
 
 ### General CLI Tools
@@ -82,12 +100,11 @@ todo
 - [ ] refactor playbook vars
 - [ ] play around with tmux config
 - [-] figure out copy/paste from cli
-- [ ] write docs for assistant
+- [x] write docs for assistant
 - [ ] helper scripts
 - [ ] fzf run tasks helper
 - [ ] move config values out of playbook
 - [ ] add mods roles and helper scripts
-- [ ] alias ansible to use ansible-navigator?
 - [x] upgrade to go 1.22
 - [ ] handle vscode config file
 
