@@ -79,15 +79,16 @@ Installed via `pip` as part of the `shell` role.
 ## Ongoing
 
 todo
+- [ ] refactor playbook vars
 - [ ] play around with tmux config
-- [ ] figure out copy/paste from cli
+- [-] figure out copy/paste from cli
 - [ ] write docs for assistant
 - [ ] helper scripts
 - [ ] fzf run tasks helper
 - [ ] move config values out of playbook
 - [ ] add mods roles and helper scripts
 - [ ] alias ansible to use ansible-navigator?
-- [ ] upgrade to go 1.22
+- [x] upgrade to go 1.22
 - [ ] handle vscode config file
 
 

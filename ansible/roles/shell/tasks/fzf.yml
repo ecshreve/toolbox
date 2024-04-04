@@ -4,19 +4,16 @@
   args:
     removes: "{{ home_dir }}/.fzf/bin/fzf"
   when: clean
-  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Download latest FZF via git
   ansible.builtin.git:
     repo: https://github.com/junegunn/fzf.git
     dest: "{{ home_dir }}/.fzf"
     depth: 1
-    update: true
+    update: false
     version: master
-  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Run fzf installation script
   ansible.builtin.command:
     cmd: "{{ home_dir }}/.fzf/install"
     creates: "{{ home_dir }}/.fzf/bin/fzf"
-  ignore_errors: "{{ ansible_check_mode }}"

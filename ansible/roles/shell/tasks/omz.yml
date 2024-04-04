@@ -4,7 +4,6 @@
     repo: https://github.com/ohmyzsh/ohmyzsh.git
     dest: "{{ omz_root }}"
     version: "{{ omz_version }}"
-  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Install omz plugins
   ansible.builtin.git:
@@ -18,11 +17,9 @@
     repo: https://github.com/romkatv/powerlevel10k.git
     dest: "{{ omz_root }}/custom/themes/powerlevel10k"
     version: "{{ p10k_version }}"
-  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Enable powerlevel theme
   ansible.builtin.file:
     src: "{{ omz_root }}/custom/themes/powerlevel10k/powerlevel10k.zsh-theme"
     dest: "{{ omz_root }}/custom/themes/powerlevel10k.zsh-theme"
     state: link
-  ignore_errors: "{{ ansible_check_mode }}"

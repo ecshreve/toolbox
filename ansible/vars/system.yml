@@ -1,0 +1,30 @@
+# Ubuntu - Debian
+apt_packages:
+  - zsh
+  - tmux
+  - exa
+  - bat
+  - fd-find
+  - ripgrep
+  - git
+symlinks:
+  bat: /usr/bin/batcat
+  fd: /usr/bin/fdfind
+
+# MacOS - Darwin
+ports:
+  - zsh
+  - tmux
+  - exa
+  - bat
+  - fd
+  - ripgrep
+  - git
+  - gnutar
+
+# DOTFILE NAMES TO COPY
+dotfiles:
+  - .zshrc
+  - .tmux.conf
+  - .tmux.conf.local
+  - .p10k.zsh

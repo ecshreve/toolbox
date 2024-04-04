@@ -1,54 +1,16 @@
 ---
-- name: Configure shell development environment
-  tags: shell
+- name: Configure system
+  tags: system
   hosts: localhost
+  vars_files:
+    - vars/system.yml
+    - vars/zshell.yml
   roles:
     - shell
   vars:
     clean: false
-    apt_packages:
-      - zsh
-      - tmux
-      - exa
-      - bat
-      - fd-find
-      - ripgrep
-      - git
-    ports:
-      - zsh
-      - tmux
-      - exa
-      - bat
-      - fd
-      - ripgrep
-      - git
-      - gnutar
-    symlinks:
-      bat: /usr/bin/batcat
-      fd: /usr/bin/fdfind
     fzf_install: true
     omz_install: true
-    omz_version: HEAD
-    omz_root: "{{ home_dir }}/.oh-my-zsh"
-    p10k_version: 35833ea15f14b71dbcebc7e54c104d8d56ca5268
-    omz_plugins:
-      - repo: "zsh-users/zsh-autosuggestions"
-        version: a411ef3e0992d4839f0732ebeb9823024afaaaa8
-      - repo: "zsh-users/zsh-syntax-highlighting"
-        version: db085e4661f6aafd24e5acb5b2e17e4dd5dddf3e
-      - repo: "zsh-users/zsh-completions"
-        version: 67921bc12502c1e7b0f156533fbac2cb51f6943d
-      - repo: "wfxr/forgit"
-        version: d582f2aa0b5bf7948d78aca05c55a974e68f4884
-
-- name: Copy dotfiles to home directory
-  tags: dotfiles
-  hosts: localhost
-  roles:
-    - { role: dotfile, dotfile_name: .zshrc }
-    - { role: dotfile, dotfile_name: .p10k.zsh }
-    - { role: dotfile, dotfile_name: .tmux.conf }
-    - { role: dotfile, dotfile_name: .tmux.conf.local }
 
 - name: Configure Go environment
   tags: golang
@@ -56,17 +18,8 @@
   hosts: localhost
   roles:
     - golang
+  vars_files:
+    - vars/golang.yml
   vars:
     clean: false
-    go_version_target: "1.22.2"
-    go_platform: "{{ ansible_os_family | lower | regex_replace('darwin', 'macos') | regex_replace('debian', 'linux') }}"
-    go_arch: "{{ ansible_machine | lower | regex_replace('aarch64', 'arm64') }}"
-    go_tarball: "go{{ go_version_target }}.{{ go_platform }}-{{ go_arch }}.tar.gz"
-    go_tarball_url: "https://golang.org/dl/{{ go_tarball }}"
-    go_packages:
-      run: github.com/amonks/run/cmd/run@v1.0.0-beta.24
-      glow: github.com/charmbracelet/glow@latest
-      mods: github.com/charmbracelet/mods@latest
-      skate: github.com/charmbracelet/skate@latest
-      gum: github.com/charmbracelet/gum@latest
-      freeze: github.com/charmbracelet/freeze@latest
+    go_version_target: 1.22.2

@@ -1,0 +1,23 @@
+go_platform: "{{ ansible_os_family | lower | regex_replace('darwin', 'macos') | regex_replace('debian', 'linux') }}"
+go_arch: "{{ ansible_machine | lower | regex_replace('aarch64', 'arm64') }}"
+go_tarball: "go{{ go_version_target }}.{{ go_platform }}-{{ go_arch }}.tar.gz"
+go_tarball_url: "https://golang.org/dl/{{ go_tarball }}"
+
+go_packages:
+  run: github.com/amonks/run/cmd/run@v1.0.0-beta.24
+  glow: github.com/charmbracelet/glow@latest
+  mods: github.com/charmbracelet/mods@latest
+  skate: github.com/charmbracelet/skate@latest
+  gum: github.com/charmbracelet/gum@latest
+  freeze: github.com/charmbracelet/freeze@latest
+
+golang_checksums:
+  '1.21.8':
+    linux:
+      arm64: 3c19113c686ffa142e9159de1594c952dee64d5464965142d222eab3a81f1270
+  '1.22.2':
+    linux:
+      arm64: 36e720b2d564980c162a48c7e97da2e407dfcc4239e1e58d98082dfa2486a0c1
+      amd64: 5901c52b7a78002aeff14a21f93e0f064f74ce1360fce51c6ee68cd471216a17
+    darwin:
+      arm64: 660298be38648723e783ba0398e90431de1cb288c637880cdb124f39bd977f0d

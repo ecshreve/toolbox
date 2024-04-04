@@ -1,6 +1,28 @@
 [[task]]
-  id = "strapp"
-  description = "Run the assistant streamlit app"
-  type = "long"
-  watch = ["assistant/*.py"]
-  cmd = "streamlit run assistant/client.py"
+  id = "play-go"
+  description = "Run the playbook for Go"
+  type = "short"
+  cmd = """
+    cd ansible
+    ansible-playbook playbook.yml --tags golang -vv | tee ./logs/play-go.log
+    echo "Done with Go setup"
+  """
+
+[[task]]
+  id = "clean"
+  description = "Clean the project"
+  type = "short"
+  cmd = """
+    rm -rf ./ansible/artifact
+    rm -rf ./ansible/logs
+    rm -rf ./ansible/log
+  """
+
+[[task]]
+  id = "debug"
+  type = "short"
+  cmd = """
+    echo "TOOLBOX_PATH: $TOOLBOX_PATH"
+    echo "HOME: $HOME"
+  """
+
