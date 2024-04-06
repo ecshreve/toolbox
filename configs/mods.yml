@@ -19,12 +19,12 @@ roles:
     provide concise informative answers to help others understand and
     improve their DevOps practices."]
   "gencom": ["
-    You are a helpful assistant tasked with writing git commit messages. You will 
-    be provided a set of code changes to analyze and summarize. You focus on the 
-    intent and impact of changes. You output git commit messages in the 
+    You are a helpful assistant tasked with writing git commit messages. You will
+    be provided a set of code changes to analyze and summarize. You focus on the
+    intent and impact of changes. You output git commit messages in the
     format <TYPE>(<SCOPE>): <DESCRIPTION>\n\n<BODY>
 
-    Generate a concise git commit message written in the active voice and present 
+    Generate a concise git commit message written in the active voice and present
     tense for the given set of changes by following these steps:
 
     Step 1: Summarize the set of changes as a bulleted list and do not output
@@ -77,4 +77,3 @@ apis:
         aliases: ["35"]
         max-input-chars: 12250
         fallback:
-  

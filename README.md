@@ -7,7 +7,7 @@ A collection of tools and configurations for my development environment.
 
 - MacOS 13.0 / Ubuntu 22.04.
 - Go: 1.22.2
-- Python: 3.11.8
+- Python: 3.12.2
 
 ### Why Toolbox?
 
@@ -79,7 +79,7 @@ The roles are defined in the `ansible/roles` directory, and the playbook
 
 **`shell`**
 
-- Installs apt packages.
+- Installs apt packages (macports ports on darwin).
 - Handles the installation and configuration of `zsh` and `oh-my-zsh`, as well 
   as plugins and utilities.
 - Configuration for `zsh` is defined in `roles/shell/files/zshrc`, which is 
@@ -98,11 +98,11 @@ The roles are defined in the `ansible/roles` directory, and the playbook
 
 **`golang`**:
 
-- Handles downloading and installing Golang 1.21.8, along with additional tools 
+- Handles downloading and installing Golang 1.22.2, along with additional tools 
   and executables.
 - Installs go under `/usr/local/go`
 - Installs executables under `/usr/local/go/bin`
-- Install path is defined in `hosts` file under localhost 
+- Install path is defined in config_vars.yml
 
 ### Ansible Tools
 
@@ -138,7 +138,8 @@ todo
 - [x] write docs for assistant
 - [ ] helper scripts
 - [ ] fzf run tasks helper
-- [ ] move config values out of playbook
+- [x] move config values out of playbook
+- [x] python environment setup
 - [ ] add mods roles and helper scripts
 - [x] upgrade to go 1.22
 - [ ] handle vscode config file

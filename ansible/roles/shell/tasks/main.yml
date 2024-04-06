@@ -1,35 +1,11 @@
 ---
-- name: Root installation tasks
+- name: Ubuntu install packages with apt
+  ansible.builtin.include_tasks: aptpackages.yml
   when: ansible_os_family == 'Debian'
-  become: true
-  ignore_errors: "{{ ansible_check_mode }}"
-  block:
-    - name: Update apt cache
-      ansible.builtin.apt:
-        update_cache: true
-      when: not ansible_check_mode
 
-    - name: Install apt packages
-      ansible.builtin.apt:
-        name: "{{ item }}"
-        state: present
-      loop: "{{ apt_packages }}"
-
-    - name: Create symbolic links
-      ansible.builtin.file:
-        src: "{{ item.value }}"
-        dest: "{{ item.value | dirname }}/{{ item.key }}"
-        state: link
-        force: true  # This will replace the link if it already exists
-      loop: "{{ symlinks | dict2items }}"
-
-- name: Macports port installs
-  community.general.macports:
-    name: "{{ item }}"
-    state: present
-  loop: "{{ ports }}"
+- name: MacOS install ports with macports
+  ansible.builtin.include_tasks: macports.yml
   when: ansible_os_family == 'Darwin'
-  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Oh My Zsh Install
   ansible.builtin.include_tasks: omz.yml
