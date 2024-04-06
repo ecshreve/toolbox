@@ -1,8 +1,9 @@
-export PATH=/usr/local/go/bin:$PATH
-export FZF_BASE=$HOME/.fzf/bin/fzf
-export FZF_DEFAULT_OPTS='--cycle --layout=reverse --border --height=90% --preview="head -$LINES {}" --preview-window=nowrap --marker="*"'
-export ZSH=$HOME/.oh-my-zsh
-
+export PATH="/usr/local/go/bin:$PATH"
+export FZF_BASE="$HOME/.fzf/bin/fzf"
+export FZF_DEFAULT_OPTS='--cycle --layout=reverse --border --height=80% --preview="bat --style=numbers --color=always --line-range :500 {}" --preview-window=nowrap --marker="*"'
+export ZSH="$HOME/.oh-my-zsh"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
 DISABLE_AUTO_UPDATE="true"
@@ -30,21 +31,20 @@ bindkey -M viins '^ff' fzf-file-widget
 alias cat='bat'
 alias ls='exa --icons'
 alias ll='ls -alF'
-alias cl='clear -x && ls -alF'
-alias cll='clear -x && ll'
+alias cl='clear -x'
+alias cll='clear -x && ls -alF'
 alias clear='clear -x'
-alias nttl='netstat -tulnp | grep LISTEN'
 
 # Git
 alias gcm='git checkout main'
 alias gco='git checkout'
-alias ffb='forgit::checkout::branch'
-alias ffcp='forgit::cherry::pick::from::branch'
 alias gdoof='git add --all && git commit --amend --no-edit'
 alias goops='git reset --soft HEAD~1 && git status'
 alias gll='git diff --cached | wc -l'
+alias gbb='forgit::checkout::branch'
+alias gcp='forgit::cherry::pick::from::branch'
 
-# N etwork
+# Network
 alias nett='netstat -tulnp | grep LISTEN'
 alias snett='sudo netstat -tulnp | grep LISTEN'
 
@@ -52,19 +52,13 @@ alias snett='sudo netstat -tulnp | grep LISTEN'
 alias nav-play='ansible-navigator run'
 alias nav-ans='ansible-navigator'
 
-# Set history size
+# Configure history size and options
 HISTSIZE=70000
 SAVEHIST=70000
+setopt HIST_IGNORE_SPACE   # Do not put commands in history if they begin with a SPACE
+setopt HIST_REDUCE_BLANKS  # Trim excessive whitespace from commands before adding to history
 
-# Do not put commands in history if they begin with a SPACE
-setopt HIST_IGNORE_SPACE
-# Trim excessive whitespace from commands before adding to history
-setopt HIST_REDUCE_BLANKS
-
+# Source theme and other scripts
 [ -f $HOME/.p10k.zsh ] && source $HOME/.p10k.zsh
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
-
-# pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"

@@ -22,6 +22,23 @@ A collection of tools and configurations for my development environment.
 - chatbot to interact with the repository via OpenAI Embeddings, LangChain, and Pinecone
 - `gencom` to generate commit messages based on currently staged changes (powered by `mods`)
   
+### Aliases and Commands to Remember
+
+- `CTRL+ff` - fuzzy search for files
+- `nett` - show open ports
+- `gll` - count lines in staged git diff
+- `goops` - reset last commit soft
+- `glo` - interactive git log with `fzf`
+- `gd`  - interactive git diff with `fzf`
+- `gaa` - add all files to git
+- `ga`  - add files to git interactively with `fzf`
+- `gcmsg <message>` - commit with a message
+- `gcm` - checkout main branch
+- `gbb` - interactive branch selection with `fzf`
+- `gcp` - interactive cherry-pick with `fzf`
+- `gss` - interactive stash selection with `fzf`
+- `gdoof` - add all and amend with no message
+- `gup` - pull with rebase
 
 ## Toolbox Chat
 
@@ -94,8 +111,6 @@ The roles are defined in the `ansible/roles` directory, and the playbook
 > [!IMPORTANT]
 > The `.zshrc` configuration defines a keybinding override to use `^ff` instead of `^t` to trigger `fzf` from the command line.
 
-
-
 **`golang`**:
 
 - Handles downloading and installing Golang 1.22.2, along with additional tools 
@@ -104,13 +119,35 @@ The roles are defined in the `ansible/roles` directory, and the playbook
 - Installs executables under `/usr/local/go/bin`
 - Install path is defined in config_vars.yml
 
-### Ansible Tools
+**`python`**
+
+- Installs and configures `pyenv` and `pyenv-virtualenv` for managing Python 
+  versions and virtual environments.
+- Installs Python 3.12.2 and sets it as the global version.
+
+**`hashi`**
+
+- Adds the HashiCorp repository to the system.
+- Installs `terraform` and `packer` via `apt` on Ubuntu
+- TODO: Add support for MacOS
+
+**`cleanup`**
+
+- This role is run last (or should be)
+- Checks that ownership is correct for a few directories.
+- Could be expanded to do more cleanup tasks.
+
+### _beta roles
 
 **`ansible-navigator`**
 
 - A text-based user interface (TUI) for Ansible.
 - Installed via `pip` as part of the `navigator` role.
 
+**`navi`**
+
+- A command-line cheatsheet tool.
+  
 ### General CLI Tools
 
 - `exa` - A modern replacement for `ls`
@@ -126,22 +163,17 @@ The roles are defined in the `ansible/roles` directory, and the playbook
 - `charm` - A utility to manage `charm` apps
 - `mods` - An application to interact with the OpenAI API
 - `gum` - A tool for glamorous shell scripts
+- `vhs` - A tool to create gifs from the terminal
 - `freeze` - A tool to take screenshots of code
 - `wishlist` - An SSH directory app
 
 ## Ideas
 
 todo
-- [x] refactor playbook vars
 - [ ] play around with tmux config
-- [-] figure out copy/paste from cli
-- [x] write docs for assistant
 - [ ] helper scripts
 - [ ] fzf run tasks helper
-- [x] move config values out of playbook
-- [x] python environment setup
 - [ ] add mods roles and helper scripts
-- [x] upgrade to go 1.22
 - [ ] handle vscode config file
 
 maybe
@@ -149,8 +181,15 @@ maybe
 - [ ] Add `run` configuration
 - [ ] Use `skate` to handle secrets
 - [ ] Bake all of this into a docker image
+- [ ] Launch in codespace as a demo?
+- [-] figure out copy/paste from cli
 
 done
+- [x] write docs for assistant
+- [x] move config values out of playbook
+- [x] python environment setup
+- [x] upgrade to go 1.22
+- [x] refactor playbook vars
 - [x] Take a few cycles to clean up the `golang` role.
 - [x] Audit .yml vs ~~.yaml~~ file extensions
 - [x] Add `tmux` configuration
@@ -164,3 +203,13 @@ done
 - [ansible-navigator](https://github.com/ansible/ansible-navigator) |
 [docs](https://ansible.readthedocs.io/projects/navigator/)
 - [golang](https://golang.org/doc/) | [go installation](https://golang.org/doc/install)
+- [forgit](https://github.com/wfxr/forgit)
+- [fzf](https://github.com/junegunn/fzf)
+- [zsh](https://www.zsh.org/)
+- [oh-my-zsh](https://ohmyz.sh/)
+- [terraform](https://www.terraform.io/)
+- [packer](https://www.packer.io/)
+- [navi](
+- [powerlevel10k](
+- [pyenv](
+- [pyenv-virtualenv](
