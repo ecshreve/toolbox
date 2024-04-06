@@ -1,0 +1,15 @@
+---
+- name: Check if config dir exists
+  ansible.builtin.stat:
+    path: "{{ home_dir }}/.config"
+  register: config_dir
+
+- name: Set ownership of config dir
+  become: true
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.config"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    recurse: true
+  when: config_dir.stat.exists
+  ignore_errors: "{{ ansible_check_mode }}"

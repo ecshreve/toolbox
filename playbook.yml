@@ -1,6 +1,6 @@
 ---
 - name: Configure system
-  tags: system
+  tags: [stable, system]
   hosts: localhost
   vars_files:
     - config_vars.yml
@@ -12,7 +12,7 @@
     omz_install: true
 
 - name: Configure Go environment
-  tags: golang
+  tags: [stable, golang]
   become: true
   hosts: localhost
   roles:
@@ -21,4 +21,33 @@
     - config_vars.yml
   vars:
     clean: false
-    golang_install: true
+    go_version_target: 1.22.2
+
+- name: Configure Navigator
+  tags: [stable, navigator]
+  hosts: localhost
+  roles:
+    - navigator
+  vars_files:
+    - config_vars.yml
+  vars:
+    clean: false
+
+- name: Configure Pyenv
+  tags: [stable, python]
+  hosts: localhost
+  roles:
+    - python
+  vars_files:
+    - config_vars.yml
+  vars:
+    clean: false
+    python_version_target: 3.12.2
+
+- name: Cleanup
+  tags: [stable, cleanup]
+  hosts: localhost
+  roles:
+    - cleanup
+  vars_files:
+    - config_vars.yml

@@ -25,6 +25,6 @@ python3 -m pip install --upgrade pip
 pip install ansible ansible-lint
 
 # Run the playbook
-ansible-playbook playbook.yml -vv | tee ansible/logs/ansible.log
+ansible-playbook playbook.yml --tags stable -vv | tee ansible/logs/ansible.log
 
 echo "Installation complete!"

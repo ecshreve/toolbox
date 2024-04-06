@@ -3,6 +3,7 @@ export FZF_BASE=$HOME/.fzf/bin/fzf
 export FZF_DEFAULT_OPTS='--cycle --layout=reverse --border --height=90% --preview="head -$LINES {}" --preview-window=nowrap --marker="*"'
 export ZSH=$HOME/.oh-my-zsh
 
+
 ZSH_THEME="powerlevel10k/powerlevel10k"
 DISABLE_AUTO_UPDATE="true"
 
@@ -40,6 +41,7 @@ alias ffb='forgit::checkout::branch'
 alias ffcp='forgit::cherry::pick::from::branch'
 alias gdoof='git add --all && git commit --amend --no-edit'
 alias goops='git reset --soft HEAD~1 && git status'
+alias gll='git diff --cached | wc -l'
 
 # N etwork
 alias nett='netstat -tulnp | grep LISTEN'
@@ -59,3 +61,8 @@ setopt HIST_REDUCE_BLANKS
 
 [ -f $HOME/.p10k.zsh ] && source $HOME/.p10k.zsh
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
+
+# pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"

@@ -45,24 +45,6 @@
   loop: "{{ go_packages | dict2items }}"
   ignore_errors: "{{ ansible_check_mode }}"
 
-- name: Ensure config directories exist.
-  ansible.builtin.file:
-    path: "{{ home_dir }}/.config/{{ item }}"
-    state: directory
-    mode: '0755'
-  loop:
-    - mods
-  ignore_errors: "{{ ansible_check_mode }}"
-
-# - name: Copy config files for go apps
-#   ansible.builtin.copy:
-#     src: "{{ toolbox_path }}/configs/{{ item | basename }}"
-#     dest: "{{ home_dir }}/{{ item }}"
-#     mode: '0644'
-#   loop:
-#     - ".config/mods/mods.yml"
-#   ignore_errors: "{{ ansible_check_mode }}"
-
 - name: Change ownership of go directories.
   ansible.builtin.file:
     path: "{{ ansible_GOROOT }}"

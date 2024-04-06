@@ -2,19 +2,18 @@
 - name: Root installation tasks
   when: ansible_os_family == 'Debian'
   become: true
+  ignore_errors: "{{ ansible_check_mode }}"
   block:
     - name: Update apt cache
       ansible.builtin.apt:
         update_cache: true
-      check_mode: false
-      ignore_errors: "{{ ansible_check_mode }}"
+      when: not ansible_check_mode
 
     - name: Install apt packages
       ansible.builtin.apt:
         name: "{{ item }}"
         state: present
       loop: "{{ apt_packages }}"
-      ignore_errors: "{{ ansible_check_mode }}"
 
     - name: Create symbolic links
       ansible.builtin.file:
@@ -23,7 +22,6 @@
         state: link
         force: true  # This will replace the link if it already exists
       loop: "{{ symlinks | dict2items }}"
-      ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Macports port installs
   community.general.macports:
@@ -48,3 +46,4 @@
   loop: "{{ dotfiles }}"
   loop_control:
     loop_var: dotfile_name
+  ignore_errors: "{{ ansible_check_mode }}"
