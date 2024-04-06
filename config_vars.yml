@@ -2,7 +2,7 @@
 #   System Configuration
 ##########################
 clean: false
-ansible_user: "{{ lookup('env', 'USER') }}"
+ansible_user: "{{ lookup('env', 'HOME') | basename }}"
 home_dir: "{{ lookup('env', 'HOME') }}"
 toolbox_path: "{{ lookup('env', 'TOOLBOX_PATH') }}"
 

@@ -12,19 +12,21 @@ if [ -z "$TOOLBOX_PATH" ]; then
     TOOLBOX_PATH="$HOME/.toolbox"
 fi
 
-# Update system package list
-sudo apt-get update
+# Check if ansible-playbook command is available
+if ! command -v ansible-playbook &> /dev/null; then
+    echo "ansible-playbook command not found. Installing ansible."
+    sudo apt update
+    sudo apt install -y python3 python3-pip
+    pip3 install --user ansible ansible-lint
 
-# Install Python3, pip, and other utilities
-sudo apt-get install -y python3 python3-pip git
-
-# Upgrade pip and install virtualenv
-python3 -m pip install --upgrade pip
-
-# Install Ansible
-pip install ansible ansible-lint
+    # Double check if ansible-playbook command is available
+    if ! command -v ansible-playbook &> /dev/null; then
+        echo "ansible-playbook command still not found. Exiting."
+        exit 1
+    fi
+fi
 
 # Run the playbook
-ansible-playbook playbook.yml --tags stable -vv | tee ansible/logs/ansible.log
+ansible-playbook playbook.yml --tags stable -vv | tee ansible/logs/install.log
 
 echo "Installation complete!"
