@@ -44,10 +44,17 @@
     clean: false
     python_version_target: 3.12.2
 
-- name: Cleanup
+- name: Ensure correct directory ownership
   tags: [stable, cleanup]
+  become: true
   hosts: localhost
-  roles:
-    - cleanup
   vars_files:
     - config_vars.yml
+  tasks:
+    - name: Set ownership of dir
+      ansible.builtin.file:
+        path: "{{ item }}"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        recurse: true
+      loop: "{{ dirs_to_own }}"

@@ -2,6 +2,22 @@
 #   System Configuration
 ##########################
 clean: false
+ansible_user: "{{ lookup('env', 'USER') }}"
+home_dir: "{{ lookup('env', 'HOME') }}"
+toolbox_path: "{{ lookup('env', 'TOOLBOX_PATH') }}"
+
+dirs_to_own:
+  - "{{ home_dir }}/.config"
+  - "{{ go_root }}"
+
+##########################
+#   Dotfiles to Copy
+##########################
+dotfiles:
+  - .zshrc
+  - .tmux.conf
+  - .tmux.conf.local
+  - .p10k.zsh
 
 ##########################
 # Packages and Symlinks
@@ -35,14 +51,6 @@ ports:
   - ttyd
   - mbedtls
 
-##########################
-#   Dotfiles to Copy
-##########################
-dotfiles:
-  - .zshrc
-  - .tmux.conf
-  - .tmux.conf.local
-  - .p10k.zsh
 
 ##########################
 #   Zsh + Oh-My-Zsh
@@ -65,6 +73,8 @@ omz_plugins:
 ##########################
 go_version_target: 1.22.2
 
+go_root: "/usr/local/go"
+go_bin: "/usr/local/go/bin"
 go_platform: "{{ ansible_os_family | lower | regex_replace('macos', 'darwin') | regex_replace('debian', 'linux') }}"
 go_arch: "{{ ansible_machine | lower | regex_replace('aarch64', 'arm64') | regex_replace('x86_64', 'amd64') }}"
 go_tarball: "go{{ go_version_target }}.{{ go_platform }}-{{ go_arch }}.tar.gz"

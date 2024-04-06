@@ -1,13 +1,13 @@
 ---
 - name: Check if Go is already installed.
   ansible.builtin.stat:
-    path: "{{ ansible_GOROOT }}/bin/go"
+    path: "{{ go_root }}/bin/go"
   register: go_stat
 
 - name: Remove current installation.
   ansible.builtin.file:
     state: absent
-    path: "{{ ansible_GOROOT }}"
+    path: "{{ go_root }}"
   ignore_errors: "{{ ansible_check_mode }}"
   when: go_stat.stat.exists and clean
 
@@ -24,30 +24,16 @@
     src: /usr/local/src/{{ go_tarball }}
     dest: /usr/local
     copy: false
-  ignore_errors: "{{ ansible_check_mode }}"
-
-- name: Add Go to to system-wide $PATH.
-  ansible.builtin.copy:
-    dest: /etc/profile.d/go-path.sh
-    content: |-
-      export PATH=$PATH:/usr/local/go/bin
-    mode: '0644'
-  when: go_platform == 'linux'
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
   ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Install go packages with go install.
   ansible.builtin.command:
-    cmd: "{{ ansible_GOROOT }}/bin/go install {{ item.value }}"
-    creates: "{{ ansible_GOROOT }}/bin/{{ item.key }}"
+    cmd: "{{ go_root }}/bin/go install {{ item.value }}"
+    creates: "{{ go_root }}/bin/{{ item.key }}"
   environment:
-    GOPATH: "{{ ansible_GOROOT }}"
-    GOROOT: "{{ ansible_GOROOT }}"
+    GOPATH: "{{ go_root }}"
+    GOROOT: "{{ go_root }}"
   loop: "{{ go_packages | dict2items }}"
-  ignore_errors: "{{ ansible_check_mode }}"
-
-- name: Change ownership of go directories.
-  ansible.builtin.file:
-    path: "{{ ansible_GOROOT }}"
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
   ignore_errors: "{{ ansible_check_mode }}"
