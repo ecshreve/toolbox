@@ -3,5 +3,6 @@
   community.general.macports:
     name: "{{ item }}"
     state: present
+  become: true
   loop: "{{ ports }}"
   ignore_errors: "{{ ansible_check_mode }}"

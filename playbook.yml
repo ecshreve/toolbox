@@ -6,55 +6,11 @@
     - config_vars.yml
   roles:
     - shell
-  vars:
-    clean: false
-    fzf_install: true
-    omz_install: true
-
-- name: Configure Go environment
-  tags: [stable, golang]
-  become: true
-  hosts: localhost
-  roles:
     - golang
-  vars_files:
-    - config_vars.yml
+    - python
+    - hashi
+    - cleanup
   vars:
     clean: false
     go_version_target: 1.22.2
-
-- name: Configure Navigator
-  tags: [stable, navigator]
-  hosts: localhost
-  roles:
-    - navigator
-  vars_files:
-    - config_vars.yml
-  vars:
-    clean: false
-
-- name: Configure Pyenv
-  tags: [stable, python]
-  hosts: localhost
-  roles:
-    - python
-  vars_files:
-    - config_vars.yml
-  vars:
-    clean: false
     python_version_target: 3.12.2
-
-- name: Ensure correct directory ownership
-  tags: [stable, cleanup]
-  become: true
-  hosts: localhost
-  vars_files:
-    - config_vars.yml
-  tasks:
-    - name: Set ownership of dir
-      ansible.builtin.file:
-        path: "{{ item }}"
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
-        recurse: true
-      loop: "{{ dirs_to_own }}"

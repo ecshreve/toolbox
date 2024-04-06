@@ -33,6 +33,7 @@ alias ll='ls -alF'
 alias cl='clear -x && ls -alF'
 alias cll='clear -x && ll'
 alias clear='clear -x'
+alias nttl='netstat -tulnp | grep LISTEN'
 
 # Git
 alias gcm='git checkout main'
@@ -54,6 +55,7 @@ alias nav-ans='ansible-navigator'
 # Set history size
 HISTSIZE=70000
 SAVEHIST=70000
+
 # Do not put commands in history if they begin with a SPACE
 setopt HIST_IGNORE_SPACE
 # Trim excessive whitespace from commands before adding to history

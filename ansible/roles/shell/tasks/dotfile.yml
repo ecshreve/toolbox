@@ -1,18 +1,32 @@
 ---
-- name: Check if the dotfile exists -- "{{ dotfile_name }}"
-  ansible.builtin.stat:
-    path: "{{ home_dir }}/{{ dotfile_name }}"
-  register: file_stat
-
-- name: Backup the original dotfile -- "{{ dotfile_name }}"
+- name: Copy dotfile to the home directory -- {{ dotfile_name }}
   ansible.builtin.copy:
-    src: "{{ home_dir }}/{{ dotfile_name }}"
-    dest: "{{ home_dir }}/{{ dotfile_name }}.bak"
-    mode: '0644'
-  when: file_stat.stat.exists
-
-- name: Copy the new dotfile -- "{{ dotfile_name }}"
-  ansible.builtin.copy:
-    src: "{{ toolbox_path }}/configs/{{ dotfile_name }}"
+    src: "{{ toolbox_path }}/config_files/{{ dotfile_name }}"
     dest: "{{ home_dir }}/{{ dotfile_name }}"
+    backup: true
     mode: '0644'
+  register: copy_result
+
+- name: Print the backup file path
+  ansible.builtin.debug:
+    msg: "Backup file path: {{ copy_result }}"
+
+- name: Create the backup directory if it doesn't exist
+  ansible.builtin.file:
+    path: "{{ home_dir }}/dotfile_backups"
+    state: directory
+    mode: '0755'
+
+- name: Move the backup of previous version to the backup directory
+  ansible.builtin.copy:
+    src: "{{ copy_result.backup_file }}"
+    dest: "{{ home_dir }}/dotfile_backups/{{ dotfile_name }}.bak"
+    remote_src: true
+    mode: '0644'
+  when: copy_result.backup_file is defined
+
+- name: Remove the backup file
+  ansible.builtin.file:
+    path: "{{ copy_result.backup_file }}"
+    state: absent
+  when: copy_result.backup_file is defined

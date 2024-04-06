@@ -55,7 +55,11 @@ ports:
 ##########################
 #   Zsh + Oh-My-Zsh
 ##########################
-omz_version: HEAD
+fzf_version: 0.49.0
+fzf_root: "{{ home_dir }}/.fzf"
+fzf_bin: "{{ fzf_root }}/bin/fzf"
+
+omz_version: 038931039030911852d456215d6f39385d5b7a6e
 omz_root: "{{ home_dir }}/.oh-my-zsh"
 p10k_version: 35833ea15f14b71dbcebc7e54c104d8d56ca5268
 omz_plugins:
@@ -126,3 +130,10 @@ pyenv_python_versions:
 
 # Set global pyenv version
 pyenv_global: "{{ python_version_target }}"
+
+##########################
+#   HashiCorp Tools
+##########################
+hashicorp_tools:
+  - terraform
+  - packer
