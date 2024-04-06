@@ -5,8 +5,8 @@
   vars_files:
     - config_vars.yml
   roles:
-    # - shell
-    # - golang
+    - shell
+    - golang
     - python
     - hashi
     - cleanup
@@ -14,20 +14,20 @@
     clean: false
     go_version_target: 1.22.2
     python_version_target: 3.12.2
-  tasks:
-    - name: Shell setup
-      include_role: shell
-      tags: [shell]
-    - name: Golang setup
-      include_role: golang
-      tags: [golang]
-    - name: Python setup
-      include_role: python
-      tags: [python]
-    - name: Hashi setup
-      include_role: hashi
-      tags: [hashi]
-    - name: Cleanup
-      include_role: cleanup
-      tags: [cleanup]
+  # tasks:
+  #   - name: Shell setup
+  #     include_role: shell
+  #     tags: [shell]
+  #   - name: Golang setup
+  #     include_role: golang
+  #     tags: [golang]
+  #   - name: Python setup
+  #     include_role: python
+  #     tags: [python]
+  #   - name: Hashi setup
+  #     include_role: hashi
+  #     tags: [hashi]
+  #   - name: Cleanup
+  #     include_role: cleanup
+  #     tags: [cleanup]
       
