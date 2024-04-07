@@ -1,6 +1,7 @@
 {
 	"name": "ubuntu-jammy",
 	"build": {
+		"cacheFrom": "ghcr.io/ecshreve/toolbox:v0.0.1",
 		"dockerfile": "./Dockerfile",
 		"context": ".",
 		"args": {

@@ -4,9 +4,27 @@ A collection of tools and configurations for my development environment.
 
 ## Current Status
 
-- MacOS 13.0 / Ubuntu 22.04.
+- Targets environment setup on Ubuntu 22.04 and MacOS 13.0
 - Go: 1.22.2
 - Python: 3.12.2
+- Docker
+
+<!-- TODO: UPDATE ME WHEN CLI CHANGES -->
+### Usage
+
+#### In this repository
+
+- Open the repository in the devcontainer in VSCode
+- Run the `install.sh` script to run the ansible playbook
+- For more control or debugging run the playbook directly with `ansible-playbook playbook.yml`
+
+#### In a new environment
+
+- Clone the repository
+- Set the `TOOLBOX_PATH` environment variable to the path of the cloned repository
+- Run the `./install.sh` script to run the ansible playbook (default to check mode)
+- Run `./install.sh --help` for for info on applying the changes
+
 
 ### Why Toolbox?
 
@@ -20,6 +38,7 @@ A collection of tools and configurations for my development environment.
 - `mods` configuration to interact with AI models from CLI 
 - chatbot to interact with the repository via OpenAI Embeddings, LangChain, and Pinecone
 - `gencom` to generate commit messages based on currently staged changes (powered by `mods`)
+- devcontainer prebuilt and ready for toolbox installation
 
 ### Devcontainer
 
@@ -35,23 +54,45 @@ The `devcontainer.json` file includes a number of extensions that are part of my
 > [!NOTE] 
 > At this time the devcontainer does NOT run the setup script or playbook, it prepares the environment for running the setup script, assuming that for now I'll will run the setup script manually as soon as the container is available.
 
+The devcontainer build workflow is triggered by a new tag being pushed to the repository, and the resulting image is pushed to the Github Container Registry. The workflow can also be triggered manually.
+
+<!-- TODO: source these from the vars file? -->
 ### Aliases and Commands to Remember
 
 - `CTRL+ff` - fuzzy search for files
-- `nett` - show open ports
-- `gll` - count lines in staged git diff
-- `goops` - reset last commit soft
-- `glo` - interactive git log with `fzf`
-- `gd`  - interactive git diff with `fzf`
 - `gaa` - add all files to git
 - `ga`  - add files to git interactively with `fzf`
+- `gbb` - interactive branch selection with `fzf`
 - `gcmsg <message>` - commit with a message
 - `gcm` - checkout main branch
-- `gbb` - interactive branch selection with `fzf`
 - `gcp` - interactive cherry-pick with `fzf`
-- `gss` - interactive stash selection with `fzf`
+- `gd`  - interactive git diff with `fzf`
 - `gdoof` - add all and amend with no message
+- `gll` - count lines in staged git diff
+- `glo` - interactive git log with `fzf`
+- `goops` - reset last commit soft
+- `gss` - interactive stash selection with `fzf`
 - `gup` - pull with rebase
+- `nett` - show open ports
+
+### General CLI Tools
+- `bat` - A modern replacement for `cat`
+- `exa` - A modern replacement for `ls`
+- `fd` - A modern replacement for `find`
+- `forgit` - A `fzf` wrapper for `git` commands
+- `fzf` - A fuzzy finder for the command line
+- `tldr` - A streamlined `man` page replacement
+
+### Go CLI Tools
+
+- `charm` - A utility to manage `charm` apps
+- `freeze` - A tool to take screenshots of code
+- `gum` - A tool for glamorous shell scripts
+- `mods` - An application to interact with the OpenAI API
+- `run` - A utility to run commands in a new shell
+- `skate` - A utility to manage secrets
+- `vhs` - A tool to create gifs from the terminal
+- `wishlist` - An SSH directory app
 
 ## Toolbox Chat
 
@@ -68,16 +109,14 @@ See the [assistant README](assistant/README.md) for more information.
 
 ## Environment Setup and Configuration
 
-### Install script
-
-- Checks the TOOLBOX_PATH environment variable
-- Installs `python3` and `pip` via `apt`
-- Installs ansible via `pip`
-- Clones this repository to `$HOME/.toolbox`
-- Runs the `ansible` playbook
+### Install Script
 
 > [!NOTE]
 > Probably don't run the install script unless you're me. But, I'm not the boss of you.
+
+The `install.sh` script is a wrapper around the `ansible-playbook` command that runs the `playbook.yml` file with the `config_vars.yml` file as input. The script is responsible for setting up the environment, checking prerequisites and requirements, parsing cli options, and finally running the playbook.
+
+[usage](#usage)
 
 ### Playbook
 
@@ -91,6 +130,7 @@ With ansible-navigator installed, the playbook can be run with the following com
 
     $ ansible-navigator run playbook.yml -v 
 
+[ansible-navigator-role](#_beta-roles)
 ### Configuration
 
 `./config_vars.yml` 
@@ -152,6 +192,8 @@ The roles are defined in the `ansible/roles` directory, and the playbook
 
 ### _beta roles
 
+These aren't fully integrated yet, but I've played around with them and they're pretty cool.
+
 **`ansible-navigator`**
 
 - A text-based user interface (TUI) for Ansible.
@@ -160,25 +202,6 @@ The roles are defined in the `ansible/roles` directory, and the playbook
 **`navi`**
 
 - A command-line cheatsheet tool.
-  
-### General CLI Tools
-
-- `exa` - A modern replacement for `ls`
-- `bat` - A modern replacement for `cat`
-- `fd` - A modern replacement for `find`
-- `fzf` - A fuzzy finder for the command line
-- `forgit` - A `fzf` wrapper for `git` commands
-- `tldr` - A streamlined `man` page replacement
-
-### Go CLI Tools
-- `run` - A utility to run commands in a new shell
-- `skate` - A utility to manage secrets
-- `charm` - A utility to manage `charm` apps
-- `mods` - An application to interact with the OpenAI API
-- `gum` - A tool for glamorous shell scripts
-- `vhs` - A tool to create gifs from the terminal
-- `freeze` - A tool to take screenshots of code
-- `wishlist` - An SSH directory app
 
 ## Ideas
 
@@ -187,6 +210,7 @@ todo
 - [ ] helper scripts
 - [ ] fzf run tasks helper
 - [ ] add mods roles and helper scripts
+- [ ] move logic to clone toolbox into install.sh
 
 maybe
 - [ ] Add `soft serve` git server
