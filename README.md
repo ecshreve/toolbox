@@ -2,7 +2,6 @@
 
 A collection of tools and configurations for my development environment.
 
-
 ## Current Status
 
 - MacOS 13.0 / Ubuntu 22.04.
@@ -21,7 +20,21 @@ A collection of tools and configurations for my development environment.
 - `mods` configuration to interact with AI models from CLI 
 - chatbot to interact with the repository via OpenAI Embeddings, LangChain, and Pinecone
 - `gencom` to generate commit messages based on currently staged changes (powered by `mods`)
-  
+
+### Devcontainer
+
+<img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/ecshreve/toolbox">
+<img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/ecshreve/toolbox/main.yml">
+
+<br>
+
+This repo is configured with a Github Actions workflow to build a devcontainer for use in VSCode. The devcontainer is built on the `mcr.microsoft.com/devcontainers/base:ubuntu` image, which comes with a user created and `zsh` installed. On top of the base image, the Dockerfile installs `ansible` and a number of base core utilities.
+
+The `devcontainer.json` file includes a number of extensions that are part of my daily workflow. This file also handles the Docker setup for the devcointainer, explicitly mounting the host docker socket into the container to allow access to the host docker daemon from within the container.
+
+> [!NOTE] 
+> At this time the devcontainer does NOT run the setup script or playbook, it prepares the environment for running the setup script, assuming that for now I'll will run the setup script manually as soon as the container is available.
+
 ### Aliases and Commands to Remember
 
 - `CTRL+ff` - fuzzy search for files
@@ -174,15 +187,15 @@ todo
 - [ ] helper scripts
 - [ ] fzf run tasks helper
 - [ ] add mods roles and helper scripts
-- [ ] handle vscode config file
 
 maybe
 - [ ] Add `soft serve` git server
 - [ ] Add `run` configuration
 - [ ] Use `skate` to handle secrets
-- [ ] Bake all of this into a docker image
+- [/] Bake all of this into a docker image
 - [ ] Launch in codespace as a demo?
 - [-] figure out copy/paste from cli
+- [ ] Use run in ci?
 
 done
 - [x] write docs for assistant
