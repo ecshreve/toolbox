@@ -9,15 +9,12 @@
 
 - name: Oh My Zsh Install
   ansible.builtin.include_tasks: omz.yml
-  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: FZF Install
   ansible.builtin.include_tasks: fzf.yml
-  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Copy dotfiles
   ansible.builtin.include_tasks: dotfile.yml
   loop: "{{ dotfiles }}"
   loop_control:
     loop_var: dotfile_name
-  ignore_errors: "{{ ansible_check_mode }}"

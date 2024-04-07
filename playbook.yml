@@ -14,6 +14,7 @@
     clean: false
     go_version_target: 1.22.2
     python_version_target: 3.12.2
+  ignore_errors: "{{ ansible_check_mode }}"
   # tasks:
   #   - name: Shell setup
   #     include_role: shell
