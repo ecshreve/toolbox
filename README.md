@@ -42,7 +42,7 @@ A collection of tools and configurations for my development environment.
 
 ### Devcontainer
 
-<img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/ecshreve/toolbox">
+<img src="https://img.shields.io/github/v/tag/ecshreve/toolbox?sort=semver&link=https%3A%2F%2Fgithub.com%2Fecshreve%2Ftoolbox%2Fpkgs%2Fcontainer%2Ftoolbox%2Fversions">
 <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/ecshreve/toolbox/main.yml">
 
 <br>
@@ -211,6 +211,8 @@ todo
 - [ ] fzf run tasks helper
 - [ ] add mods roles and helper scripts
 - [ ] move logic to clone toolbox into install.sh
+- [ ] revisit cleanup role and file ownership
+- [x] run container build on push to main?
 
 maybe
 - [ ] Add `soft serve` git server
