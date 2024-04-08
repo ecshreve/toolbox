@@ -51,8 +51,7 @@ A collection of tools and configurations for my development environment.
 
 ### Devcontainer
 
-<img src="https://img.shields.io/github/v/tag/ecshreve/toolbox?sort=semver&link=https%3A%2F%2Fgithub.com%2Fecshreve%2Ftoolbox%2Fpkgs%2Fcontainer%2Ftoolbox%2Fversions">
-<img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/ecshreve/toolbox/main.yml">
+[![Build Devcontainer](https://github.com/ecshreve/toolbox/actions/workflows/devcontainerci.yml/badge.svg)](https://github.com/ecshreve/toolbox/actions/workflows/devcontainerci.yml)
 
 <br>
 
