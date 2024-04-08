@@ -82,6 +82,12 @@ run_playbook() {
         ANSIBLE_FLAGS+=" --check"
         echo "Running in check mode. No changes will be made."
         echo "Use --apply-install to apply changes."
+        echo "Continue? [y/N]"
+        read -r response
+        if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+            echo "Exiting."
+            exit 0
+        fi
     else
         echo "Applying changes."
     fi

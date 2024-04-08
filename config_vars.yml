@@ -126,7 +126,6 @@ pyenv_python312_version: "3.12.2"
 
 # Python versions to install
 pyenv_python_versions:
-  - "{{ pyenv_python311_version }}"
   - "{{ pyenv_python312_version }}"
 
 # Set global pyenv version

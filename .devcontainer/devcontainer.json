@@ -9,7 +9,7 @@
 		}
 	},
 	"features": {
-		"ghcr.io/devcontainers/features/docker-outside-of-docker": {}
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
 	},
 	"customizations": {
 		"vscode": {
@@ -17,15 +17,11 @@
 				"redhat.ansible",
 				"ms-azuretools.vscode-docker",
 				"ms-python.python",
-        		"ms-python.vscode-pylance",
+				"ms-python.vscode-pylance",
 				"ms-toolsai.jupyter",
-				"golang.go"
+				"golang.go",
+				"hashicorp.hcl"
 			]
 		}
-	},
-	"mounts": [
-		// This mounts the Docker socket into the devcontainer
-		"source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
-	]
-	// Add other configurations as needed
+	}
 }

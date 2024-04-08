@@ -5,9 +5,19 @@ A collection of tools and configurations for my development environment.
 ## Current Status
 
 - Targets environment setup on Ubuntu 22.04 and MacOS 13.0
-- Go: 1.22.2
-- Python: 3.12.2
-- Docker
+- Golang <img alt="Static Badge" src="https://img.shields.io/badge/version-1.22.2-blue?logo=go">
+
+- Python <img alt="Static Badge" src="https://img.shields.io/badge/version-3.12.2-blue?logo=python">
+
+### Docker
+
+- The Dockerfile in the devcontainer builds an environment suitable for running
+  the `install.sh` script. It's meant to be used in VSCode as a development
+  environment for this repository.
+- The Dockerfile in the root of the repository builds on top of the devcontainer
+  image, running the `install.sh` script to configure the environment before
+  committing the changes to the image. This image is meant to be used as a
+  base development environment for other projects.
 
 <!-- TODO: UPDATE ME WHEN CLI CHANGES -->
 ### Usage
@@ -24,7 +34,6 @@ A collection of tools and configurations for my development environment.
 - Set the `TOOLBOX_PATH` environment variable to the path of the cloned repository
 - Run the `./install.sh` script to run the ansible playbook (default to check mode)
 - Run `./install.sh --help` for for info on applying the changes
-
 
 ### Why Toolbox?
 

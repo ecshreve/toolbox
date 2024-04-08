@@ -1,0 +1,19 @@
+FROM ghcr.io/ecshreve/toolbox:latest
+
+ARG USER=vscode
+RUN mkdir -p /home/${USER}/.toolbox
+WORKDIR /home/${USER}/.toolbox
+
+COPY ./ansible/ ./ansible/
+COPY ./config_files/ ./config_files/
+COPY ./playbook.yml ./playbook.yml
+COPY ./config_vars.yml ./config_vars.yml
+
+ENV ANSIBLE_CONFIG=/home/${USER}/.toolbox/ansible
+ENV TOOLBOX_PATH=/home/${USER}/.toolbox
+
+RUN ansible-playbook playbook.yml --tags stable
+
+WORKDIR /home/${USER}
+
+CMD ["/bin/bash"]
