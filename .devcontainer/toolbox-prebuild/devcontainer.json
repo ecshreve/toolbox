@@ -1,0 +1,4 @@
+{
+	"name": "toolbox-prebuild",
+	"image": "ghcr.io/ecshreve/toolbox-devcontainer:v0.0.9"
+}

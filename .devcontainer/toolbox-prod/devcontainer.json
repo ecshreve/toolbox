@@ -1,4 +1,0 @@
-{
-	"name": "toolbox-prod",
-	"image": "ghcr.io/ecshreve/toolbox-devcontainer:latest"
-}

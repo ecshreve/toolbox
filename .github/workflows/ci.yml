@@ -28,11 +28,12 @@ jobs:
         with:
           imageName: ghcr.io/${{ env.IMAGE_NAME }}
           cacheFrom: ghcr.io/${{ env.IMAGE_NAME }}
-          push: always   
+          push: filter
+          refFilterForPush: 'refs/heads/main'
 
   release:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/v')
     needs: build
     steps:
       - name: Checkout
@@ -50,7 +51,7 @@ jobs:
         with:
           imageName: ghcr.io/${{ env.IMAGE_NAME }}
           cacheFrom: ghcr.io/${{ env.IMAGE_NAME }}
-          imageTag: ${{ github.ref_name }}
+          imageTag: latest,${{ github.ref_name }}
           push: always
 
       - name: Create GitHub Release
