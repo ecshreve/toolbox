@@ -1,8 +1,23 @@
 {
 	"name": "toolbox-dev",
 	"build": {
-		"cacheFrom": "ghcr.io/ecshreve/toolbox:latest",
-		"dockerfile": "../Dockerfile",
+		"dockerfile": "./Dockerfile",
 		"context": ".."
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"redhat.ansible",
+				"ms-azuretools.vscode-docker",
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-toolsai.jupyter",
+				"golang.go",
+				"hashicorp.hcl"
+			]
+		}
 	}
 }
