@@ -1,10 +1,10 @@
-name: Devcontainer Build
+name: 'build'
 on:
   workflow_dispatch:
   push:
-    tags:
-      - '*'
-
+    branches: [main, ecs/devci]
+  release:
+    types: [published]
 
 jobs:
   build-and-push:
@@ -25,7 +25,7 @@ jobs:
         name: Pre-build dev container image
         uses: devcontainers/ci@v0.3
         with:
-          imageName: ghcr.io/${{ github.repository }}
-          imageTag: latest,${{github.ref_name}}
-          cacheFrom: ghcr.io/${{ github.repository }}
+          imageName: ghcr.io/${{ github.repository }}-devcontainer
+          imageTag: latest
           push: always
+           
