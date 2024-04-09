@@ -1,5 +1,4 @@
-FROM ghcr.io/ecshreve/toolbox:latest
-LABEL org.opencontainers.image.source=https://github.com/ecshreve/toolbox
+FROM ghcr.io/ecshreve/toolbox-base:latest
 
 ARG USER=vscode
 RUN mkdir -p /home/${USER}/.toolbox
