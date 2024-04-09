@@ -2,19 +2,44 @@
 
 A collection of tools and configurations for my development environment.
 
+## Usage 
+
+Try out the latest version of `toolbox` in a Codespace by clicking the button below:
+
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/ecshreve/toolbox?devcontainer_path=.devcontainer%2Ftoolbox-prod%2Fdevcontainer.json)
 
-## Current Status
+Open a `zsh` shell in the terminal to get started.
 
-- Targets environment setup on Ubuntu 22.04 and MacOS 13.0
+>[!NOTE]
+>Regardless of the default profile, codespaces opened in the web client always open with a bash session running initially.
 
-<img alt="Static Badge" src="https://img.shields.io/badge/Golang_version-1.22.2-blue?logo=go"> <img alt="Static Badge" src="https://img.shields.io/badge/Python_version-3.12.2-blue?logo=python">
+### Local
 
-<br>
+<small>_ymmv_</small>
+
+To run the `toolbox` setup locally, clone the repository and run the `install.sh` script:
+
+    $ git clone https://github.com/ecshreve/toolbox.git ~/.toolbox
+
+    $ cd ~/.toolbox
+
+    $ ./install.sh
+
+The script will check the necessary dependencies and run the `ansible` playbook to configure the environment.
+
+## Status
+
+[![GitHub Release](https://img.shields.io/github/v/release/ecshreve/toolbox)](https://github.com/ecshreve/toolbox/releases/latest)
+
+[![Static Badge](https://img.shields.io/badge/mac_os-13.0-blue?logo=apple)](https://www.apple.com/macos/sonoma/)
+
+[![Static Badge](https://img.shields.io/badge/ubuntu-22.04-pink?logo=ubuntu&logoColor=white)](https://ubuntu.com/download/desktop)
+
+### dev
 
 [![devcontainer build status](https://github.com/ecshreve/toolbox/actions/workflows/devcontainer.yml/badge.svg)](https://github.com/ecshreve/toolbox/actions/workflows/devcontainer.yml)
 
-### Why Toolbox?
+## Why Toolbox?
 
 - I was tired of having do extra work to integrate things with my old `fish` setup. 
 - Time to update some tools and look at new ones.
@@ -29,7 +54,7 @@ A collection of tools and configurations for my development environment.
 - devcontainer prebuilt and ready for toolbox installation
 
 <!-- TODO: source these from the vars file? -->
-### Aliases and Commands to Remember
+## Aliases and Commands to Remember
 
 - `CTRL+ff` - fuzzy search for files
 - `gaa` - add all files to git
@@ -190,8 +215,8 @@ maybe
 - [ ] Add `soft serve` git server
 - [ ] Add `run` configuration
 - [ ] Use `skate` to handle secrets
-- [/] Bake all of this into a docker image
-- [ ] Launch in codespace as a demo?
+- [x] Bake all of this into a docker image
+- [x] Launch in codespace as a demo?
 - [-] figure out copy/paste from cli
 - [ ] Use run in ci?
 
