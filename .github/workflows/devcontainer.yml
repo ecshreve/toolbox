@@ -32,8 +32,7 @@ jobs:
         uses: devcontainers/ci@v0.3
         with:
           imageName: ghcr.io/ecshreve/${{ env.IMAGE_NAME }}
-          cacheFrom: ghcr.io/ecshreve/${{ env.IMAGE_NAME }}
           imageTag: latest,${{github.ref_name}}
           push: filter
           eventFilterForPush: release
-          platform: linux/amd64,linux/arm64,linux/arm/v7
+          platform: linux/amd64,linux/arm64

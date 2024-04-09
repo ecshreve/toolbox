@@ -93,7 +93,7 @@ go_packages:
   freeze: github.com/charmbracelet/freeze@latest
   vhs: github.com/charmbracelet/vhs@latest
   wishlist: github.com/charmbracelet/wishlist/cmd/wishlist@latest
-  charm: github.com/charmbracelet/charmlatest
+  charm: github.com/charmbracelet/charm@latest
 
 binary_releases:
   ttyd: https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.aarch64
