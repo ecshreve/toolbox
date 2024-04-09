@@ -9,15 +9,14 @@ A collection of tools and configurations for my development environment.
 
 - Python <img alt="Static Badge" src="https://img.shields.io/badge/version-3.12.2-blue?logo=python">
 
-### Docker
+### Docker and Devcontainer
 
-- The Dockerfile in the devcontainer builds an environment suitable for running
-  the `install.sh` script. It's meant to be used in VSCode as a development
-  environment for this repository.
-- The Dockerfile in the root of the repository builds on top of the devcontainer
-  image, running the `install.sh` script to configure the environment before
-  committing the changes to the image. This image is meant to be used as a
-  base development environment for other projects.
+[![Build devcontainer](https://github.com/ecshreve/toolbox/actions/workflows/devcontainer.yml/badge.svg)](https://github.com/ecshreve/toolbox/actions/workflows/devcontainer.yml)
+
+- The repository includes a `devcontainer` configuration for use with VSCode.
+- The `devcontainer` is built from the Dockerfile in the root of the repo, which
+  is based on the container defined in the `.devcontainer/toolbox-base` directory.
+- It is built via GitHub Actions and pushed to the GitHub Container Registry.
 
 <!-- TODO: UPDATE ME WHEN CLI CHANGES -->
 ### Usage
@@ -48,21 +47,6 @@ A collection of tools and configurations for my development environment.
 - chatbot to interact with the repository via OpenAI Embeddings, LangChain, and Pinecone
 - `gencom` to generate commit messages based on currently staged changes (powered by `mods`)
 - devcontainer prebuilt and ready for toolbox installation
-
-### Devcontainer
-
-[![Build Devcontainer](https://github.com/ecshreve/toolbox/actions/workflows/devcontainerci.yml/badge.svg)](https://github.com/ecshreve/toolbox/actions/workflows/devcontainerci.yml)
-
-<br>
-
-This repo is configured with a Github Actions workflow to build a devcontainer for use in VSCode. The devcontainer is built on the `mcr.microsoft.com/devcontainers/base:ubuntu` image, which comes with a user created and `zsh` installed. On top of the base image, the Dockerfile installs `ansible` and a number of base core utilities.
-
-The `devcontainer.json` file includes a number of extensions that are part of my daily workflow. This file also handles the Docker setup for the devcointainer, explicitly mounting the host docker socket into the container to allow access to the host docker daemon from within the container.
-
-> [!NOTE] 
-> At this time the devcontainer does NOT run the setup script or playbook, it prepares the environment for running the setup script, assuming that for now I'll will run the setup script manually as soon as the container is available.
-
-The devcontainer build workflow is triggered by a new tag being pushed to the repository, and the resulting image is pushed to the Github Container Registry. The workflow can also be triggered manually.
 
 <!-- TODO: source these from the vars file? -->
 ### Aliases and Commands to Remember

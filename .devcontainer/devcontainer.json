@@ -1,7 +1,7 @@
 {
 	"name": "dev-toolbox",
 	"build": {
-		"cacheFrom": ["ghcr.io/ecshreve/toolbox:latest", "ghcr.io/ecshreve/toolbox-base:latest"],
+		"cacheFrom": "ghcr.io/ecshreve/toolbox:latest",
 		"dockerfile": "../Dockerfile",
 		"context": ".."
 	}
