@@ -1,4 +1,4 @@
-FROM ghcr.io/ecshreve/toolbox-base:latest
+FROM ghcr.io/ecshreve/toolbox-devcontainer:latest
 
 ARG USER=vscode
 RUN mkdir -p /home/${USER}/.toolbox
@@ -12,6 +12,8 @@ ENV GOPATH=/usr/local/go
 ENV GOROOT=/usr/local/go
 
 RUN ansible-playbook playbook.yml --tags stable -v
+
+RUN ansible-playbook playbook.yml --tags golang -v
 
 WORKDIR /home/${USER}
 

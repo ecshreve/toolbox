@@ -1,0 +1,24 @@
+{
+	"name": "toolbox-dev",
+	"build": {
+		"cacheFrom": "ghcr.io/ecshreve/toolbox-devcontainer:latest",
+		"dockerfile": "./Dockerfile",
+		"context": ".."
+	},
+	"remoteUser": "vscode",
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"terminal.integrated.shell.linux": "/bin/bash"
+			},
+			"extensions": [
+				"ms-vscode-remote.remote-containers"
+			]
+		}
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/go:1": {
+			"version": "latest"
+		}
+	}
+}

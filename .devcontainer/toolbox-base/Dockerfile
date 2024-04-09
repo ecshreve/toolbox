@@ -50,11 +50,6 @@ ENV TOOLBOX_PATH=/home/${USER}/.toolbox
 ENV ANSIBLE_CONFIG=${TOOLBOX_PATH}/ansible/ansible.cfg
 RUN ansible-playbook playbook.yml --tags base -v
 
-FROM toolbox-user as toolbox-golang
-
-ENV GOROOT=/usr/local/go
-RUN ansible-playbook playbook.yml --tags golang -v
-
 # Set the default shell to bash
 SHELL ["/bin/bash", "-c"]
 
