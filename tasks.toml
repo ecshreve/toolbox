@@ -1,4 +1,12 @@
 [[task]]
+  id = "screenshots"
+  description = "Take screenshots and GIFs"
+  type = "short"
+  cmd = """
+    vhs tapes/secrets.tape
+  """
+  
+[[task]]
   id = "play-go"
   description = "Run the playbook for Go"
   type = "short"

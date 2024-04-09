@@ -115,6 +115,17 @@ The `install.sh` script is a wrapper around the `ansible-playbook` command that 
 
 [usage](#usage)
 
+### Secrets Helper Script
+
+    $ ./scripts/secrets.sh
+
+This script is designed to streamline setting up secrets in my development environment for this project, but can be generally used to dump secrets from a `skate` database to a local file.
+
+<div align="center">
+  <img src="./assets/secrets.gif" width="70%">
+</div>
+
+
 ### Playbook
 
 The `playbook.yml` file is the main entry point for the `ansible` configuration. It handles running the roles defined in the `ansible/roles` directory with the variables defined in `config_vars.yml`.
