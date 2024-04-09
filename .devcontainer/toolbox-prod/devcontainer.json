@@ -1,0 +1,4 @@
+{
+	"name": "toolbox-prod",
+	"image": "ghcr.io/ecshreve/toolbox:latest"
+}

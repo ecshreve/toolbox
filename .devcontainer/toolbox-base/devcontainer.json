@@ -1,5 +1,5 @@
 {
-	"name": "ubuntu-jammy",
+	"name": "base",
 	"build": {
 		"cacheFrom": "ghcr.io/ecshreve/toolbox-base:latest",
 		"dockerfile": "./Dockerfile",

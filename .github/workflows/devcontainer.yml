@@ -1,4 +1,4 @@
-name: Build devcontainer
+name: devcontainer
 on:
   push:
     branches: [main]

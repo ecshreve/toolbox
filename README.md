@@ -2,37 +2,17 @@
 
 A collection of tools and configurations for my development environment.
 
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/ecshreve/toolbox?devcontainer_path=.devcontainer%2Ftoolbox-prod%2Fdevcontainer.json)
+
 ## Current Status
 
 - Targets environment setup on Ubuntu 22.04 and MacOS 13.0
-- Golang <img alt="Static Badge" src="https://img.shields.io/badge/version-1.22.2-blue?logo=go">
 
-- Python <img alt="Static Badge" src="https://img.shields.io/badge/version-3.12.2-blue?logo=python">
+<img alt="Static Badge" src="https://img.shields.io/badge/Golang_version-1.22.2-blue?logo=go"> <img alt="Static Badge" src="https://img.shields.io/badge/Python_version-3.12.2-blue?logo=python">
 
-### Docker and Devcontainer
+<br>
 
-[![Build devcontainer](https://github.com/ecshreve/toolbox/actions/workflows/devcontainer.yml/badge.svg)](https://github.com/ecshreve/toolbox/actions/workflows/devcontainer.yml)
-
-- The repository includes a `devcontainer` configuration for use with VSCode.
-- The `devcontainer` is built from the Dockerfile in the root of the repo, which
-  is based on the container defined in the `.devcontainer/toolbox-base` directory.
-- It is built via GitHub Actions and pushed to the GitHub Container Registry.
-
-<!-- TODO: UPDATE ME WHEN CLI CHANGES -->
-### Usage
-
-#### In this repository
-
-- Open the repository in the devcontainer in VSCode
-- Run the `install.sh` script to run the ansible playbook
-- For more control or debugging run the playbook directly with `ansible-playbook playbook.yml`
-
-#### In a new environment
-
-- Clone the repository
-- Set the `TOOLBOX_PATH` environment variable to the path of the cloned repository
-- Run the `./install.sh` script to run the ansible playbook (default to check mode)
-- Run `./install.sh --help` for for info on applying the changes
+[![devcontainer build status](https://github.com/ecshreve/toolbox/actions/workflows/devcontainer.yml/badge.svg)](https://github.com/ecshreve/toolbox/actions/workflows/devcontainer.yml)
 
 ### Why Toolbox?
 

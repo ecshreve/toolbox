@@ -15,4 +15,4 @@ RUN ansible-playbook playbook.yml --tags stable -v
 
 WORKDIR /home/${USER}
 
-CMD ["/bin/bash"]
+CMD ["/bin/zsh"]
