@@ -1,9 +1,9 @@
 {
 	"name": "ubuntu-jammy",
 	"build": {
-		"cacheFrom": "ghcr.io/ecshreve/toolbox:v0.0.2",
+		"cacheFrom": "ghcr.io/ecshreve/toolbox:latest",
 		"dockerfile": "./Dockerfile",
-		"context": ".",
+		"context": "..",
 		"args": {
 			"DOCKER_GID": "999"
 		}

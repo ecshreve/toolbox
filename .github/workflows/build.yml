@@ -1,15 +1,13 @@
-name: Build Devcontainer
+name: Build toolbox
 on:
   push:
-    branches: main
+    branches: [main]
   release:
     types: [published]
 
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
-  # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build:
@@ -23,11 +21,11 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build Docker image
+      - name: Build toolbox image
         uses: devcontainers/ci@v0.3
         with:
-          imageName: ghcr.io/${{ github.repository }}
-          cacheFrom: ghcr.io/${{ github.repository }}
+          imageName: ghcr.io/ecshreve/toolbox
+          cacheFrom: ghcr.io/ecshreve/toolbox
           imageTag: latest,${{github.ref_name}}
-          push: filter
-          eventFilterForPush: release
+          push: always
+          subFolder: .devcontainer/toolbox

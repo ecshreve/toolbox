@@ -1,0 +1,52 @@
+name: Build combined toolbox and tooldots
+on:
+  release:
+    types: [published]
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  IMAGE: ecshreve/tooldots
+
+jobs:
+  build-toolbox:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build toolbox image
+        uses: devcontainers/ci@v0.3
+        with:
+          imageName: ghcr.io/ecshreve/toolbox
+          cacheFrom: ghcr.io/ecshreve/toolbox
+          imageTag: latest,${{github.ref_name}}
+          push: always
+          subFolder: .devcontainer/toolbox
+
+  build-tooldots:
+    runs-on: ubuntu-latest
+    needs: build-toolbox
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build tooldots image
+        uses: devcontainers/ci@v0.3
+        with:
+          imageName: ghcr.io/ecshreve/tooldots
+          cacheFrom: ghcr.io/ecshreve/tooldots
+          imageTag: latest,${{github.ref_name}}
+          push: filter
+          eventFilterForPush: release
+          subFolder: .devcontainer/tooldots
