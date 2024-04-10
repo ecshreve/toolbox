@@ -1,15 +1,15 @@
-name: devcontainer-ci
+name: release
 
 on:
   push:
-    branches: [main]
+    tags: ['v*']
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ecshreve/toolbox-devcontainer
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -22,16 +22,23 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Prebuild ${{ env.IMAGE_NAME }} image
+      - name: Build and tag with version ${{ env.IMAGE_NAME }} image
         uses: devcontainers/ci@v0.3
         with:
           imageName: ghcr.io/${{ env.IMAGE_NAME }}
           cacheFrom: ghcr.io/${{ env.IMAGE_NAME }}
-          push: filter
-          refFilterForPush: 'refs/heads/main'
+          imageTag: latest,${{ github.ref_name }}
+          push: always
 
-
-          
-
-          
-  
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            README.md
+            .devcontainer/devcontainer.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+      

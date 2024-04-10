@@ -2,20 +2,19 @@
 
 A collection of tools and configurations for my development environment.
 
-## Usage 
+I use this repository to manage my development environment across different machines, operating systems, containers, and cloud workspaces. The repository is designed to be cloned and run on a Ubuntu or MacOS system (only tested on my computers, ymmv).
 
-Try out the latest version of `toolbox` in a Codespace by clicking the button below:
+## Usage
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/ecshreve/toolbox?devcontainer_path=.devcontainer%2Ftoolbox-prod%2Fdevcontainer.json)
+Besides installation on a local machine, I use this repository to build a `devcontainer` via Github Actions. The latest tagged version is also used to prebuild a `devcontainer` image meant to be used in Codespaces.
 
-Open a `zsh` shell in the terminal to get started.
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/ecshreve/toolbox?devcontainer_path=.devcontainer%2Ftoolbox-prebuild%2Fdevcontainer.json)
+
 
 >[!NOTE]
->Regardless of the default profile, codespaces opened in the web client always open with a bash session running initially.
+>Open a `zsh` shell in the terminal to get started. Regardless of the default profile, codespaces opened in the web client always open with a bash session running initially.
 
 ### Local
-
-<small>_ymmv_</small>
 
 To run the `toolbox` setup locally, clone the repository and run the `install.sh` script:
 
@@ -26,18 +25,6 @@ To run the `toolbox` setup locally, clone the repository and run the `install.sh
     $ ./install.sh
 
 The script will check the necessary dependencies and run the `ansible` playbook to configure the environment.
-
-## Status
-
-[![GitHub Release](https://img.shields.io/github/v/release/ecshreve/toolbox)](https://github.com/ecshreve/toolbox/releases/latest)
-
-[![Static Badge](https://img.shields.io/badge/mac_os-13.0-blue?logo=apple)](https://www.apple.com/macos/sonoma/)
-
-[![Static Badge](https://img.shields.io/badge/ubuntu-22.04-pink?logo=ubuntu&logoColor=white)](https://ubuntu.com/download/desktop)
-
-### dev
-
-[![devcontainer build status](https://github.com/ecshreve/toolbox/actions/workflows/devcontainer.yml/badge.svg)](https://github.com/ecshreve/toolbox/actions/workflows/devcontainer.yml)
 
 ## Why Toolbox?
 
@@ -211,6 +198,39 @@ These aren't fully integrated yet, but I've played around with them and they're 
 
 - A command-line cheatsheet tool.
 
+
+
+
+## Builds and Releases
+
+[![devcontainer build status](https://github.com/ecshreve/toolbox/actions/workflows/ci.yml/badge.svg)](https://github.com/ecshreve/toolbox/actions/workflows/ci.yml)
+[![Codespaces Prebuilds](https://github.com/ecshreve/toolbox/actions/workflows/codespaces/create_codespaces_prebuilds/badge.svg?branch=main)](https://github.com/ecshreve/toolbox/actions/workflows/codespaces/create_codespaces_prebuilds)
+
+[![GitHub Release](https://img.shields.io/github/v/release/ecshreve/toolbox)](https://github.com/ecshreve/toolbox/releases/latest)
+[![GitHub commits since latest release (branch)](https://img.shields.io/github/commits-since/ecshreve/toolbox/latest/main?color=green)](https://github.com/ecshreve/toolbox/releases/latest)
+
+General outline of what images get build where.
+
+```mermaid
+graph TD
+    A(Push to Main Branch) -->|Triggers| B(Checkout)
+    A1(Push Tag v*) -->|Triggers| B1(Checkout)
+    B --> C(Login to GitHub Container Registry)
+    B1 --> C1(Login to GitHub Container Registry)
+    C --> D[Prebuild image]
+    C1 --> E(Build and tag with version image)
+    E --> F(Create GitHub Release)
+    A2(cron job) -.->|Asynchronously triggers| G[Codespace Prebuilds]
+    G --> H{{toolbox-prebuild/devcontainer.json}}
+    H -. "References" .-> I[Latest Tagged Version of the Devcontainer Image]
+```
+
+`toolbox-devcontainer:latest` is built on push to main and tagged as the latest version. This image is used in developing _this_ repository. 
+
+`toolbox-devcontainer:v*` is built on push of a tag that starts with `v`. This image is used in the Codespace prebuilds. I use this image as a devcontainer in other repositories.
+
+`codespace-prebuild`: A workflow that runs on a cron job and configured via the repository settings in the Github UI. Prebuilds are configured to target the latest tagged version of the devcontainer image.
+
 ## Ideas
 
 todo
@@ -220,18 +240,21 @@ todo
 - [ ] add mods roles and helper scripts
 - [ ] move logic to clone toolbox into install.sh
 - [ ] revisit cleanup role and file ownership
-- [x] run container build on push to main?
+- [ ] reindex pinecone on push to main?
+- [ ] demo the assistant in the readme
 
 maybe
 - [ ] Add `soft serve` git server
 - [ ] Add `run` configuration
-- [ ] Use `skate` to handle secrets
-- [x] Bake all of this into a docker image
-- [x] Launch in codespace as a demo?
 - [-] figure out copy/paste from cli
 - [ ] Use run in ci?
+- [ ] Rethink python install
 
 done
+- [x] Use `skate` to handle secrets
+- [x] Bake all of this into a docker image
+- [x] Launch in codespace as a demo?
+- [x] run container build on push to main?
 - [x] write docs for assistant
 - [x] move config values out of playbook
 - [x] python environment setup
