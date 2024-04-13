@@ -52,15 +52,16 @@ slog() {
         --structured \
         --level debug "$@"
 }
+slog "Starting secrets script..."
 
 # Prompt user for the database name, with a default suggestion.
-DB_NAME=$(gum input --value "mytoolboxsecrets.db" \
-                    --prompt.foreground "#0FF" \
-                    --prompt "db_name: ")
+DB_NAME=$(skate list-dbs | gum choose \
+                    --cursor.foreground "#0FF" \
+                    --header "db_name: ")
 slog "Selected database" db "$DB_NAME"
 
 slog "Reloading database..."
-gum spin --title "reloading db..." -- skate reset @"$DB_NAME"
+gum spin --title "reloading db..." -- skate reset "$DB_NAME"
 
 # Prompt user for the environment file name, with a default suggestion.
 ENV_FILE=$(gum input --value ".env.skate" \
@@ -76,8 +77,8 @@ fi
 
 slog "Getting secrets..."
 gum spin --show-output --title "getting secrets..." \
-         -- skate list @"$DB_NAME" | \
-    awk -v OFS='=' '{print "export", toupper($1), $2}' > "$ENV_FILE"
+         -- skate list "$DB_NAME" | \
+    awk -v OFS='' '{print "export ", toupper($1), "=", $2}' > "$ENV_FILE"
 
 slog "Secrets written to $ENV_FILE"
 
