@@ -1,11 +1,14 @@
 ---
-- name: Configure system
+- name: Configure environment
   tags: [stable, base]
   hosts: 127.0.0.1
   vars_files:
     - config_vars.yml
   roles:
-    - shell
+    - base
+    - zsh
+    - fzf
+    - dotfiles
   ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Configure golang and go tools
@@ -15,9 +18,7 @@
     - config_vars.yml
   roles:
     - golang
-    - cleanup
   vars:
-    clean: false
-    go_version_target: 1.22.2
+    go_version_target: 1.22.1
   ignore_errors: "{{ ansible_check_mode }}"
   

@@ -1,7 +1,0 @@
----
-- name: Macports port installs
-  community.general.macports:
-    name: "{{ item }}"
-    state: present
-  become: true
-  loop: "{{ ports }}"

@@ -4,37 +4,58 @@
     path: "{{ go_root }}/bin/go"
   register: go_stat
 
-- name: Remove current installation.
-  ansible.builtin.file:
-    state: absent
-    path: "{{ go_root }}"
-  ignore_errors: "{{ ansible_check_mode }}"
-  when: go_stat.stat.exists and clean
+- name: Checks
+  block:
+    - name: Check installed Go version.
+      ansible.builtin.command:
+        cmd: "{{ go_root }}/bin/go version"
+      register: go_version
+      ignore_errors: "{{ ansible_check_mode }}"
 
-- name: Download Go.
-  ansible.builtin.get_url:
-    url: "{{ go_tarball_url }}"
-    dest: /tmp/{{ go_tarball }}
-    checksum: "sha256:{{ golang_checksums[go_version_target][go_platform][go_arch] }}"
-    mode: '0644'
-  ignore_errors: "{{ ansible_check_mode }}"
+    - name: Extract the installed Go version.
+      set_fact:
+        go_version_installed: "{{ go_version.stdout | regex_replace('^go version go([0-9]+\\.[0-9]+\\.[0-9]+) .*', '\\1') }}"
 
-- name: Extract Go.
-  become: true
-  ansible.builtin.unarchive:
-    src: /tmp/{{ go_tarball }}
-    dest: /usr/local
-    remote_src: true
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
-  ignore_errors: "{{ ansible_check_mode }}"
+    - name: Check if installed Go version matches target version.
+      set_fact:
+        go_version_needs_upgrade: "{{ go_version_installed != go_version_target }}"
+  when: go_stat.stat.exists
+
+- name: Install target Go version if not already installed.
+  block:
+    - name: Remove current installation if version does not match.
+      ansible.builtin.file:
+        state: absent
+        path: "{{ go_root }}"
+      ignore_errors: "{{ ansible_check_mode }}"
+
+    - name: Download Go.
+      ansible.builtin.get_url:
+        url: "{{ go_tarball_url }}"
+        dest: /tmp/{{ go_tarball }}
+        checksum: "sha256:{{ golang_checksums[go_version_target][go_platform][go_arch] }}"
+        mode: '0644'
+      ignore_errors: "{{ ansible_check_mode }}"
+
+    - name: Extract Go.
+      become: true
+      ansible.builtin.unarchive:
+        src: /tmp/{{ go_tarball }}
+        dest: /usr/local
+        remote_src: true
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+      ignore_errors: "{{ ansible_check_mode }}"
+  when: 
+    - not ansible_check_mode  
+    - not go_stat.stat.exists or go_version_needs_upgrade | default(false)
 
 - name: Install go packages with go install.
   ansible.builtin.command:
     cmd: "{{ go_root }}/bin/go install {{ item.value }}"
     creates: "{{ go_root }}/bin/{{ item.key }}"
   environment:
-    GOPATH: "{{ go_root }}"
     GOROOT: "{{ go_root }}"
   loop: "{{ go_packages | dict2items }}"
   ignore_errors: "{{ ansible_check_mode }}"
+  when: not ansible_check_mode

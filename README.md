@@ -132,62 +132,51 @@ With ansible-navigator installed, the playbook can be run with the following com
   - Contains the variables used in `playbook.yml`.
   - Things like packages to install, language and tool versions, etc
   
-`ansible/hosts` 
-  - Defines the `localhost` host and some specific variables related to the env
-  - This file only contains the `localhost` host, as all roles are run locally.
-  
+_environment variables_
+
+`TOOLBOX_DIR`: `~/.toolbox`
+  - The directory where the toolbox repository is cloned.
+
+`ANSIBLE_CONFIG_DIR`: `$TOOLBOX_DIR/ansible/ansible.cfg`
+  - The file where the toolbox ansible configuration is stored.
+  - 
 ### Ansible Roles
 
 For environment setup `ansible` is used to manage dotfiles and configurations. 
 The roles are defined in the `ansible/roles` directory, and the playbook 
 `playbook.yml` is responsible for running them.
 
-**`shell`**
+**`base`**
+- Installs packages (apt packages on debian/ubuntu) (macports ports on darwin).
 
-- Installs apt packages (macports ports on darwin).
+**`zsh`**:
 - Handles the installation and configuration of `zsh` and `oh-my-zsh`, as well 
   as plugins and utilities.
-- Configuration for `zsh` is defined in `roles/shell/files/zshrc`, which is 
-  copied to `$HOME/.zshrc` after installation. 
 - Uses `powerlevel10k` for prompt styling.
-- Installs `fzf` and `forgit` for fuzzy searching and git integration.
-- Installs `zsh-autosuggestions`, `zsh-completions`, `zsh-syntax-highlighting` 
-  for enhanced shell functionality.
-- Installs `tmux`.
-- Copies dotfiles to home directory
+- Installs `zsh-autosuggestions`, `zsh-completions`, `zsh-syntax-highlighting`,
+  `forgit` and `fzf` plugins for enhanced shell functionality.
+
+**`fzf`**:
+- Installs `fzf` from git repository.
+
+**`dotfiles`**:
+- Symlinks dotfiles in `config_files/` to `$HOME`.
 
 > [!IMPORTANT]
 > The `.zshrc` configuration defines a keybinding override to use `^ff` instead of `^t` to trigger `fzf` from the command line.
 
 **`golang`**:
 
-- Handles downloading and installing Golang 1.22.2, along with additional tools 
+- Handles downloading and installing Golang, along with additional tools 
   and executables.
-- Installs go under `/usr/local/go`
-- Installs executables under `/usr/local/go/bin`
-- Install path is defined in config_vars.yml
+- Installs `go` under `/usr/local/go`
+- Installs executables under `/home/eric/go/bin`
+- Install path is defined in `config_vars.yml`
+  
+### _dev roles
 
-**`python`**
-
-- Installs and configures `pyenv` and `pyenv-virtualenv` for managing Python 
-  versions and virtual environments.
-- Installs Python 3.12.2 and sets it as the global version.
-
-**`hashi`**
-
-- Adds the HashiCorp repository to the system.
-- Installs `terraform` and `packer` via `apt` on Ubuntu
-- TODO: Add support for MacOS
-
-**`cleanup`**
-
-- This role is run last (or should be)
-- Checks that ownership is correct for a few directories.
-- Could be expanded to do more cleanup tasks.
-
-### _beta roles
-
-These aren't fully integrated yet, but I've played around with them and they're pretty cool.
+These aren't fully integrated yet, some are just for fun, some are planned
+to be integrated into the main playbook.
 
 **`ansible-navigator`**
 
@@ -198,38 +187,14 @@ These aren't fully integrated yet, but I've played around with them and they're 
 
 - A command-line cheatsheet tool.
 
+**etc...**
+- cleanup: check ownership of files and directories
+- hashi: install terraform and packer
+- python: install pyenv and pyenv-virtualenv
 
+## Devcontainer / Docker
 
-
-## Builds and Releases
-
-[![devcontainer build status](https://github.com/ecshreve/toolbox/actions/workflows/ci.yml/badge.svg)](https://github.com/ecshreve/toolbox/actions/workflows/ci.yml)
-[![Codespaces Prebuilds](https://github.com/ecshreve/toolbox/actions/workflows/codespaces/create_codespaces_prebuilds/badge.svg?branch=main)](https://github.com/ecshreve/toolbox/actions/workflows/codespaces/create_codespaces_prebuilds)
-
-[![GitHub Release](https://img.shields.io/github/v/release/ecshreve/toolbox)](https://github.com/ecshreve/toolbox/releases/latest)
-[![GitHub commits since latest release (branch)](https://img.shields.io/github/commits-since/ecshreve/toolbox/latest/main?color=green)](https://github.com/ecshreve/toolbox/releases/latest)
-
-General outline of what images get build where.
-
-```mermaid
-graph TD
-    A(Push to Main Branch) -->|Triggers| B(Checkout)
-    A1(Push Tag v*) -->|Triggers| B1(Checkout)
-    B --> C(Login to GitHub Container Registry)
-    B1 --> C1(Login to GitHub Container Registry)
-    C --> D[Prebuild image]
-    C1 --> E(Build and tag with version image)
-    E --> F(Create GitHub Release)
-    A2(cron job) -.->|Asynchronously triggers| G[Codespace Prebuilds]
-    G --> H{{toolbox-prebuild/devcontainer.json}}
-    H -. "References" .-> I[Latest Tagged Version of the Devcontainer Image]
-```
-
-`toolbox-devcontainer:latest` is built on push to main and tagged as the latest version. This image is used in developing _this_ repository. 
-
-`toolbox-devcontainer:v*` is built on push of a tag that starts with `v`. This image is used in the Codespace prebuilds. I use this image as a devcontainer in other repositories.
-
-`codespace-prebuild`: A workflow that runs on a cron job and configured via the repository settings in the Github UI. Prebuilds are configured to target the latest tagged version of the devcontainer image.
+TODO
 
 ## Links
 

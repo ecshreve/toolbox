@@ -75,7 +75,7 @@ omz_plugins:
 ##########################
 #   Golang + Go Tools
 ##########################
-go_version_target: 1.22.2
+go_version_target: 1.22.1
 
 go_root: "/usr/local/go"
 go_bin: "/usr/local/go/bin"
@@ -94,19 +94,22 @@ go_packages:
   vhs: github.com/charmbracelet/vhs@latest
   wishlist: github.com/charmbracelet/wishlist/cmd/wishlist@latest
 
-binary_releases:
-  ttyd: https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.aarch64
-
 golang_checksums:
   '1.21.8':
     linux:
       arm64: 3c19113c686ffa142e9159de1594c952dee64d5464965142d222eab3a81f1270
+  '1.22.1':
+    linux:
+      amd64: aab8e15785c997ae20f9c88422ee35d962c4562212bb0f879d052a35c8307c7f
   '1.22.2':
     linux:
       arm64: 36e720b2d564980c162a48c7e97da2e407dfcc4239e1e58d98082dfa2486a0c1
       amd64: 5901c52b7a78002aeff14a21f93e0f064f74ce1360fce51c6ee68cd471216a17
     darwin:
       arm64: 660298be38648723e783ba0398e90431de1cb288c637880cdb124f39bd977f0d
+
+binary_releases:
+  ttyd: https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.aarch64
 
 ##########################
 #   Python + Pip
