@@ -1,7 +1,9 @@
-export FZF_BASE="$HOME/.fzf/bin/fzf"
-export ZSH="$HOME/.oh-my-zsh"
+export PATH="/usr/local/go/bin:$HOME/go/bin:$PATH"
 export TOOLBOX_DIR="$HOME/.toolbox"
 export ANSIBLE_CONFIG="$TOOLBOX_DIR/ansible/ansible.cfg"
+
+export FZF_BASE="$HOME/.fzf/bin/fzf"
+export ZSH="$HOME/.oh-my-zsh"
 export FZF_DEFAULT_OPTS='--cycle --layout=reverse --border --height=80% --preview="bat --style=numbers --color=always --line-range :500 {}" --preview-window=nowrap --marker="*"'
 
 ZSH_THEME="powerlevel10k/powerlevel10k"

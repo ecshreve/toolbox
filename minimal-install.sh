@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# TODO: bake in git clone here
+
 export TOOLBOX_DIR=$PWD
 export ANSIBLE_CONFIG=$TOOLBOX_DIR/ansible/ansible.cfg
 
@@ -7,7 +9,7 @@ export ANSIBLE_CONFIG=$TOOLBOX_DIR/ansible/ansible.cfg
 if [ -z "$(which ansible)" ]; then
     echo "Ansible is not installed. Installing Ansible..."
     sudo add-apt-repository ppa:ansible/ansible
-    sudo apt-get update -y && sudo apt-get install -y ansible
+    sudo apt-get update -y && sudo apt-get install -y ansible ansible-lint
 else
     echo "Ansible is already installed. Proceeding..."
     echo $TOOLBOX_DIR
