@@ -1,0 +1,37 @@
+Projects:
+  ☐ Assistant
+  ☐ Devbox
+
+Todos:
+  ☐ iterate on setup flow
+  ☐ play around with tmux config
+  ☐ helper scripts
+  ☐ fzf run tasks helper
+  ☐ add mods roles and helper scripts
+  ☐ move logic to clone toolbox into install.sh
+  ☐ revisit cleanup role and file ownership
+  ☐ reindex pinecone on push to main?
+  ☐ demo the assistant in the readme
+  ☐ Add `soft serve` git server
+  ☐ Add `run` configuration
+  ☐ Use run in ci?
+  ☐ Rethink python install
+
+Archive:
+  [-] figure out copy/paste from cli
+  ✔ Use `skate` to handle secrets @done(24-04-13 20:32)
+  ✔ Bake all of this into a docker image @done(24-04-13 20:32)
+  ✔ Launch in codespace as a demo? @done(24-04-13 20:32)
+  ✔ run container build on push to main? @done(24-04-13 20:32)
+  ✔ write docs for assistant @done(24-04-13 20:32)
+  ✔ move config values out of playbook @done(24-04-13 20:32)
+  ✔ python environment setup @done(24-04-13 20:32)
+  ✔ upgrade to go 1.22 @done(24-04-13 20:32)
+  ✔ refactor playbook vars @done(24-04-13 20:32)
+  ✔ Take a few cycles to clean up the `golang` role. @done(24-04-13 20:32)
+  ✔ Audit .yml vs ~~.yaml~~ file extensions @done(24-04-13 20:32)
+  ✔ Add `tmux` configuration @done(24-04-13 20:32)
+  ✔ Add `aliases` to .zshrc @done(24-04-13 20:32)
+  ✔ Configure `charm` server to run via docker @done(24-04-13 20:32)
+  ✔ Archive: @done(24-04-13 20:32)
+  ✔ @done(24-04-13 20:32)
