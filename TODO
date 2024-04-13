@@ -1,23 +1,35 @@
 Projects:
-  ☐ Assistant
-  ☐ Devbox
+
+  Configuration:
+    ☐ add ssh config file
+    ☐ add global git config
+    ☐ add global gitignore
+
+  Assistant:
+    ☐ reindex pinecone @low
 
 Todos:
-  ☐ iterate on setup flow
-  ☐ play around with tmux config
-  ☐ helper scripts
-  ☐ fzf run tasks helper
-  ☐ add mods roles and helper scripts
-  ☐ move logic to clone toolbox into install.sh
-  ☐ revisit cleanup role and file ownership
-  ☐ reindex pinecone on push to main?
-  ☐ demo the assistant in the readme
-  ☐ Add `soft serve` git server
-  ☐ Add `run` configuration
-  ☐ Use run in ci?
-  ☐ Rethink python install
+
+  Next:
+    ☐ redo devcontainer setup
+
+  Later:
+    ☐ how to integrate skate effectively
+    ☐ iterate on setup flow
+    ☐ add `soft serve` git server config?
+    ☐ play around with tmux config
+    ☐ fzf run tasks helper
+    ☐ add mods roles and helper scripts
+    ☐ move logic to clone toolbox into install.sh
+    ☐ reindex pinecone on push to main?
+    ☐ demo the assistant in the readme
+    ☐ Add `run` configuration
+    ☐ Use run in ci?
+    ☐ Rethink python install
 
 Archive:
+  ✔ fix install.sh @done(24-04-13 23:18) @project(Todos.Next)
+  ✔ revisit cleanup role and file ownership @done(24-04-13 22:28) @project(Todos.Later)
   [-] figure out copy/paste from cli
   ✔ Use `skate` to handle secrets @done(24-04-13 20:32)
   ✔ Bake all of this into a docker image @done(24-04-13 20:32)
