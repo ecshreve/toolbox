@@ -18,9 +18,9 @@
     dest: "{{ omz_root }}/custom/themes/powerlevel10k"
     version: "{{ p10k_version }}"
 
-- name: Enable powerlevel theme
-  ansible.builtin.file:
-    src: "{{ omz_root }}/custom/themes/powerlevel10k/powerlevel10k.zsh-theme"
-    dest: "{{ omz_root }}/custom/themes/powerlevel10k.zsh-theme"
-    state: link
-    force: true
+# - name: Enable powerlevel theme
+#   ansible.builtin.file:
+#     src: "{{ omz_root }}/custom/themes/powerlevel10k/powerlevel10k.zsh-theme"
+#     dest: "{{ omz_root }}/custom/themes/powerlevel10k.zsh-theme"
+#     state: link
+#     force: true

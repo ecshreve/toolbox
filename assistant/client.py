@@ -22,7 +22,7 @@ load_dotenv()
 required_env_vars = [
     "LANGCHAIN_ENDPOINT", "LANGCHAIN_API_KEY", "LANGCHAIN_PROJECT", "LANGCHAIN_TRACING_V2",
     "TAVILY_API_KEY", "OPENAI_API_KEY", "PINECONE_API_KEY",
-    "CHARM_HOST", "TOOLBOX_PATH",
+    "CHARM_HOST", "TOOLBOX_DIR",
 ]
 
 # Collect environment variables and check if they are all set.

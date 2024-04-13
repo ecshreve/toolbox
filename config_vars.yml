@@ -4,7 +4,7 @@
 clean: false
 ansible_user: "{{ lookup('env', 'HOME') | basename }}"
 home_dir: "{{ lookup('env', 'HOME') }}"
-toolbox_path: "{{ lookup('env', 'TOOLBOX_PATH') }}"
+toolbox_dir: "{{ lookup('env', 'TOOLBOX_DIR') }}"
 
 dirs_to_own:
   - "{{ home_dir }}/.config"
@@ -13,11 +13,12 @@ dirs_to_own:
 ##########################
 #   Dotfiles to Copy
 ##########################
-dotfiles:
+dotfile_names:
   - .zshrc
   - .tmux.conf
   - .tmux.conf.local
   - .p10k.zsh
+  - .profile
 
 ##########################
 # Packages and Symlinks

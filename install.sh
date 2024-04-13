@@ -24,7 +24,7 @@ Options:
   --ansible-flags       Specify custom ansible-playbook flags. Default "-vv".
 
 Environment Variables:
-  TOOLBOX_PATH          Path for toolbox installation. Defaults to "\$HOME/.toolbox".
+  TOOLBOX_DIR          Path for toolbox installation. Defaults to "\$HOME/.toolbox".
 
 Examples:
   1. Run script in check mode with default verbose flags (-vv):
@@ -52,12 +52,12 @@ check_prerequisites() {
     fi
 }
 
-setup_toolbox_path() {
+setup_toolbox_dir() {
     # TODO: this is brittle, needs thought.
-    if [ -z "${TOOLBOX_PATH:-}" ]; then
-        echo "TOOLBOX_PATH not set. Setting to \$HOME/.toolbox"
-        TOOLBOX_PATH="\$HOME/.toolbox"
-        mkdir -p "$TOOLBOX_PATH"
+    if [ -z "${TOOLBOX_DIR:-}" ]; then
+        echo "TOOLBOX_DIR not set. Setting to \$HOME/.toolbox"
+        TOOLBOX_DIR="\$HOME/.toolbox"
+        mkdir -p "$TOOLBOX_DIR"
     fi
 }
 
@@ -126,6 +126,6 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 check_prerequisites
-setup_toolbox_path
+setup_toolbox_dir
 install_ansible
 run_playbook

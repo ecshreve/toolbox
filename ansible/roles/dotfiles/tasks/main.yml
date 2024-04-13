@@ -1,0 +1,28 @@
+---
+- name: Ensure all configured dotfile_names are links.
+  command: "ls -F {{ home_dir }}/{{ dotfile_name }}"
+  register: existing_dotfile_info
+  failed_when: false
+  check_mode: false
+  changed_when: false
+  loop: "{{ dotfile_names }}"
+  loop_control:
+    loop_var: dotfile_name
+
+- name: Remove dotfile_names if replacement is being linked
+  file:
+    path: "{{ home_dir }}/{{ item.dotfile_name }}"
+    state: absent
+  when: "'@' not in item.stdout"
+  loop: "{{ existing_dotfile_info.results }}"
+
+- name: Link dotfile_names into home folder.
+  file:
+    src: "{{ toolbox_dir }}/config_files/{{ item }}"
+    dest: "{{ home_dir }}/{{ item }}"
+    state: link
+    force: true
+    mode: 0644
+  become: false
+  with_items: "{{ dotfile_names }}"
+

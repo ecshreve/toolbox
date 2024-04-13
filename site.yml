@@ -1,0 +1,50 @@
+---
+- name: Boot book
+  hosts: 127.0.0.1
+  connection: local
+  vars_files:
+    - config_vars.yml
+  roles:
+    - base
+    - zsh
+    - dotfiles
+
+- name: Install fzf
+  hosts: 127.0.0.1
+  connection: local
+  vars_files: config_vars.yml
+  roles: 
+    - fzf
+
+# - name: After
+#   hosts: localhost
+#   vars_files: config_vars.yml
+#   post_tasks:
+#     - name: Ensure all configured dotfiles are links.
+#       command: "ls -F {{ home_dir }}/{{ dotfile_name }}"
+#       register: existing_dotfile_info
+#       failed_when: false
+#       check_mode: false
+#       changed_when: false
+#       loop: "{{ dotfiles }}"
+#       loop_control:
+#         loop_var: dotfile_name
+
+#     - name: Remove dotfiles if replacement is being linked
+#       file:
+#         path: "{{ home_dir }}/{{ item.dotfile_name }}"
+#         state: absent
+#       when: "'@' not in item.stdout"
+#       loop: "{{ existing_dotfile_info.results }}"
+
+#     - name: Link dotfiles into home folder.
+#       file:
+#         src: "{{ toolbox_dir }}/config_files/{{ item }}"
+#         dest: "{{ home_dir }}/{{ item }}"
+#         state: link
+#         force: true
+#         mode: 0644
+#       become: false
+#       with_items: "{{ dotfiles }}"
+
+   
