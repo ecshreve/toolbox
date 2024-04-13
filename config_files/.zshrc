@@ -2,6 +2,7 @@ export FZF_BASE="$HOME/.fzf/bin/fzf"
 export ZSH="$HOME/.oh-my-zsh"
 export TOOLBOX_DIR="$HOME/.toolbox"
 export ANSIBLE_CONFIG="$TOOLBOX_DIR/ansible/ansible.cfg"
+export FZF_DEFAULT_OPTS='--cycle --layout=reverse --border --height=80% --preview="bat --style=numbers --color=always --line-range :500 {}" --preview-window=nowrap --marker="*"'
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
 DISABLE_AUTO_UPDATE="true"
@@ -25,6 +26,7 @@ bindkey -M emacs '^ff' fzf-file-widget
 bindkey -M vicmd '^ff' fzf-file-widget
 bindkey -M viins '^ff' fzf-file-widget
 
+# TODO: should these be moved?
 # General
 alias cat='bat'
 alias ls='exa --icons'
@@ -59,5 +61,3 @@ setopt HIST_REDUCE_BLANKS  # Trim excessive whitespace from commands before addi
 # Source theme and other scripts
 [ -f $HOME/.p10k.zsh ] && source $HOME/.p10k.zsh
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

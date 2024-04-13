@@ -18,7 +18,6 @@ dotfile_names:
   - .tmux.conf
   - .tmux.conf.local
   - .p10k.zsh
-  - .profile
 
 ##########################
 # Packages and Symlinks

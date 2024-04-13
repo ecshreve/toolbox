@@ -231,41 +231,6 @@ graph TD
 
 `codespace-prebuild`: A workflow that runs on a cron job and configured via the repository settings in the Github UI. Prebuilds are configured to target the latest tagged version of the devcontainer image.
 
-## Ideas
-
-todo
-- [ ] play around with tmux config
-- [ ] helper scripts
-- [ ] fzf run tasks helper
-- [ ] add mods roles and helper scripts
-- [ ] move logic to clone toolbox into install.sh
-- [ ] revisit cleanup role and file ownership
-- [ ] reindex pinecone on push to main?
-- [ ] demo the assistant in the readme
-
-maybe
-- [ ] Add `soft serve` git server
-- [ ] Add `run` configuration
-- [-] figure out copy/paste from cli
-- [ ] Use run in ci?
-- [ ] Rethink python install
-
-done
-- [x] Use `skate` to handle secrets
-- [x] Bake all of this into a docker image
-- [x] Launch in codespace as a demo?
-- [x] run container build on push to main?
-- [x] write docs for assistant
-- [x] move config values out of playbook
-- [x] python environment setup
-- [x] upgrade to go 1.22
-- [x] refactor playbook vars
-- [x] Take a few cycles to clean up the `golang` role.
-- [x] Audit .yml vs ~~.yaml~~ file extensions
-- [x] Add `tmux` configuration
-- [x] Add `aliases` to .zshrc
-- [x] Configure `charm` server to run via docker
-
 ## Links
 
 - [charmbracelet](https://charm.sh/)
@@ -279,6 +244,8 @@ done
 - [oh-my-zsh](https://ohmyz.sh/)
 - [terraform](https://www.terraform.io/)
 - [packer](https://www.packer.io/)
+
+<!-- TODO: add these links -->
 - [navi](
 - [powerlevel10k](
 - [pyenv](
