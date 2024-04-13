@@ -22,7 +22,7 @@
   id = "debug"
   type = "short"
   cmd = """
-    echo "TOOLBOX_PATH: $TOOLBOX_PATH"
+    echo "TOOLBOX_DIR: $TOOLBOX_DIR"
     echo "HOME: $HOME"
   """
 

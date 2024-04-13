@@ -1,0 +1,22 @@
+---
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+  become: true
+  when: not ansible_check_mode
+
+- name: Install apt packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  become: true
+  loop: "{{ apt_packages }}"
+
+- name: Create symbolic links
+  ansible.builtin.file:
+    src: "{{ item.value }}"
+    dest: "{{ item.value | dirname }}/{{ item.key }}"
+    state: link
+    force: true  # This will replace the link if it already exists
+  become: true
+  loop: "{{ symlinks | dict2items }}"
