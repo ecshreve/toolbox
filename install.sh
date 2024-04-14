@@ -4,7 +4,9 @@
 #
 # The script clones the toolbox repo and runs the playbook in check mode.
 
-set -euo pipefail
+set -x
+
+export DEBIAN_FRONTEND="noninteractive"
 
 TOOLBOX_REPO="https://github.com/ecshreve/toolbox"
 export TOOLBOX_DIR=${TOOLBOX_DIR:-$HOME/.toolbox}
@@ -19,7 +21,13 @@ fi
 if [ ! -d $TOOLBOX_DIR ]; then
     echo "Toolbox directory does not exist. Creating..."
     mkdir -p $TOOLBOX_DIR
-    git clone $TOOLBOX_REPO $TOOLBOX_DIR
+
+    # if TOOLBOX_DOCKER_BUILD is set, skip cloning the repo
+    if [ -z "${TOOLBOX_DOCKER_BUILD:-}" ]; then
+        git clone $TOOLBOX_REPO $TOOLBOX_DIR
+    else
+        echo "DOCKER-BUILD -- skipping cloning the toolbox repo."
+    fi
 else
     echo "Toolbox directory already exists. Proceeding..."
 fi
@@ -28,19 +36,23 @@ echo "Toolbox directory: $TOOLBOX_DIR"
 # check if ansible installed
 if [ -z "$(which ansible)" ]; then
     echo "Ansible is not installed. Installing Ansible..."
-    sudo add-apt-repository ppa:ansible/ansible
-    sudo apt-get update -y && sudo apt-get install -y ansible ansible-lint
+    # sudo add-apt-repository ppa:ansible/ansible
+    # sudo apt-get update -y && sudo apt-get install -y ansible
+    sudo apt-get update && sudo apt-get install -y python3-dev python3-pip
+
+    python3 -m pip install --upgrade pip
+    python3 -m pip install ansible ansible-lint
+    export PATH=$PATH:$HOME/.local/bin
 else
     echo "Ansible is already installed. Proceeding..."
 fi
 echo "Ansible config: $ANSIBLE_CONFIG"
 
 # run the full playbook
-echo "Running playbook IN CHECK MODE...edit install.sh to execute for real."
+# echo "Running playbook IN CHECK MODE...edit install.sh to execute for real."
 
-cd $TOOLBOX_DIR
-ansible-playbook playbook.yml --tags stable -vv --check
-sudo chsh -s /usr/bin/zsh $USER
+ansible-playbook playbook.yml --tags stable -vv
+# sudo chsh -s /usr/bin/zsh $USER
 
 echo "Done."
 
