@@ -41,7 +41,7 @@ if [ -z "$(which ansible)" ]; then
     sudo apt-get update && sudo apt-get install -y python3-dev python3-pip
 
     python3 -m pip install --upgrade pip
-    python3 -m pip install ansible ansible-lint
+    python3 -m pip install ansible
     export PATH=$PATH:$HOME/.local/bin
 else
     echo "Ansible is already installed. Proceeding..."
@@ -51,7 +51,7 @@ echo "Ansible config: $ANSIBLE_CONFIG"
 # run the full playbook
 # echo "Running playbook IN CHECK MODE...edit install.sh to execute for real."
 
-ansible-playbook playbook.yml --tags stable -vv
+ansible-playbook playbook.yml --tags stable -v
 # sudo chsh -s /usr/bin/zsh $USER
 
 echo "Done."

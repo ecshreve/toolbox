@@ -7,19 +7,19 @@
     - config_vars.yml
   roles:
     - base
-    # - zsh
-    # - fzf
-    # - dotfiles
+    - zsh
+    - fzf
+    - dotfiles
   ignore_errors: "{{ ansible_check_mode }}"
 
-# - name: Configure golang and go tools
-#   tags: [stable, dev, golang]
-#   hosts: 127.0.0.1
-#   vars_files:
-#     - config_vars.yml
-#   roles:
-#     - golang
-#   vars:
-#     go_version_target: 1.22.1
-#   ignore_errors: "{{ ansible_check_mode }}"
+- name: Configure golang and go tools
+  tags: [stable, golang]
+  hosts: 127.0.0.1
+  vars_files:
+    - config_vars.yml
+  roles:
+    - golang
+  vars:
+    go_version_target: 1.22.1
+  ignore_errors: "{{ ansible_check_mode }}"
   
