@@ -39,16 +39,24 @@ RUN useradd ${USER} \
     --user-group && \
     echo "${USER} ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers.d/nopasswd
 
+RUN <<EOT bash
+    apt-get update
+    apt-get install -y python3-dev python3-pip
+    
+    python3 -m pip install --upgrade pip
+    python3 -m pip install ansible ansible-lint
+EOT
+
 USER $USER
-RUN mkdir -p /home/$USER/.toolbox
+WORKDIR /home/$USER
+COPY . .toolbox/
+
+ENV TOOLBOX_DIR=/home/$USER/.toolbox
+ENV ANSIBLE_CONFIG=$TOOLBOX_DIR/ansible/ansible.cfg
 WORKDIR /home/$USER/.toolbox
+RUN ansible-playbook playbook.yml -v
 
-COPY . .
-
-ENV TOOLBOX_DOCKER_BUILD=true
-
-RUN ./install.sh
-
+WORKDIR /home/$USER
 CMD [ "/bin/bash" ]
 
 

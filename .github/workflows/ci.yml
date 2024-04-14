@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [main, ecs*]
+    branches: [main]
 
 env:
   REGISTRY: ghcr.io
@@ -30,10 +30,4 @@ jobs:
           imageName: ghcr.io/${{ env.IMAGE_NAME }}
           cacheFrom: ghcr.io/${{ env.IMAGE_NAME }}
           push: filter
-          refFilterForPush: 'refs/heads/main'
-
-
-          
-
-          
-  
+          refFilterForPush: 'refs/heads/main'  

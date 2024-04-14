@@ -6,9 +6,16 @@ I use this repository to manage my development environment across different mach
 
 ## Usage
 
-Besides installation on a local machine, I use this repository to build a `devcontainer` via Github Actions. The latest tagged version is also used to prebuild a `devcontainer` image meant to be used in Codespaces.
+Besides installation on a local machine, I use this repository to build a ubuntu based docker image with tools installed. The devcontainer for this repository is based on _that_ custom image. And both the vanilla docker image and the devcontainer are built via a github action, and pushed to the github container registry.
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/ecshreve/toolbox?devcontainer_path=.devcontainer%2Ftoolbox-prebuild%2Fdevcontainer.json)
+
+<!-- ### Codespaces
+TODO: update codespaces build with new image and update this readme section -->
+
+<!-- 
+This is an old build, and I'm working on a new one. Stay tuned -->
+
+<!-- [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/ecshreve/toolbox?devcontainer_path=.devcontainer%2Ftoolbox-prebuild%2Fdevcontainer.json) -->
 
 
 >[!NOTE]
@@ -192,9 +199,19 @@ to be integrated into the main playbook.
 - hashi: install terraform and packer
 - python: install pyenv and pyenv-virtualenv
 
-## Devcontainer / Docker
+## Docker Image
 
-TODO
+[![docker-ci](https://github.com/ecshreve/toolbox/actions/workflows/docker.yml/badge.svg)](https://github.com/ecshreve/toolbox/actions/workflows/docker.yml)
+
+The `Dockerfile` in the root of the repository is used to build a docker image with the tools and configurations defined in the `ansible` playbook. The image is built and pushed to the github container registry via a github action.
+
+The image is based on `ubuntu:22.04`, first installs some core packages and tools via `apt` and `pip`, then runs the ansible playbook which handles the rest of the setup.
+
+## Devcontainer
+
+[![devcontainer-ci](https://github.com/ecshreve/toolbox/actions/workflows/ci.yml/badge.svg)](https://github.com/ecshreve/toolbox/actions/workflows/ci.yml)
+
+The `devcontainer.json` file in the `.devcontainer` directory is used to define the devcontainer for this repository. The devcontainer is based on the custom docker image built from the `Dockerfile` in the root of the repository.
 
 ## Links
 
