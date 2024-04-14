@@ -31,7 +31,7 @@ fi
 # Check if the mods.yml file exists, if not, create it.
 if [ ! -f mods.yml ]; then
     echo "mods.yml not found, creating it."
-    cp /workspaces/toolbox/config_files/mods.yml $HOME/.config/mods/mods.yml
+    cp $TOOLBOX_DIR/config_files/mods.yml $HOME/.config/mods/mods.yml
 fi
 
 # Generate the commit message using mods, displays a spinner until mods finishes.

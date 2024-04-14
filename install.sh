@@ -22,8 +22,9 @@ if [ ! -d $TOOLBOX_DIR ]; then
     echo "Toolbox directory does not exist. Creating..."
     mkdir -p $TOOLBOX_DIR
 
-    # if TOOLBOX_DOCKER_BUILD is set, skip cloning the repo
-    if [ -z "${TOOLBOX_DOCKER_BUILD:-}" ]; then
+    # TODO: test this again
+    # if TOOLBOX_DEVCONTAINER is set, skip cloning the repo
+    if [ -z "${TOOLBOX_DEVCONTAINER:-}" ]; then
         git clone $TOOLBOX_REPO $TOOLBOX_DIR
     else
         echo "DOCKER-BUILD -- skipping cloning the toolbox repo."
