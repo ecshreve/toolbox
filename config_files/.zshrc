@@ -1,4 +1,4 @@
-export PATH="/usr/local/go/bin:$HOME/go/bin:$PATH"
+export PATH="/usr/local/go/bin:$HOME/go/bin:$HOME/.local/bin:$PATH"
 export TOOLBOX_DIR="$HOME/.toolbox"
 export ANSIBLE_CONFIG="$TOOLBOX_DIR/ansible/ansible.cfg"
 

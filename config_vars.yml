@@ -51,17 +51,18 @@ ports:
   - ttyd
   - mbedtls
 
-
 ##########################
-#   Zsh + Oh-My-Zsh
+#   FZF
 ##########################
 fzf_version: 0.49.0
 fzf_root: "{{ home_dir }}/.fzf"
 fzf_bin: "{{ fzf_root }}/bin/fzf"
 
+##########################
+#   Zsh + Oh-My-Zsh
+##########################
 omz_version: 038931039030911852d456215d6f39385d5b7a6e
 omz_root: "{{ home_dir }}/.oh-my-zsh"
-p10k_version: 35833ea15f14b71dbcebc7e54c104d8d56ca5268
 omz_plugins:
   - repo: "zsh-users/zsh-autosuggestions"
     version: a411ef3e0992d4839f0732ebeb9823024afaaaa8
@@ -71,6 +72,7 @@ omz_plugins:
     version: 67921bc12502c1e7b0f156533fbac2cb51f6943d
   - repo: "wfxr/forgit"
     version: d582f2aa0b5bf7948d78aca05c55a974e68f4884
+p10k_version: 35833ea15f14b71dbcebc7e54c104d8d56ca5268
 
 ##########################
 #   Golang + Go Tools

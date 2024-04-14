@@ -86,6 +86,7 @@
     gcloud                  # google cloud cli account and project (https://cloud.google.com/)
     google_app_cred         # google application credentials (https://cloud.google.com/docs/authentication/production)
     toolbox                 # toolbox name (https://github.com/containers/toolbox)
+    my_devcontainer         # devcontainer indicator
     nordvpn                 # nordvpn connection status, linux only (https://nordvpn.com/)
     ranger                  # ranger shell (https://github.com/ranger/ranger)
     yazi                    # yazi shell (https://github.com/sxyazi/yazi)
@@ -1683,6 +1684,12 @@
   # Type `p10k help segment` for documentation and a more sophisticated example.
   function prompt_example() {
     p10k segment -f 208 -i '⭐' -t 'hello, %n'
+  }
+
+  function prompt_my_devcontainer() {
+    if [[ -n $TOOLBOX_DEVCONTAINER ]]; then
+      p10k segment -f blue -i 'ﰭ' -t 'devcontainer'
+    fi
   }
 
   # User-defined prompt segments may optionally provide an instant_prompt_* function. Its job
