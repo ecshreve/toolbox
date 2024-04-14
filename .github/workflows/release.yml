@@ -6,7 +6,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ecshreve/toolbox-devcontainer
+  IMAGE_NAME: ecshreve/toolbox-dev
 
 jobs:
   release:

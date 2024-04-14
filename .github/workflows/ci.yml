@@ -1,12 +1,14 @@
 name: devcontainer-ci
 
 on:
+  pull_request:
+    branches: [main]
   push:
     branches: [main]
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ecshreve/toolbox-devcontainer
+  IMAGE_NAME: ecshreve/toolbox-dev
 
 jobs:
   build:
