@@ -15,27 +15,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and tag with version ${{ env.IMAGE_NAME }} image
-        uses: devcontainers/ci@v0.3
-        with:
-          imageName: ghcr.io/${{ env.IMAGE_NAME }}
-          cacheFrom: ghcr.io/${{ env.IMAGE_NAME }}
-          imageTag: latest,${{ github.ref_name }}
-          push: always
-
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
             README.md
             .devcontainer/devcontainer.json
+            Dockerfile
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ github.ref_name }}
           generate_release_notes: true
