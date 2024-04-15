@@ -14,10 +14,6 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            README.md
-            .devcontainer/devcontainer.json
-            Dockerfile
           token: ${{ secrets.GH_CUSTOM_PAT }}
           tag_name: ${{ github.ref_name }}
           generate_release_notes: true

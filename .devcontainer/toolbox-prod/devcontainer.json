@@ -1,30 +1,9 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
 {
-	"name": "toolboxdev",
-	"image": "ghcr.io/ecshreve/toolbox:latest",
-	"features": {
-		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
-	},
-	"workspaceMount": "source=${localWorkspaceFolder},target=/home/dev/.toolbox,type=bind,consistency=cached",
-	"workspaceFolder": "",
-	"remoteEnv": {
-		"TOOLBOX_DEVCONTAINER": "true"
-	},
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				"github.vscode-github-actions",
-				"GitHub.copilot",
-				"GitHub.copilot-chat",
-				"mutantdino.resourcemonitor",
-				"ms-azuretools.vscode-docker",
-				"redhat.vscode-yaml",
-				"fabiospampinato.vscode-todo-plus",
-				"golang.go"
-			]
-		}
-	}
+	"name": "toolbox-prod",
+	"image": "ghcr.io/ecshreve/toolbox-dev:latest"
+	
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},

@@ -199,17 +199,17 @@ to be integrated into the main playbook.
 - hashi: install terraform and packer
 - python: install pyenv and pyenv-virtualenv
 
-## Docker Image
+## CI/CD
 
-[![docker-ci](https://github.com/ecshreve/toolbox/actions/workflows/docker.yml/badge.svg)](https://github.com/ecshreve/toolbox/actions/workflows/docker.yml)
+[![Combined CI](https://github.com/ecshreve/toolbox/actions/workflows/ci.yml/badge.svg?event=release)](https://github.com/ecshreve/toolbox/actions/workflows/ci.yml)
+
+### Docker Image
 
 The `Dockerfile` in the root of the repository is used to build a docker image with the tools and configurations defined in the `ansible` playbook. The image is built and pushed to the github container registry via a github action.
 
 The image is based on `ubuntu:22.04`, first installs some core packages and tools via `apt` and `pip`, then runs the ansible playbook which handles the rest of the setup.
 
-## Devcontainer
-
-[![devcontainer-ci](https://github.com/ecshreve/toolbox/actions/workflows/ci.yml/badge.svg)](https://github.com/ecshreve/toolbox/actions/workflows/ci.yml)
+### Devcontainer
 
 The `devcontainer.json` file in the `.devcontainer` directory is used to define the devcontainer for this repository. The devcontainer is based on the custom docker image built from the `Dockerfile` in the root of the repository.
 
