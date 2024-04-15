@@ -5,6 +5,8 @@ on:
     branches: [main]
   push:
     branches: [main]
+  release:
+    types: [published]
 
 env:
   REGISTRY: ghcr.io
@@ -68,6 +70,6 @@ jobs:
           cacheFrom: ${{ env.REGISTRY }}/${{ env.DEV_IMAGE_NAME }}
           imageTag: latest,${{ github.ref_name }}
           push: filter
-          eventFilterForPush: push
+          eventFilterForPush: push,release
 
   
