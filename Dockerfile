@@ -1,4 +1,5 @@
-FROM ubuntu:22.04 as devbase
+FROM ubuntu:22.04
+LABEL org.opencontainers.image.source="https://github.com/ecshreve/toolbox"
 
 USER root
 ENV DEBIAN_FRONTEND=noninteractive
@@ -54,7 +55,7 @@ COPY . .toolbox/
 ENV TOOLBOX_DIR=/home/$USER/.toolbox
 ENV ANSIBLE_CONFIG=$TOOLBOX_DIR/ansible/ansible.cfg
 WORKDIR /home/$USER/.toolbox
-RUN ansible-playbook playbook.yml -v
+RUN ansible-playbook playbook.yml --tags base -v
 
 WORKDIR /home/$USER
 CMD [ "/bin/bash" ]
