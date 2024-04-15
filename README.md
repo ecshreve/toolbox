@@ -9,13 +9,13 @@ I use this repository to manage my development environment across different mach
 Besides installation on a local machine, I use this repository to build a ubuntu based docker image with tools installed. The devcontainer for this repository is based on _that_ custom image. And both the vanilla docker image and the devcontainer are built via a github action, and pushed to the github container registry.
 
 
-<!-- ### Codespaces
-TODO: update codespaces build with new image and update this readme section -->
+### Codespaces
 
-<!-- 
-This is an old build, and I'm working on a new one. Stay tuned -->
+[![Latest Image](https://ghcr-badge.egpl.dev/ecshreve/toolbox/latest_tag?color=%2344cc11&ignore=latest&label=latest&trim=)](https://github.com/ecshreve/toolbox/pkgs/container/toolbox/203676976?tag=latest)
 
-<!-- [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/ecshreve/toolbox?devcontainer_path=.devcontainer%2Ftoolbox-prebuild%2Fdevcontainer.json) -->
+Prebuilt devcontainer for the latest image in the github container registry.
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/ecshreve/toolbox?devcontainer_path=.devcontainer%2Ftoolbox-prod%2Fdevcontainer.json)
 
 
 >[!NOTE]
@@ -202,6 +202,10 @@ to be integrated into the main playbook.
 ## CI/CD
 
 [![Combined CI](https://github.com/ecshreve/toolbox/actions/workflows/ci.yml/badge.svg?event=release)](https://github.com/ecshreve/toolbox/actions/workflows/ci.yml)
+[![Latest Image](https://ghcr-badge.egpl.dev/ecshreve/toolbox/latest_tag?color=%2344cc11&ignore=latest&label=latest&trim=)](https://github.com/ecshreve/toolbox/pkgs/container/toolbox/203676976?tag=latest)
+[![Image Size](https://ghcr-badge.egpl.dev/ecshreve/toolbox/size?color=%2344cc11&tag=latest&label=image+size&trim=)](https://github.com/ecshreve/toolbox/pkgs/container/toolbox)
+
+
 
 ### Docker Image
 
@@ -211,7 +215,9 @@ The image is based on `ubuntu:22.04`, first installs some core packages and tool
 
 ### Devcontainer
 
-The `devcontainer.json` file in the `.devcontainer` directory is used to define the devcontainer for this repository. The devcontainer is based on the custom docker image built from the `Dockerfile` in the root of the repository.
+The `devcontainer.json` file in the `.devcontainer` directory is used to define the devcontainer for this repository. The devcontainer is based on the custom docker image built from the `Dockerfile` in the root of the repository. The devcontainer defined in `.devcontainer/toolbox-prod/devcontainer.json` is based on pulling the prebuilt image from the github container registry, and is an example of how to use the devcontainer in another repository.
+
+The `toolbox_prod` devcontainer is also used as the source for the codespaces prebuild configuration.
 
 ## Links
 
