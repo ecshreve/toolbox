@@ -1,11 +1,7 @@
 name: build
 
 on:
-  pull_request: 
-    branches:
-      - main
-  release: 
-    types: [published]
+  workflow_dispatch: 
 
 env:
   IMAGE_NAME: ghcr.io/ecshreve/toolbox
