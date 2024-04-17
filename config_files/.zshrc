@@ -1,6 +1,5 @@
 export PATH="/usr/local/go/bin:$HOME/go/bin:$HOME/.local/bin:$PATH"
 export TOOLBOX_DIR="$HOME/.toolbox"
-export ANSIBLE_CONFIG="$TOOLBOX_DIR/ansible/ansible.cfg"
 
 export FZF_BASE="$HOME/.fzf/bin/fzf"
 export ZSH="$HOME/.oh-my-zsh"
@@ -10,6 +9,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 DISABLE_AUTO_UPDATE="true"
 
 plugins=(
+    direnv
     git
     forgit
     zsh-autosuggestions

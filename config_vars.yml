@@ -34,6 +34,7 @@ apt_packages:
   - git
   - ffmpeg
   - ttyd
+  - direnv
 symlinks:
   bat: /usr/bin/batcat
   fd: /usr/bin/fdfind
