@@ -1,7 +1,6 @@
-FROM ubuntu:22.04 as base
+FROM --platform=linux/amd64 ubuntu:22.04 as build
 
-LABEL org.opencontainers.image.source "https://github.com/ecshreve/toolbox"
-LABEL org.opencontainers.image.description "ecshreve development toolbox"
+LABEL org.opencontainers.image.source="https://github.com/ecshreve/toolbox"
 
 USER root
 ENV DEBIAN_FRONTEND=noninteractive
@@ -18,6 +17,7 @@ RUN apt-get update && \
     sudo \
     software-properties-common \
     gnupg \
+    zsh \
     && rm -rf /var/lib/apt/lists/*
 
 # Install locales package
@@ -42,27 +42,22 @@ RUN useradd ${USER} \
     --user-group && \
     echo "${USER} ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers.d/nopasswd
 
-RUN <<EOT bash
-    apt-get update
-    apt-get install -y python3-dev python3-pip
-    
-    python3 -m pip install --upgrade pip
-    python3 -m pip install ansible ansible-lint
-EOT
+RUN apt-get update && apt-get install -y python3-dev python3-pip
+RUN python3 -m pip install --upgrade pip && python3 -m pip install ansible
 
 USER $USER
 WORKDIR /home/$USER
-COPY . .toolbox/
+COPY --chown=${USER}:${USER} . .toolbox/
 
 ENV TOOLBOX_DIR=/home/$USER/.toolbox
-ENV ANSIBLE_CONFIG=$TOOLBOX_DIR/ansible/ansible.cfg
-WORKDIR /home/$USER/.toolbox
-RUN ansible-playbook playbook.yml --tags base -v
+ENV ANSIBLE_HOME=$TOOLBOX_DIR/ansible
 
-FROM base as dev
+FROM build as base
+RUN ansible-playbook $TOOLBOX_DIR/playbook.yml --tags base -v
 
-USER $USER
-WORKDIR /home/$USER
+FROM base as golang
+RUN ansible-playbook $TOOLBOX_DIR/playbook.yml --tags golang -v
+
 CMD [ "/bin/bash" ]
 
 

@@ -11,7 +11,7 @@ Besides installation on a local machine, I use this repository to build a ubuntu
 
 ### Codespaces
 
-[![Latest Image](https://ghcr-badge.egpl.dev/ecshreve/toolbox/latest_tag?color=%2344cc11&ignore=latest&label=latest&trim=)](https://github.com/ecshreve/toolbox/pkgs/container/toolbox/203676976?tag=latest)
+[![Latest Image](https://ghcr-badge.egpl.dev/ecshreve/toolbox/latest_tag?color=%2344cc11&ignore=latest&label=latest&trim=)](https://github.com/ecshreve/toolbox/pkgs/container/toolbox/latest?tag=latest)
 
 Prebuilt devcontainer for the latest image in the github container registry.
 

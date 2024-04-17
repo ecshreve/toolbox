@@ -61,13 +61,4 @@ jobs:
   release:
     needs: build
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          token: ${{ secrets.GH_CUSTOM_PAT }}
-          tag_name: ${{ github.ref_name }}
-          generate_release_notes: true
-          draft: false
-          prerelease: false
+    uses: ./.github/workflows/release.yml
