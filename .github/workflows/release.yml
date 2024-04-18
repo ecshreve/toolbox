@@ -13,16 +13,15 @@ on:
         type: string
         required: true
 
+env:
+  RELEASE_BODY: "##info"
 jobs:
-  info:
+  gh-release:
     runs-on: ubuntu-latest
-    outputs:
-      toolbox_image_size: ${{ steps.get_package_size.outputs.toolbox_image_size }}
-      toolboxdev_image_size: ${{ steps.get_package_size.outputs.toolboxdev_image_size }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -30,23 +29,8 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get package size
-        id: get_package_size
-        run: |
-          TOOLBOX_IMAGE_SIZE=$(docker manifest inspect -v ghcr.io/ecshreve/toolbox:latest | jq -c 'if type == "array" then .[] else . end' | jq -r '( [ .SchemaV2Manifest.layers[].size ] | add )' | numfmt --to si)
-          TOOLBOXDEV_IMAGE_SIZE=$(docker manifest inspect -v ghcr.io/ecshreve/toolbox-dev:latest | jq -c 'if type == "array" then .[] else . end' | jq -r '( [ .SchemaV2Manifest.layers[].size ] | add )' | numfmt --to si)
-
-          echo "toolbox_image_size=${TOOLBOX_IMAGE_SIZE}" >> "$GITHUB_OUTPUT"
-          echo "toolboxdev_image_size=${TOOLBOXDEV_IMAGE_SIZE}" >> "$GITHUB_OUTPUT"
-  gh-release:
-    needs: info
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Get Package URLs
-        id: get_package_urls
+      - name: Get Package info
+        id: info
         env:
           GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OWNER: ${{ github.repository_owner }}
@@ -58,11 +42,18 @@ jobs:
           # Base URL for GHCR API
           PACKAGES_URL="https://api.github.com/user/packages/container"
  
-          version_url=$(curl -s -H "$AUTH_HEADER" -H "$CONTENT_HEADER" "$PACKAGES_URL/toolbox/versions" | jq -r '.[] | select(.metadata.container.tags | contains(["latest"])) | .html_url')
-          version_url_dev=$(curl -s -H "$AUTH_HEADER" -H "$CONTENT_HEADER" "$PACKAGES_URL/toolbox-dev/versions" | jq -r '.[] | select(.metadata.container.tags | contains(["latest"])) | .html_url')
+          TOOLBOX_URL=$(curl -s -H "$AUTH_HEADER" -H "$CONTENT_HEADER" "$PACKAGES_URL/toolbox/versions" | jq -r '.[] | select(.metadata.container.tags | contains(["latest"])) | .html_url')
+          TOOLBOXDEV_URL=$(curl -s -H "$AUTH_HEADER" -H "$CONTENT_HEADER" "$PACKAGES_URL/toolbox-dev/versions" | jq -r '.[] | select(.metadata.container.tags | contains(["latest"])) | .html_url')
 
-          echo "toolbox_url=$version_url" >> "$GITHUB_ENV"
-          echo "toolboxdev_url=$version_url_dev" >> "$GITHUB_ENV"
+          TOOLBOX_IMAGE_SIZE=$(docker manifest inspect -v ghcr.io/ecshreve/toolbox:latest | jq -c 'if type == "array" then .[] else . end' | jq -r '( [ .SchemaV2Manifest.layers[].size ] | add )' | numfmt --to si)
+          TOOLBOXDEV_IMAGE_SIZE=$(docker manifest inspect -v ghcr.io/ecshreve/toolbox-dev:latest | jq -c 'if type == "array" then .[] else . end' | jq -r '( [ .SchemaV2Manifest.layers[].size ] | add )' | numfmt --to si)
+
+          echo "## info" > RELEASE.txt
+          echo "[![toolbox](https://img.shields.io/badge/toolbox-${{ inputs.tag }}-purple)](${TOOLBOX_URL}?tag=${{ inputs.tag }})" >> RELEASE.txt
+          echo "[![toolbox-size](https://img.shields.io/badge/toolbox_size-${TOOLBOX_IMAGE_SIZE}-blue)](${TOOLBOX_URL}?tag=${{ inputs.tag }})" >> RELEASE.txt
+          echo "---" >> RELEASE.txt
+          echo "[![toolbox-dev](https://img.shields.io/badge/toolbox_dev-${{ inputs.tag }}-purple)](${TOOLBOXDEV_URL}?tag=${{ inputs.tag }})" >> RELEASE.txt
+          echo "[![toolbox-dev-size](https://img.shields.io/badge/toolbox_dev_size-${TOOLBOXDEV_IMAGE_SIZE}-blue)](${TOOLBOXDEV_URL}?tag=${{ inputs.tag }})" >> RELEASE.txt
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
@@ -75,16 +66,6 @@ jobs:
           files: |
             Dockerfile
             .devcontainer/toolbox-dev/devcontainer.json
-          body: |
-            ## info
-
-            [![toolbox](https://img.shields.io/badge/toolbox-${{ inputs.tag }}-purple)](${{ env.toolbox_url }}?tag=${{ inputs.tag }})
-            [![toolbox-size](https://img.shields.io/badge/toolbox_size-${{ needs.info.outputs.toolbox_image_size }}-blue)](${{ env.toolbox_url }}?tag=${{ inputs.tag }})
-            
-            ---
-
-            [![toolbox-dev](https://img.shields.io/badge/toolbox_dev-${{ inputs.tag }}-purple)](${{ env.toolboxdev_url }}?tag=${{ inputs.tag }})
-            [![toolbox-dev-size](https://img.shields.io/badge/toolbox_dev_size-${{ needs.info.outputs.toolboxdev_image_size }}-blue)](${{ env.toolboxdev_url }}?tag=${{ inputs.tag }})
-
+          body_path: RELEASE.txt
 
       

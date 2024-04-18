@@ -200,6 +200,8 @@ to be integrated into the main playbook.
 - python: install pyenv and pyenv-virtualenv
 
 ## CI/CD
+[![Static Badge](https://img.shields.io/badge/toolbox-v0.0.0-blue)](https://github.com/ecshreve/toolbox/pkgs/container/toolbox/203676976?tag=latest)
+
 
 [![Combined CI](https://github.com/ecshreve/toolbox/actions/workflows/ci.yml/badge.svg?event=release)](https://github.com/ecshreve/toolbox/actions/workflows/ci.yml)
 [![Latest Image](https://ghcr-badge.egpl.dev/ecshreve/toolbox/latest_tag?color=%2344cc11&ignore=latest&label=latest&trim=)](https://github.com/ecshreve/toolbox/pkgs/container/toolbox/203676976?tag=latest)
