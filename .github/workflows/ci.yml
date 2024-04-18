@@ -21,9 +21,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
+      
       - name: Cache Docker layers
         uses: actions/cache@v2
         with:
@@ -31,13 +38,6 @@ jobs:
           key: ${{ runner.os }}-buildx-${{ hashFiles('**/Dockerfile') }}
           restore-keys: |
             ${{ runner.os }}-buildx-
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up docker tags
         id: tag-docker
@@ -54,11 +54,43 @@ jobs:
           context: .
           push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.tag-docker.outputs.tags }}
+          labels: ${{ steps.tag-docker.outputs.labels }}
           platforms: linux/amd64
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          provenance: false
+
+      - name: Get devcontainer tags
+        id: devcontainer-tag
+        run: |
+          vtag="${{ github.ref_name }}"
+          tag="latest"
+          if [[ $vtag == 'refs/tags/v'* ]]; then
+            tag="$tag, ${vtag:1}"
+          fi
+
+          echo tag=$tag >> "$GITHUB_OUTPUT"
+
+      - name: Build and push devcontainer
+        uses: devcontainers/ci@v0.3
+        with:
+          imageName: ${{ env.IMAGE_NAME }}-dev
+          cacheFrom: ${{ env.IMAGE_NAME }}-dev
+          imageTag: ${{ steps.devcontainer-tag.outputs.tag }}
+          configFile: .devcontainer/toolbox-dev/devcontainer.json
+          push: filter
+          eventFilterForPush: push
 
   release:
     needs: build
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    uses: ./.github/workflows/release.yml
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          token: ${{ secrets.GH_CUSTOM_PAT }}
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+          draft: false
+          prerelease: false
