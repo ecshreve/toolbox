@@ -7,10 +7,13 @@ on:
   push:
     branches:
       - main
+    tags:
+      - 'v*.*.*'
 
 env:
   LATEST_TAG: ghcr.io/ecshreve/toolbox:latest
   IMAGE_NAME: ghcr.io/ecshreve/toolbox
+  DEVIMG_NAME: ghcr.io/ecshreve/toolbox-dev
 
 jobs:
   build:
@@ -45,11 +48,13 @@ jobs:
           platforms: linux/amd64
           provenance: false
 
-      - name: Build devcontainer
-        uses: devcontainers/ci@v0.3
-        with:
-          imageName: ${{ env.IMAGE_NAME }}-dev
-          cacheFrom: ${{ env.IMAGE_NAME }}-dev
-          configFile: .devcontainer/toolbox-dev/devcontainer.json
-          push: filter
-          eventFilterForPush: push
+      - name: Tag and push release docker image tag
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        run: |
+          docker tag ghcr.io/ecshreve/toolbox:latest ghcr.io/ecshreve/toolbox:${{ github.ref_name }}
+          docker push ghcr.io/ecshreve/toolbox:${{ github.ref_name }}
+  
+  release:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    needs: build
+    uses: ./.github/workflows/release.yml

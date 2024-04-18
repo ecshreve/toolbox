@@ -1,9 +1,7 @@
 name: release
 
 on:
-  push:
-    tags:
-      - 'v*.*.*'
+  workflow_call:
   
 jobs:
   prep:
@@ -36,36 +34,7 @@ jobs:
             echo $package_name=$version_url >> $GITHUB_OUTPUT
           done
 
-  docktag:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Pull and tag docker images
-        run: |
-          docker pull ghcr.io/ecshreve/toolbox:latest
-          docker pull ghcr.io/ecshreve/toolbox-dev:latest
-
-          docker tag ghcr.io/ecshreve/toolbox:latest ghcr.io/ecshreve/toolbox:${{ github.ref_name }}
-          docker tag ghcr.io/ecshreve/toolbox-dev:latest ghcr.io/ecshreve/toolbox-dev:${{ github.ref_name }}
-
-      - name: Push Docker image
-        run: |
-          docker push ghcr.io/ecshreve/toolbox:${{ github.ref_name }}
-          docker push ghcr.io/ecshreve/toolbox-dev:${{ github.ref_name }}
-
-  release:
+  gh-release:
     runs-on: ubuntu-latest
     needs: prep
     steps:
