@@ -17,6 +17,8 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      imageid: ${{ steps.push-docker.outputs.imageid }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,14 +32,6 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ hashFiles('**/Dockerfile') }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
 
       - name: Set up docker tags
         id: tag-docker
@@ -46,47 +40,29 @@ jobs:
           images: ${{ env.IMAGE_NAME }}
           tags: |
             type=semver,pattern={{version}}
-            type=raw,value=latest
+            type=raw,latest
 
-      - name: Build and push docker image 
+      - name: Tag and push Docker image
+        id: push-docker
         uses: docker/build-push-action@v5
         with:
           context: .
-          push: ${{ github.event_name == 'push' }}
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.tag-docker.outputs.tags }}
           labels: ${{ steps.tag-docker.outputs.labels }}
-          platforms: linux/amd64
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          platforms: linux/amd64
           provenance: false
-
-      - name: Get devcontainer tags
-        id: devcontainer-tag
-        run: |
-          vtag="${{ github.ref_name }}"
-          tag="latest"
-          if [[ $vtag == 'refs/tags/v'* ]]; then
-            tag="$tag, ${vtag:1}"
-          fi
-
-          echo tag=$tag >> "$GITHUB_OUTPUT"
-
-      - name: Build and push devcontainer
-        uses: devcontainers/ci@v0.3
-        with:
-          imageName: ${{ env.IMAGE_NAME }}-dev
-          cacheFrom: ${{ env.IMAGE_NAME }}-dev
-          imageTag: ${{ steps.devcontainer-tag.outputs.tag }}
-          configFile: .devcontainer/toolbox-dev/devcontainer.json
-          push: filter
-          eventFilterForPush: push
 
   release:
     needs: build
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
+      - name: Debug
+        run: echo ${{ needs.build.outputs.imageid }}
       - name: Create GitHub Release
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v1
         with:
           token: ${{ secrets.GH_CUSTOM_PAT }}
@@ -94,3 +70,5 @@ jobs:
           generate_release_notes: true
           draft: false
           prerelease: false
+          body: |
+            ${{ needs.build.outputs.imageid }}
