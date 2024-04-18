@@ -2,7 +2,11 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
 {
 	"name": "toolbox-dev",
-	"image": "ghcr.io/ecshreve/toolbox:latest",
+	"build": {
+		"dockerfile": "../../Dockerfile",
+		"context": "../..",
+		"cacheFrom": "ghcr.io/ecshreve/toolbox-dev:latest"
+	},
 	"features": {
 		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
 	},

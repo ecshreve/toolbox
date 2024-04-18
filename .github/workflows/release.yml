@@ -6,12 +6,6 @@ on:
       tag:
         description: 'Tag to release'
         required: true
-  workflow_call:
-    inputs:
-      tag:
-        description: 'Tag to release'
-        type: string
-        required: true
 
 jobs:
   gh-release:
@@ -26,6 +20,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      
 
       - name: Get Package info
         id: info
@@ -41,7 +36,7 @@ jobs:
           PACKAGES_URL="https://api.github.com/user/packages/container"
  
           TOOLBOX_URL=$(curl -s -H "$AUTH_HEADER" -H "$CONTENT_HEADER" "$PACKAGES_URL/toolbox/versions" | jq -r '.[] | select(.metadata.container.tags | contains(["latest"])) | .html_url')
-          TOOLBOXDEV_URL=$(curl -s -H "$AUTH_HEADER" -H "$CONTENT_HEADER" "$PACKAGES_URL/toolbox-dev/versions" | jq -r '.[] | select(.metadata.container.tags | contains(["latest"])) | .html_url')
+          # TOOLBOXDEV_URL=$(curl -s -H "$AUTH_HEADER" -H "$CONTENT_HEADER" "$PACKAGES_URL/toolbox-dev/versions" | jq -r '.[] | select(.metadata.container.tags | contains(["latest"])) | .html_url')
 
           TOOLBOX_IMAGE_SIZE=$(docker manifest inspect -v ghcr.io/ecshreve/toolbox:latest | jq -c 'if type == "array" then .[] else . end' | jq -r '( [ .SchemaV2Manifest.layers[].size ] | add )' | numfmt --to si)
           TOOLBOXDEV_IMAGE_SIZE=$(docker manifest inspect -v ghcr.io/ecshreve/toolbox-dev:latest | jq -c 'if type == "array" then .[] else . end' | jq -r '( [ .SchemaV2Manifest.layers[].size ] | add )' | numfmt --to si)
@@ -49,10 +44,9 @@ jobs:
           echo "## info" > RELEASE.txt
           echo "[![toolbox](https://img.shields.io/badge/toolbox-${{ inputs.tag }}-purple)]($TOOLBOX_URL?tag=${{ inputs.tag }})" >> RELEASE.txt
           echo "[![toolbox-size](https://img.shields.io/badge/toolbox_size-${TOOLBOX_IMAGE_SIZE}-blue)]($TOOLBOX_URL?tag=${{ inputs.tag }})" >> RELEASE.txt
+          echo "![toolbox-size](https://img.shields.io/badge/toolbox_dev_size-${TOOLBOXDEV_IMAGE_SIZE}-blue)" >> RELEASE.txt 
           echo "---" >> RELEASE.txt
-          echo "[![toolbox-dev](https://img.shields.io/badge/toolbox_dev-${{ inputs.tag }}-purple)]($TOOLBOXDEV_URL?tag=${{ inputs.tag }})" >> RELEASE.txt
-          echo "[![toolbox-dev-size](https://img.shields.io/badge/toolbox_dev_size-$TOOLBOXDEV_IMAGE_SIZE-blue)]($TOOLBOXDEV_URL?tag=${{ inputs.tag }})" >> RELEASE.txt
-
+         
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
