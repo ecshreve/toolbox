@@ -76,7 +76,7 @@ jobs:
             fi
 
             # Shift the array to keep only the last 10 images
-            versions_old=${versions[@]:10}
+            versions_old=$(echo $versions | jq -s | jq '.[10:]')
 
             # Delete untagged package versions
             for version_id in $version_old; do

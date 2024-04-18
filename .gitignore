@@ -1,4 +1,4 @@
-.env*.*
+.env*
 __pycache__/
 .vscode/
 *.log
@@ -7,3 +7,4 @@ playbook-artifact*
 artifacts/*
 logs/
 .python-version
+.env
