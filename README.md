@@ -6,24 +6,11 @@ I use this repository to manage my development environment across different mach
 
 ## Usage
 
-Besides installation on a local machine, I use this repository to build a ubuntu based docker image with tools installed. The devcontainer for this repository is based on _that_ custom image. And both the vanilla docker image and the devcontainer are built via a github action, and pushed to the github container registry.
-
-
-### Codespaces
-
-[![Latest Image](https://ghcr-badge.egpl.dev/ecshreve/toolbox/latest_tag?color=%2344cc11&ignore=latest&label=latest&trim=)](https://github.com/ecshreve/toolbox/pkgs/container/toolbox/latest?tag=latest)
-
-Prebuilt devcontainer for the latest image in the github container registry.
-
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/ecshreve/toolbox?devcontainer_path=.devcontainer%2Ftoolbox-prod%2Fdevcontainer.json)
-
-
->[!NOTE]
->Open a `zsh` shell in the terminal to get started. Regardless of the default profile, codespaces opened in the web client always open with a bash session running initially.
+Used on local machines and docker based development containers.
 
 ### Local
 
-To run the `toolbox` setup locally, clone the repository and run the `install.sh` script:
+How I currently run the `toolbox` setup locally:
 
     $ git clone https://github.com/ecshreve/toolbox.git ~/.toolbox
 
@@ -31,13 +18,37 @@ To run the `toolbox` setup locally, clone the repository and run the `install.sh
 
     $ ./install.sh
 
-The script will check the necessary dependencies and run the `ansible` playbook to configure the environment.
+> [!NOTE]
+> Probably don't run the install script unless you're me. But, I'm not the boss of you.
+
+The `install.sh` script is more or less a wrapper around the `ansible-playbook` command that runs the `playbook.yml` file with the `config_vars.yml` file as input. The script checks basic preprequisites and runs the playbook.
+
+
+### Devcontainer and Codespaces
+
+![latest](https://ghcr-badge.egpl.dev/ecshreve/toolbox-dev/latest_tag?color=%235c62c9&ignore=&label=latest&trim=)
+![size](https://ghcr-badge.egpl.dev/ecshreve/toolbox-dev/size?color=%2365bec9&tag=latest&label=image+size&trim=)
+
+Prebuilt codespace for the latest devcontainer image in the github container registry. This image is built from the devcontainer defined in `.devcontainer/toolbox-prod/devcontainer.json`. It just pulls a tagged image of a prebuilt devcontainer from the github container registry.
+
+```
+{
+	"name": "toolbox-prod",
+	"image": "ghcr.io/ecshreve/toolbox-dev:v0.0.42"
+}
+```
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/ecshreve/toolbox?devcontainer_path=.devcontainer%2Ftoolbox-prod%2Fdevcontainer.json)
+
+
+>[!NOTE]
+>Open a `zsh` shell in the terminal to get started. Regardless of the default profile, codespaces opened in the web client always open with a bash session running initially.
 
 ## Why Toolbox?
 
 - I was tired of having do extra work to integrate things with my old `fish` setup. 
-- Time to update some tools and look at new ones.
-- Wanted to move to ansible for configuration management rather than rely on just an install script and the VSCode dotfiles settings.
+- Wanted to update some tools and look at new ones.
+- Move setup definition to Ansible for better control and organization.
 - Its fun.
 
 ### Highlights
@@ -45,7 +56,7 @@ The script will check the necessary dependencies and run the `ansible` playbook 
 - `mods` configuration to interact with AI models from CLI 
 - chatbot to interact with the repository via OpenAI Embeddings, LangChain, and Pinecone
 - `gencom` to generate commit messages based on currently staged changes (powered by `mods`)
-- devcontainer prebuilt and ready for toolbox installation
+- devcontainer prebuilt and ready for toolbox development or to be used as a base devcontainer for other projects
 
 <!-- TODO: source these from the vars file? -->
 ## Aliases and Commands to Remember
@@ -85,29 +96,8 @@ The script will check the necessary dependencies and run the `ansible` playbook 
 - `vhs` - A tool to create gifs from the terminal
 - `wishlist` - An SSH directory app
 
-## Toolbox Chat
-
-Toolbox Chat is a Streamlit-based web application designed to facilitate interactive conversations powered by LangChain and OpenAI's GPT models.
-
-It is integrated with Pinecone, a vector database, and LangChain's information retrieval tools to provide a conversational interface to the contents of the repository itself.
-
-<div align="center">
-  <img src="./assets/toolchat.png" width="70%">
-</div>
-
-<br>
-See the [assistant README](assistant/README.md) for more information.
-
 ## Environment Setup and Configuration
 
-### Install Script
-
-> [!NOTE]
-> Probably don't run the install script unless you're me. But, I'm not the boss of you.
-
-The `install.sh` script is a wrapper around the `ansible-playbook` command that runs the `playbook.yml` file with the `config_vars.yml` file as input. The script is responsible for setting up the environment, checking prerequisites and requirements, parsing cli options, and finally running the playbook.
-
-[usage](#usage)
 
 ### Secrets Helper Script
 
@@ -126,13 +116,14 @@ The `playbook.yml` file is the main entry point for the `ansible` configuration.
 
 The playbook can be run with the following command to  see the output in the terminal and log it to a file:
 
-    $ ansible-playbook playbook.yml -v | tee ansible/logs/ansible.log
+    $ ansible-playbook playbook.yml --tags base -v | tee ansible/logs/ansible.log
 
 With ansible-navigator installed, the playbook can be run with the following command to open the TUI:
 
     $ ansible-navigator run playbook.yml -v 
 
 [ansible-navigator-role](#_beta-roles)
+
 ### Configuration
 
 `./config_vars.yml` 
@@ -144,9 +135,9 @@ _environment variables_
 `TOOLBOX_DIR`: `~/.toolbox`
   - The directory where the toolbox repository is cloned.
 
-`ANSIBLE_CONFIG_DIR`: `$TOOLBOX_DIR/ansible/ansible.cfg`
-  - The file where the toolbox ansible configuration is stored.
-  - 
+`ANSIBLE_HOME`: `$TOOLBOX_DIR/ansible`
+  - Overrides the default ansible home directory.
+  
 ### Ansible Roles
 
 For environment setup `ansible` is used to manage dotfiles and configurations. 
@@ -200,26 +191,20 @@ to be integrated into the main playbook.
 - python: install pyenv and pyenv-virtualenv
 
 ## CI/CD
-[![Static Badge](https://img.shields.io/badge/toolbox-v0.0.0-blue)](https://github.com/ecshreve/toolbox/pkgs/container/toolbox/203676976?tag=latest)
-
 
 [![Combined CI](https://github.com/ecshreve/toolbox/actions/workflows/ci.yml/badge.svg?event=release)](https://github.com/ecshreve/toolbox/actions/workflows/ci.yml)
-[![Latest Image](https://ghcr-badge.egpl.dev/ecshreve/toolbox/latest_tag?color=%2344cc11&ignore=latest&label=latest&trim=)](https://github.com/ecshreve/toolbox/pkgs/container/toolbox/203676976?tag=latest)
-[![Image Size](https://ghcr-badge.egpl.dev/ecshreve/toolbox/size?color=%2344cc11&tag=latest&label=image+size&trim=)](https://github.com/ecshreve/toolbox/pkgs/container/toolbox)
-
-
+![Latest Image](https://ghcr-badge.egpl.dev/ecshreve/toolbox/latest_tag?color=%2344cc11&ignore=latest&label=latest&trim=)
+![Image Size](https://ghcr-badge.egpl.dev/ecshreve/toolbox/size?color=%2344cc11&tag=latest&label=image+size&trim=)
 
 ### Docker Image
 
 The `Dockerfile` in the root of the repository is used to build a docker image with the tools and configurations defined in the `ansible` playbook. The image is built and pushed to the github container registry via a github action.
 
-The image is based on `ubuntu:22.04`, first installs some core packages and tools via `apt` and `pip`, then runs the ansible playbook which handles the rest of the setup.
-
 ### Devcontainer
 
-The `devcontainer.json` file in the `.devcontainer` directory is used to define the devcontainer for this repository. The devcontainer is based on the custom docker image built from the `Dockerfile` in the root of the repository. The devcontainer defined in `.devcontainer/toolbox-prod/devcontainer.json` is based on pulling the prebuilt image from the github container registry, and is an example of how to use the devcontainer in another repository.
+The devcontainer defined in the `.devcontainer/toolbox-dev` directory is used to build a devcontainer with some features and extensions installed. These are general features that I probably want in any dev environment. 
 
-The `toolbox_prod` devcontainer is also used as the source for the codespaces prebuild configuration.
+The devcontainer defined in the `.devcontainer/toolbox-prod` directory is based on the `toolbox-dev` devcontainer, but does not include any additional features or extensions. This is the devcontainer that is used for the codespaces prebuild configuration.
 
 ## Links
 
