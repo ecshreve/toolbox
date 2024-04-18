@@ -1,89 +1,90 @@
 name: release
 
 on:
-  push:
-    tags:
-      - 'v*.*.*'
-  
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release'
+        required: true
+  workflow_call:
+    inputs:
+      tag:
+        description: 'Tag to release'
+        type: string
+        required: true
+
 jobs:
-  prep:
+  info:
     runs-on: ubuntu-latest
     outputs:
-      toolbox: ${{ steps.get_package_urls.outputs.toolbox }}
-      toolbox-dev: ${{ steps.get_package_urls.outputs.toolbox-dev }}
-    steps:
-      - name: Get Package URLs
-        id: get_package_urls
-        env:
-          GHCR_TOKEN: ${{ secrets.GH_CUSTOM_PAT }}
-          OWNER: ${{ github.repository_owner }}
-        run: |
-          #!/bin/bash
-          AUTH_HEADER="Authorization: Bearer $GHCR_TOKEN"
-          CONTENT_HEADER="Accept: application/vnd.github.v3+json"
-
-          # Define your package names
-          packages=("toolbox" "toolbox-dev")
-
-          # Base URL for GHCR API
-          PACKAGES_URL="https://api.github.com/user/packages/container"
-
-          echo "Checking packages for untagged versions"
-          for package_name in "${packages[@]}"; do
-            echo "Checking package: $package_name"
-           
-            version_url=$(curl -s -H "$AUTH_HEADER" -H "$CONTENT_HEADER" "$PACKAGES_URL/$package_name/versions" | jq -r '.[] | select(.metadata.container.tags | contains(["latest"])) | .html_url')
-            echo $package_name=$version_url >> $GITHUB_OUTPUT
-          done
-
-  docktag:
-    runs-on: ubuntu-latest
+      toolbox_image_size: ${{ steps.get_package_size.outputs.toolbox_image_size }}
+      toolboxdev_image_size: ${{ steps.get_package_size.outputs.toolboxdev_image_size }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Login to GitHub Container Registry
+      
+      - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Pull and tag docker images
+      - name: Get package size
+        id: get_package_size
         run: |
-          docker pull ghcr.io/ecshreve/toolbox:latest
-          docker pull ghcr.io/ecshreve/toolbox-dev:latest
+          TOOLBOX_IMAGE_SIZE=$(docker manifest inspect -v ghcr.io/ecshreve/toolbox:latest | jq -c 'if type == "array" then .[] else . end' | jq -r '( [ .SchemaV2Manifest.layers[].size ] | add )' | numfmt --to si)
+          TOOLBOXDEV_IMAGE_SIZE=$(docker manifest inspect -v ghcr.io/ecshreve/toolbox-dev:latest | jq -c 'if type == "array" then .[] else . end' | jq -r '( [ .SchemaV2Manifest.layers[].size ] | add )' | numfmt --to si)
 
-          docker tag ghcr.io/ecshreve/toolbox:latest ghcr.io/ecshreve/toolbox:${{ github.ref_name }}
-          docker tag ghcr.io/ecshreve/toolbox-dev:latest ghcr.io/ecshreve/toolbox-dev:${{ github.ref_name }}
-
-      - name: Push Docker image
-        run: |
-          docker push ghcr.io/ecshreve/toolbox:${{ github.ref_name }}
-          docker push ghcr.io/ecshreve/toolbox-dev:${{ github.ref_name }}
-
-  release:
+          echo "toolbox_image_size=${TOOLBOX_IMAGE_SIZE}" >> "$GITHUB_OUTPUT"
+          echo "toolboxdev_image_size=${TOOLBOXDEV_IMAGE_SIZE}" >> "$GITHUB_OUTPUT"
+  gh-release:
+    needs: info
     runs-on: ubuntu-latest
-    needs: prep
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get Package URLs
+        id: get_package_urls
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          #!/bin/bash
+          AUTH_HEADER="Authorization: Bearer $GHCR_TOKEN"
+          CONTENT_HEADER="Accept: application/vnd.github.v3+json"
+
+          # Base URL for GHCR API
+          PACKAGES_URL="https://api.github.com/user/packages/container"
+ 
+          version_url=$(curl -s -H "$AUTH_HEADER" -H "$CONTENT_HEADER" "$PACKAGES_URL/toolbox/versions" | jq -r '.[] | select(.metadata.container.tags | contains(["latest"])) | .html_url')
+          version_url_dev=$(curl -s -H "$AUTH_HEADER" -H "$CONTENT_HEADER" "$PACKAGES_URL/toolbox-dev/versions" | jq -r '.[] | select(.metadata.container.tags | contains(["latest"])) | .html_url')
+
+          echo "toolbox_url=$version_url" >> "$GITHUB_ENV"
+          echo "toolboxdev_url=$version_url_dev" >> "$GITHUB_ENV"
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           token: ${{ secrets.GH_CUSTOM_PAT }}
-          tag_name: ${{ github.ref_name }}
+          tag_name: ${{ inputs.tag }}
           generate_release_notes: true
           draft: false
           prerelease: false
+          files: |
+            Dockerfile
+            .devcontainer/toolbox-dev/devcontainer.json
           body: |
-            [![toolbox](https://img.shields.io/badge/toolbox-${{ github.ref_name }}-blue)](${{ needs.prep.outputs.toolbox }}?tag=${{ github.ref_name }})
-            [![toolbox-size](https://ghcr-badge.egpl.dev/ecshreve/toolbox/size?color=%235c62c9&tag=${{ github.ref_name }}&label=image+size&trim=)](${{ needs.prep.outputs.toolbox }}?tag=${{ github.ref_name }})
+            ## info
 
+            [![toolbox](https://img.shields.io/badge/toolbox-${{ inputs.tag }}-purple)](${{ env.toolbox_url }}?tag=${{ inputs.tag }})
+            [![toolbox-size](https://img.shields.io/badge/toolbox_size-${{ needs.info.outputs.toolbox_image_size }}-blue)](${{ env.toolbox_url }}?tag=${{ inputs.tag }})
+            
             ---
 
-            [![toolbox-dev](https://img.shields.io/badge/toolbox_dev-${{ github.ref_name }}-blue)](${{ needs.prep.outputs.toolbox-dev }}?tag=${{ github.ref_name }})
-            [![toolbox-dev-size](https://ghcr-badge.egpl.dev/ecshreve/toolbox-dev/size?color=%235c62c9&tag=${{ github.ref_name }}&label=image+size&trim=)](${{ needs.prep.outputs.toolbox-dev }}?tag=${{ github.ref_name }})
+            [![toolbox-dev](https://img.shields.io/badge/toolbox_dev-${{ inputs.tag }}-purple)](${{ env.toolboxdev_url }}?tag=${{ inputs.tag }})
+            [![toolbox-dev-size](https://img.shields.io/badge/toolbox_dev_size-${{ needs.info.outputs.toolboxdev_image_size }}-blue)](${{ env.toolboxdev_url }}?tag=${{ inputs.tag }})
+
 
       
