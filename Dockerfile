@@ -52,11 +52,7 @@ COPY --chown=${USER}:${USER} . .toolbox/
 ENV TOOLBOX_DIR=/home/$USER/.toolbox
 ENV ANSIBLE_HOME=$TOOLBOX_DIR/ansible
 
-FROM build as base
 RUN ansible-playbook $TOOLBOX_DIR/playbook.yml --tags base -v
-
-FROM base as golang
-RUN ansible-playbook $TOOLBOX_DIR/playbook.yml --tags golang -v
 
 CMD [ "/bin/bash" ]
 
