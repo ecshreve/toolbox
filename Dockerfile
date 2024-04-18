@@ -18,16 +18,14 @@ RUN apt-get update && \
     software-properties-common \
     gnupg \
     zsh \
+    python3-dev \
+    python3-pip \
+    locales \
     && rm -rf /var/lib/apt/lists/*
 
-# Install locales package
-RUN apt-get update && apt-get install -y locales
 
 # Uncomment the desired locale to enable it on the system
-RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen
-
-# Generate locale
-RUN locale-gen
+RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
 
 # Set the environment variables
 ENV LANG en_US.UTF-8
@@ -42,8 +40,7 @@ RUN useradd ${USER} \
     --user-group && \
     echo "${USER} ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers.d/nopasswd
 
-RUN apt-get update && apt-get install -y python3-dev python3-pip
-RUN python3 -m pip install --upgrade pip && python3 -m pip install ansible
+RUN python3 -m pip install ansible
 
 USER $USER
 WORKDIR /home/$USER
@@ -53,6 +50,8 @@ ENV TOOLBOX_DIR=/home/$USER/.toolbox
 ENV ANSIBLE_HOME=$TOOLBOX_DIR/ansible
 
 RUN ansible-playbook $TOOLBOX_DIR/playbook.yml --tags base -v
+
+RUN ansible-playbook $TOOLBOX_DIR/playbook.yml --tags golang -v
 
 CMD [ "/bin/bash" ]
 
