@@ -6,6 +6,8 @@ on:
     branches:
       - main
   push:
+    branches:
+      - main
     tags:
       - 'v*.*.*'
 
@@ -54,20 +56,30 @@ jobs:
         uses: devcontainers/ci@v0.3
         with:
           imageName: ghcr.io/ecshreve/toolbox-dev
-          cacheFrom: ghcr.io/ecshreve/toolbox, ghcr.io/ecshreve/toolbox-dev
+          cacheFrom: ghcr.io/ecshreve/toolbox-dev
           configFile: .devcontainer/toolbox-dev/devcontainer.json
           push: always
-
-      - name: Push devcontainer release
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-        run: |
-          docker tag ghcr.io/ecshreve/toolbox-dev:latest ghcr.io/ecshreve/toolbox-dev:${{ github.ref_name }}
-          docker push ghcr.io/ecshreve/toolbox-dev:${{ github.ref_name }}
-  
+     
   release:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     needs: build
-    uses: ./.github/workflows/release.yml
-    with:
-      tag: ${{ github.ref_name }}
-
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          token: ${{ secrets.GH_CUSTOM_PAT }}
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+          files: |
+            Dockerfile
+            .devcontainer/toolbox-dev/devcontainer.json
+          body: |
+            ## info
+            
+            ![toolbox](https://img.shields.io/badge/toolbox-${{ github.ref_name }}-purple)
