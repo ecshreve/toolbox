@@ -7,8 +7,6 @@ on:
   push:
     branches:
       - main
-    tags:
-      - 'v*.*.*'
 
 env:
   LATEST_TAG: ghcr.io/ecshreve/toolbox:latest
@@ -17,8 +15,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    outputs:
-      imageid: ${{ steps.push-docker.outputs.imageid }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,42 +29,27 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Set up docker tags
-        id: tag-docker
+      - name: Set up docker labels
+        id: meta
         uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.IMAGE_NAME }}
-          tags: |
-            type=semver,pattern={{version}}
-            type=raw,latest
 
-      - name: Tag and push Docker image
-        id: push-docker
+      - name: Build docker image
         uses: docker/build-push-action@v5
         with:
           context: .
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.tag-docker.outputs.tags }}
-          labels: ${{ steps.tag-docker.outputs.labels }}
+          push: ${{ github.event_name != 'pull_request'}}
+          tags: ${{ env.LATEST_TAG }}
+          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
           provenance: false
 
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Debug
-        run: echo ${{ needs.build.outputs.imageid }}
-      - name: Create GitHub Release
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v1
+      - name: Build devcontainer
+        uses: devcontainers/ci@v0.3
         with:
-          token: ${{ secrets.GH_CUSTOM_PAT }}
-          tag_name: ${{ github.ref_name }}
-          generate_release_notes: true
-          draft: false
-          prerelease: false
-          body: |
-            ${{ needs.build.outputs.imageid }}
+          imageName: ${{ env.IMAGE_NAME }}-dev
+          cacheFrom: ${{ env.IMAGE_NAME }}-dev
+          configFile: .devcontainer/toolbox-dev/devcontainer.json
+          push: filter
+          eventFilterForPush: push

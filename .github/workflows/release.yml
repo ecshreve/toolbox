@@ -1,11 +1,73 @@
 name: release
 
 on:
-  workflow_call: 
-
+  push:
+    tags:
+      - 'v*.*.*'
+  
 jobs:
+  prep:
+    runs-on: ubuntu-latest
+    outputs:
+      toolbox: ${{ steps.get_package_urls.outputs.toolbox }}
+      toolbox-dev: ${{ steps.get_package_urls.outputs.toolbox-dev }}
+    steps:
+      - name: Get Package URLs
+        id: get_package_urls
+        env:
+          GHCR_TOKEN: ${{ secrets.GH_CUSTOM_PAT }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          #!/bin/bash
+          AUTH_HEADER="Authorization: Bearer $GHCR_TOKEN"
+          CONTENT_HEADER="Accept: application/vnd.github.v3+json"
+
+          # Define your package names
+          packages=("toolbox" "toolbox-dev")
+
+          # Base URL for GHCR API
+          PACKAGES_URL="https://api.github.com/user/packages/container"
+
+          echo "Checking packages for untagged versions"
+          for package_name in "${packages[@]}"; do
+            echo "Checking package: $package_name"
+           
+            version_url=$(curl -s -H "$AUTH_HEADER" -H "$CONTENT_HEADER" "$PACKAGES_URL/$package_name/versions" | jq -r '.[] | select(.metadata.container.tags | contains(["latest"])) | .html_url')
+            echo $package_name=$version_url >> $GITHUB_OUTPUT
+          done
+
+  docktag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Pull and tag docker images
+        run: |
+          docker pull ghcr.io/ecshreve/toolbox:latest
+          docker pull ghcr.io/ecshreve/toolbox-dev:latest
+
+          docker tag ghcr.io/ecshreve/toolbox:latest ghcr.io/ecshreve/toolbox:${{ github.ref_name }}
+          docker tag ghcr.io/ecshreve/toolbox-dev:latest ghcr.io/ecshreve/toolbox-dev:${{ github.ref_name }}
+
+      - name: Push Docker image
+        run: |
+          docker push ghcr.io/ecshreve/toolbox:${{ github.ref_name }}
+          docker push ghcr.io/ecshreve/toolbox-dev:${{ github.ref_name }}
+
   release:
     runs-on: ubuntu-latest
+    needs: prep
     steps:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
@@ -15,5 +77,13 @@ jobs:
           generate_release_notes: true
           draft: false
           prerelease: false
-          
+          body: |
+            [![toolbox](https://img.shields.io/badge/toolbox-${{ github.ref_name }}-blue)](${{ needs.prep.outputs.toolbox }}?tag=${{ github.ref_name }})
+            [![toolbox-size](https://ghcr-badge.egpl.dev/ecshreve/toolbox/size?color=%235c62c9&tag=${{ github.ref_name }}&label=image+size&trim=)](${{ needs.prep.outputs.toolbox }}?tag=${{ github.ref_name }})
+
+            ---
+
+            [![toolbox-dev](https://img.shields.io/badge/toolbox_dev-${{ github.ref_name }}-blue)](${{ needs.prep.outputs.toolbox-dev }}?tag=${{ github.ref_name }})
+            [![toolbox-dev-size](https://ghcr-badge.egpl.dev/ecshreve/toolbox-dev/size?color=%235c62c9&tag=${{ github.ref_name }}&label=image+size&trim=)](${{ needs.prep.outputs.toolbox-dev }}?tag=${{ github.ref_name }})
+
       
