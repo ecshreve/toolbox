@@ -3,8 +3,8 @@
 {
 	"name": "toolbox-dev",
 	"build": {
-		"dockerfile": "../../Dockerfile",
-		"context": "../..",
+		"dockerfile": "Dockerfile",
+		"context": ".",
 		"cacheFrom": "ghcr.io/ecshreve/toolbox-dev:latest"
 	},
 	"features": {
