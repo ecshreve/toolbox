@@ -7,9 +7,10 @@ on:
   push:
     branches:
       - main
+    tags:
+      - 'v*.*.*'
 
 env:
-  LATEST_TAG: ghcr.io/ecshreve/toolbox:latest
   IMAGE_NAME: ghcr.io/ecshreve/toolbox
 
 jobs:
@@ -29,27 +30,36 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Set up docker labels
+      - name: Set up docker meta
         id: meta
         uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=tag
+            type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Build docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: ${{ github.event_name != 'pull_request'}}
-          tags: ${{ env.LATEST_TAG }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
           provenance: false
 
-      - name: Build devcontainer
+      - name: Prebuild devcontainer
         uses: devcontainers/ci@v0.3
         with:
           imageName: ${{ env.IMAGE_NAME }}-dev
-          cacheFrom: ${{ env.IMAGE_NAME }}-dev
+          cacheFrom: ${{ env.IMAGE_NAME }}
           configFile: .devcontainer/toolbox-dev/devcontainer.json
-          push: filter
-          eventFilterForPush: push
+          push: always
+
+  create-release:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    uses: ./.github/workflows/release.yml
