@@ -17,8 +17,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    outputs:
-      imageid: ${{ steps.push-docker.outputs.imageid }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -43,7 +41,6 @@ jobs:
             type=raw,latest
 
       - name: Tag and push Docker image
-        id: push-docker
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -55,20 +52,75 @@ jobs:
           platforms: linux/amd64
           provenance: false
 
+      - name: Set up devcontainer tags
+        id: tag-devcon
+        uses: docker/metadata-action@v5
+        with:
+          tags: |
+            type=semver,pattern={{version}}
+            type=raw,latest
+
+      - name: Pre-build dev container image
+        uses: devcontainers/ci@v0.3
+        with:
+          imageName: ${{ env.IMAGE_NAME }}-dev
+          cacheFrom: ${{ env.IMAGE_NAME }}-dev
+          configFile: .devcontainer/toolbox-dev/devcontainer.json
+          imageTag: ${{ steps.tag-devcon.outputs.tags }}
+          push: always
+
   release:
     needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/tags/v*.*.*'
     runs-on: ubuntu-latest
     steps:
-      - name: Debug
-        run: echo ${{ needs.build.outputs.imageid }}
+      - name: Determine tag
+        id: tagger
+        run: |
+          r=${{ github.ref_name }}
+          tt=${r:1}
+          echo "rel=$tt" >> "$GITHUB_OUTPUT"
+
+      - name: Get Package URLs
+        id: get_package_urls
+        env:
+          GHCR_TOKEN: ${{ secrets.GH_CUSTOM_PAT }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          #!/bin/bash
+          AUTH_HEADER="Authorization: Bearer $GHCR_TOKEN"
+          CONTENT_HEADER="Accept: application/vnd.github.v3+json"
+
+          # Define your package names
+          packages=("toolbox" "toolbox-dev")
+
+          # Base URL for GHCR API
+          PACKAGES_URL="https://api.github.com/user/packages/container"
+
+          echo "Checking packages for untagged versions"
+          for package_name in "${packages[@]}"; do
+            echo "Checking package: $package_name"
+           
+            version_url=$(curl -s -H "$AUTH_HEADER" -H "$CONTENT_HEADER" "$PACKAGES_URL/$package_name/versions" | jq -r '.[] | select(.metadata.container.tags | contains([${{ steps.tagger.outputs.rel }}])) | .html_url')
+            echo $package_name=$version_url >> $GITHUB_OUTPUT
+          done
+
       - name: Create GitHub Release
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v1
         with:
           token: ${{ secrets.GH_CUSTOM_PAT }}
-          tag_name: ${{ github.ref_name }}
+          tag_name: v${{ steps.tagger.outputs.rel }}
           generate_release_notes: true
           draft: false
           prerelease: false
           body: |
-            ${{ needs.build.outputs.imageid }}
+            [![toolbox](https://img.shields.io/badge/toolbox-${{ steps.tagger.outputs.rel }}-blue)](${{ steps.get_package_urls.outputs.toolbox }}?tag=${{ steps.tagger.outputs.rel }})
+            [![toolbox-size](https://ghcr-badge.egpl.dev/ecshreve/toolbox/size?color=%235c62c9&tag=${{ steps.tagger.outputs.rel }}&label=image+size&trim=)](${{ steps.get_package_urls.outputs.toolbox }}?tag=${{ steps.tagger.outputs.rel }})
+
+            ---
+
+            [![toolbox-dev](https://img.shields.io/badge/toolbox_dev-${{ steps.tagger.outputs.rel }}-blue)](${{ steps.get_package_urls.outputs.toolbox-dev }}?tag=${{ steps.tagger.outputs.rel }})
+            [![toolbox-dev-size](https://ghcr-badge.egpl.dev/ecshreve/toolbox-dev/size?color=%235c62c9&tag=${{ steps.tagger.outputs.rel }}&label=image+size&trim=)](${{ steps.get_package_urls.outputs.toolbox-dev }}?tag=${{ steps.tagger.outputs.rel }})
+
+      
+
