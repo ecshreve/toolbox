@@ -1,19 +1,60 @@
 name: release
 
 on:
-  workflow_call: 
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - name: Get Package URLs
+        id: get_package_urls
+        env:
+          GHCR_TOKEN: ${{ secrets.GH_CUSTOM_PAT }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          #!/bin/bash
+          AUTH_HEADER="Authorization: Bearer $GHCR_TOKEN"
+          CONTENT_HEADER="Accept: application/vnd.github.v3+json"
+
+          # Define your package names
+          packages=("toolbox" "toolbox-dev")
+
+          # Base URL for GHCR API
+          PACKAGES_URL="https://api.github.com/user/packages/container"
+
+          echo "Checking packages for untagged versions"
+          for package_name in "${packages[@]}"; do
+            echo "Checking package: $package_name"
+           
+            version_url=$(curl -s -H "$AUTH_HEADER" -H "$CONTENT_HEADER" "$PACKAGES_URL/$package_name/versions" | jq -r '.[] | select(.metadata.container.tags | contains(["0.0.23"])) | .html_url')
+            echo $package_name=$version_url >> $GITHUB_OUTPUT
+          done
+
+      - name: Debug
+        run: |
+          echo '[![toolbox](https://img.shields.io/badge/toolbox-${{ inputs.version }}-blue)](${{ steps.get_package_urls.outputs.toolbox }}?tag=${{ inputs.version }})'
+          echo '[![toolbox-dev](https://img.shields.io/badge/toolbox_dev-${{ inputs.version }}-blue)](${{ steps.get_package_urls.outputs.toolbox-dev }}?tag=${{ inputs.version }})'
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           token: ${{ secrets.GH_CUSTOM_PAT }}
-          tag_name: ${{ github.ref_name }}
+          tag_name: v${{ inputs.version }}
           generate_release_notes: true
           draft: false
           prerelease: false
-          
+          body: |
+            [![toolbox](https://img.shields.io/badge/toolbox-${{ inputs.version }}-blue)](${{ steps.get_package_urls.outputs.toolbox }}?tag=${{ inputs.version }})
+            [![toolbox-size](https://ghcr-badge.egpl.dev/ecshreve/toolbox/size?color=%235c62c9&tag=${{ inputs.version }}&label=image+size&trim=)](${{ steps.get_package_urls.outputs.toolbox }}?tag=${{ inputs.version }})
+
+            ---
+
+            [![toolbox-dev](https://img.shields.io/badge/toolbox_dev-${{ inputs.version }}-blue)](${{ steps.get_package_urls.outputs.toolbox-dev }}?tag=${{ inputs.version }})
+            [![toolbox-dev-size](https://ghcr-badge.egpl.dev/ecshreve/toolbox-dev/size?color=%235c62c9&tag=${{ inputs.version }}&label=image+size&trim=)](${{ steps.get_package_urls.outputs.toolbox-dev }}?tag=${{ inputs.version }})
+
       
