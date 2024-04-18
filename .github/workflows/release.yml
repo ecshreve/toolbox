@@ -1,12 +1,47 @@
 name: release
 
 on:
-  workflow_call: 
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version'
+        required: true
+        default: '0.0.25'
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - name: Get Package URLs
+        id: get_package_urls
+        env:
+          GHCR_TOKEN: ${{ secrets.GH_CUSTOM_PAT }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          #!/bin/bash
+          AUTH_HEADER="Authorization: Bearer $GHCR_TOKEN"
+          CONTENT_HEADER="Accept: application/vnd.github.v3+json"
+
+          # Define your package names
+          packages=("toolbox" "toolbox-dev")
+
+          # Base URL for GHCR API
+          PACKAGES_URL="https://api.github.com/user/packages/container"
+
+          echo "Checking packages for untagged versions"
+          for package_name in "${packages[@]}"; do
+            echo "Checking package: $package_name"
+           
+            latest_version_url=$(curl -s -H "$AUTH_HEADER" -H "$CONTENT_HEADER" "$PACKAGES_URL/$package_name/versions" | jq -r '.[0].html_url')
+            echo $package_name=$latest_version_url >> $GITHUB_OUTPUT
+            echo $package_name-shield=https://img.shields.io/badge/$package_name-${{ inputs.version }}-blue >> $GITHUB_OUTPUT
+          done
+
+      - name: Debug
+        run: |
+          echo '[![toolbox](${{ steps.get_package_urls.outputs.toolbox-shield }})](https://github.com/ecshreve/toolbox/pkgs/container/toolbox/${{ steps.get_package_urls.outputs.toolbox }}?tag=${{ inputs.version }})'
+          echo '[![toolbox-dev](${{ steps.get_package_urls.outputs.toolbox-dev-shield }})](https://github.com/ecshreve/toolbox/pkgs/container/toolbox-dev/${{ steps.get_package_urls.outputs.toolbox-dev }}?tag=${{ inputs.version }})'
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
@@ -15,5 +50,9 @@ jobs:
           generate_release_notes: true
           draft: false
           prerelease: false
+          body: |
+              [![toolbox](${{ steps.get_package_urls.outputs.toolbox-shield }})](https://github.com/ecshreve/toolbox/pkgs/container/toolbox/${{ steps.get_package_urls.outputs.toolbox }}?tag=${{ inputs.version }})
+              [![toolbox-dev](${{ steps.get_package_urls.outputs.toolbox-dev-shield }})](https://github.com/ecshreve/toolbox/pkgs/container/toolbox-dev/${{ steps.get_package_urls.outputs.toolbox-dev }}?tag=${{ inputs.version }})
+
           
       
