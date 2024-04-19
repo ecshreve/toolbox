@@ -5,3 +5,5 @@ backgroundColor ="#282828" # Soft black for the background
 secondaryBackgroundColor ="#3c3836" # Dark brown for secondary elements
 textColor ="#ebdbb2" # Light cream for text
 font = "sans serif"
+
+
