@@ -32,8 +32,6 @@ apt_packages:
   - fd-find
   - ripgrep
   - git
-  - ffmpeg
-  - ttyd
   - direnv
 symlinks:
   bat: /usr/bin/batcat
