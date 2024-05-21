@@ -1,5 +1,5 @@
 export PATH="/usr/local/go/bin:$HOME/go/bin:$HOME/.local/bin:$PATH"
-export TOOLBOX_DIR="$HOME/.toolbox"
+export TOOLBOX_DIR="$HOME/github/ecshreve/toolbox"
 
 export FZF_BASE="$HOME/.fzf/bin/fzf"
 export ZSH="$HOME/.oh-my-zsh"

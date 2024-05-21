@@ -1,7 +1,7 @@
 ---
-- name: Macports port installs
-  community.general.macports:
+- name: Homebrew package installs
+  community.general.homebrew:
     name: "{{ item }}"
     state: present
-  become: true
+  become: false
   loop: "{{ ports }}"
