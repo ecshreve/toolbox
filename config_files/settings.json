@@ -40,3 +40,13 @@
         "titleBar.inactiveForeground": "#e7e7e799"
     }
 }
+
+curl -X 'POST' \
+  'https://hook.us1.make.com/u1aduv32sz6pmjyxp6wasc2xsemozkp5' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "spaceId": "2ad84ea9-a674-4a8d-88e5-47af59e65834",
+  "mdText": "hello world",
+  "origin": "commandPalette"
+}'

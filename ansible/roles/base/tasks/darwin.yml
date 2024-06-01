@@ -4,4 +4,4 @@
     name: "{{ item }}"
     state: present
   become: false
-  loop: "{{ ports }}"
+  loop: "{{ brew_packages }}"

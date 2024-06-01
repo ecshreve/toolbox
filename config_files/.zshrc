@@ -1,4 +1,4 @@
-export PATH="/usr/local/go/bin:$HOME/go/bin:$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 export TOOLBOX_DIR="$HOME/github/ecshreve/toolbox"
 
 export FZF_BASE="$HOME/.fzf/bin/fzf"
@@ -40,6 +40,7 @@ alias clear='clear -x'
 # Git
 alias gcm='git checkout main'
 alias gco='git checkout'
+alias gup='git pull --rebase'
 alias gdoof='git add --all && git commit --amend --no-edit'
 alias goops='git reset --soft HEAD~1 && git status'
 alias gll='git diff --cached | wc -l'
@@ -64,11 +65,10 @@ setopt HIST_REDUCE_BLANKS  # Trim excessive whitespace from commands before addi
 [ -f $HOME/.p10k.zsh ] && source $HOME/.p10k.zsh
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
 
-
-
+# nvm
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 # pyenv
 export PYENV_ROOT="$HOME/.pyenv"

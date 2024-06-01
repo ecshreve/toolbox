@@ -44,7 +44,6 @@
         dest: /usr/local
         remote_src: true
         owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
       ignore_errors: "{{ ansible_check_mode }}"
   when: 
     - not ansible_check_mode  

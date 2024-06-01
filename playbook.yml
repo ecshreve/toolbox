@@ -18,9 +18,10 @@
   vars_files:
     - config_vars.yml
   roles:
+    - base
     - golang
   vars:
-    go_version_target: 1.22.1
+    go_version_target: 1.22.2
   ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Configure python

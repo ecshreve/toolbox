@@ -38,7 +38,7 @@ symlinks:
   fd: /usr/bin/fdfind
 
 # MacOS - Darwin
-ports:
+brew_packages:
   - zsh
   - tmux
   - eza
@@ -46,6 +46,7 @@ ports:
   - fd
   - ripgrep
   - git
+  - gnu-tar
 
 
 ##########################
@@ -74,7 +75,7 @@ p10k_version: 35833ea15f14b71dbcebc7e54c104d8d56ca5268
 ##########################
 #   Golang + Go Tools
 ##########################
-go_version_target: 1.22.1
+go_version_target: 1.22.2
 
 go_root: "/usr/local/go"
 go_bin: "/usr/local/go/bin"
@@ -85,6 +86,8 @@ go_tarball_url: "https://golang.org/dl/{{ go_tarball }}"
 
 go_packages:
   run: github.com/amonks/run/cmd/run@v1.0.0-beta.24
+
+charm_packages:
   glow: github.com/charmbracelet/glow@latest
   mods: github.com/charmbracelet/mods@latest
   skate: github.com/charmbracelet/skate@latest
