@@ -12,6 +12,9 @@ Todos:
 
   Next:
     ☐ redo devcontainer setup
+    ☐ rip and replace docker and ci flow
+    ☐ move playbook to ansible directory
+    ☐ figure out a better way to handle ansible config path
 
   Later:
     ☐ how to integrate skate effectively
