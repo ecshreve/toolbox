@@ -2,8 +2,6 @@ Projects:
 
   Configuration:
     ☐ add ssh config file
-    ☐ add global git config
-    ☐ add global gitignore
 
   Assistant:
     ☐ refactor and clean up
@@ -15,6 +13,7 @@ Todos:
 
   Next:
     ☐ figure out a better way to handle ansible config path
+    ☐ should I use homebrew to install ansible?
 
   Later:
     ☐ redo devcontainer setup / ci / docker
@@ -32,6 +31,8 @@ Todos:
     ☐ Rethink python install
 
 Archive:
+  ✔ add global git config @done(24-06-27 05:33) @project(Projects.Configuration)
+  ✔ add global gitignore @done(24-06-27 05:33) @project(Projects.Configuration)
   ✔ update readme @done(24-06-27 05:07) @project(Todos.Next)
   ✔ rip and replace docker and ci flow @done(24-06-27 04:51) @project(Todos.Next)
   ✔ move playbook to ansible directory @done(24-06-27 04:50) @project(Todos.Next)

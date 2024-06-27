@@ -18,6 +18,8 @@ dotfile_names:
   - .tmux.conf
   - .tmux.conf.local
   - .p10k.zsh
+  - .gitconfig
+  - .global_gitignore
 
 ##########################
 # Packages and Symlinks
