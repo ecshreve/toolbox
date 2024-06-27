@@ -16,47 +16,27 @@ How I currently run the `toolbox` setup locally:
 
     $ cd ~/.toolbox
 
-    $ ./install.sh
+    $ ./setup.sh
+
+    $ ansible-playbook ansible/playbook.yml --tags base -v --check | tee ansible/logs/ansible.log 
 
 > [!NOTE]
 > Probably don't run the install script unless you're me. But, I'm not the boss of you.
 
-The `install.sh` script is more or less a wrapper around the `ansible-playbook` command that runs the `playbook.yml` file with the `config_vars.yml` file as input. The script checks basic preprequisites and runs the playbook.
-
-
-### Devcontainer and Codespaces
-
-![latest](https://ghcr-badge.egpl.dev/ecshreve/toolbox-dev/latest_tag?color=%235c62c9&ignore=&label=latest&trim=)
-![size](https://ghcr-badge.egpl.dev/ecshreve/toolbox-dev/size?color=%2365bec9&tag=latest&label=image+size&trim=)
-
-Prebuilt codespace for the latest devcontainer image in the github container registry. This image is built from the devcontainer defined in `.devcontainer/toolbox-prod/devcontainer.json`. It just pulls a tagged image of a prebuilt devcontainer from the github container registry.
-
-```
-{
-	"name": "toolbox-prod",
-	"image": "ghcr.io/ecshreve/toolbox-dev:v0.0.42"
-}
-```
-
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/ecshreve/toolbox?devcontainer_path=.devcontainer%2Ftoolbox-prod%2Fdevcontainer.json)
-
-
->[!NOTE]
->Open a `zsh` shell in the terminal to get started. Regardless of the default profile, codespaces opened in the web client always open with a bash session running initially.
+The `setup.sh` script installs the necessary dependencies to run the `ansible` playbook. The `ansible` playbook is run separately to configure the development environment in pieces.
 
 ## Why Toolbox?
 
 - I was tired of having do extra work to integrate things with my old `fish` setup. 
 - Wanted to update some tools and look at new ones.
 - Move setup definition to Ansible for better control and organization.
+- Possibly look at other tools and configuration management systems.
 - Its fun.
 
 ### Highlights
 - reliable `zsh` configuration, with plugins and utilities covering almost all of what `fish` was doing for me.
-- `mods` configuration to interact with AI models from CLI 
 - chatbot to interact with the repository via OpenAI Embeddings, LangChain, and Pinecone
 - `gencom` to generate commit messages based on currently staged changes (powered by `mods`)
-- devcontainer prebuilt and ready for toolbox development or to be used as a base devcontainer for other projects
 
 <!-- TODO: source these from the vars file? -->
 ## Aliases and Commands to Remember
@@ -114,21 +94,13 @@ This script is designed to streamline setting up secrets in my development envir
 
 The `playbook.yml` file is the main entry point for the `ansible` configuration. It handles running the roles defined in the `ansible/roles` directory with the variables defined in `config_vars.yml`.
 
-The playbook can be run with the following command to  see the output in the terminal and log it to a file:
-
-    $ ansible-playbook playbook.yml --tags base -v | tee ansible/logs/ansible.log
-
-With ansible-navigator installed, the playbook can be run with the following command to open the TUI:
-
-    $ ansible-navigator run playbook.yml -v 
-
-[ansible-navigator-role](#_beta-roles)
+I tend go update this file as needed to configure whatever piece of the environment I'm working on at the time, it's not in a "ready-to-run" state.
 
 ### Configuration
 
-`./config_vars.yml` 
-  - Contains the variables used in `playbook.yml`.
-  - Things like packages to install, language and tool versions, etc
+`./ansible/config_vars.yml` 
+  - Contains configuration variables that define the environment.
+  - Things like packages to install, language and tool versions, etc.
   
 _environment variables_
 
@@ -139,10 +111,6 @@ _environment variables_
   - Overrides the default ansible home directory.
   
 ### Ansible Roles
-
-For environment setup `ansible` is used to manage dotfiles and configurations. 
-The roles are defined in the `ansible/roles` directory, and the playbook 
-`playbook.yml` is responsible for running them.
 
 **`base`**
 - Installs packages (apt packages on debian/ubuntu) (macports ports on darwin).
@@ -165,16 +133,14 @@ The roles are defined in the `ansible/roles` directory, and the playbook
 
 **`golang`**:
 
-- Handles downloading and installing Golang, along with additional tools 
-  and executables.
+- Handles downloading and installing Golang, along with additional tools and executables.
 - Installs `go` under `/usr/local/go`
-- Installs executables under `/home/eric/go/bin`
+- Installs executables under `/home/eric/go/bin` <!--is this true?-->
 - Install path is defined in `config_vars.yml`
   
 ### _dev roles
 
-These aren't fully integrated yet, some are just for fun, some are planned
-to be integrated into the main playbook.
+These aren't fully integrated yet, some are just for fun, some are planned to be integrated into the main playbook.
 
 **`ansible-navigator`**
 
@@ -189,22 +155,6 @@ to be integrated into the main playbook.
 - cleanup: check ownership of files and directories
 - hashi: install terraform and packer
 - python: install pyenv and pyenv-virtualenv
-
-## CI/CD
-
-[![Combined CI](https://github.com/ecshreve/toolbox/actions/workflows/ci.yml/badge.svg?event=release)](https://github.com/ecshreve/toolbox/actions/workflows/ci.yml)
-![Latest Image](https://ghcr-badge.egpl.dev/ecshreve/toolbox/latest_tag?color=%2344cc11&ignore=latest&label=latest&trim=)
-![Image Size](https://ghcr-badge.egpl.dev/ecshreve/toolbox/size?color=%2344cc11&tag=latest&label=image+size&trim=)
-
-### Docker Image
-
-The `Dockerfile` in the root of the repository is used to build a docker image with the tools and configurations defined in the `ansible` playbook. The image is built and pushed to the github container registry via a github action.
-
-### Devcontainer
-
-The devcontainer defined in the `.devcontainer/toolbox-dev` directory is used to build a devcontainer with some features and extensions installed. These are general features that I probably want in any dev environment. 
-
-The devcontainer defined in the `.devcontainer/toolbox-prod` directory is based on the `toolbox-dev` devcontainer, but does not include any additional features or extensions. This is the devcontainer that is used for the codespaces prebuild configuration.
 
 ## Links
 

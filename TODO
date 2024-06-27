@@ -6,17 +6,18 @@ Projects:
     ☐ add global gitignore
 
   Assistant:
+    ☐ refactor and clean up
+    ☐ integrate serperapi search tool
+    ☐ think about possible fine tuning
     ☐ reindex pinecone @low
 
 Todos:
 
   Next:
-    ☐ redo devcontainer setup
-    ☐ rip and replace docker and ci flow
-    ☐ move playbook to ansible directory
     ☐ figure out a better way to handle ansible config path
 
   Later:
+    ☐ redo devcontainer setup / ci / docker
     ☐ how to integrate skate effectively
     ☐ iterate on setup flow
     ☐ add `soft serve` git server config?
@@ -31,6 +32,9 @@ Todos:
     ☐ Rethink python install
 
 Archive:
+  ✔ update readme @done(24-06-27 05:07) @project(Todos.Next)
+  ✔ rip and replace docker and ci flow @done(24-06-27 04:51) @project(Todos.Next)
+  ✔ move playbook to ansible directory @done(24-06-27 04:50) @project(Todos.Next)
   ✔ fix install.sh @done(24-04-13 23:18) @project(Todos.Next)
   ✔ revisit cleanup role and file ownership @done(24-04-13 22:28) @project(Todos.Later)
   [-] figure out copy/paste from cli
