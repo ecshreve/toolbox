@@ -8,7 +8,6 @@ from langchain.agents import Tool
 from langchain.utilities.google_serper import GoogleSerperAPIWrapper
 from langchain_community.callbacks import StreamlitCallbackHandler
 from langchain_community.chat_message_histories.streamlit import StreamlitChatMessageHistory
-from langchain_community.document_loaders.git import GitLoader
 from langchain_community.tools.wikipedia.tool import WikipediaQueryRun
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_community.utilities.wikipedia import WikipediaAPIWrapper
@@ -85,8 +84,8 @@ serper_tool = Tool(
 api_wrapper = WikipediaAPIWrapper(wiki_client={}, top_k_results=1, doc_content_chars_max=100)
 wikipedia_tool = WikipediaQueryRun(api_wrapper=api_wrapper)
 
-embeddings = OpenAIEmbeddings(dimensions=512, model="text-embedding-3-small")
-vector = PineconeVectorStore(index_name="toolbox-index", embedding=embeddings)
+embeddings = OpenAIEmbeddings(dimensions=3072, model="text-embedding-3-large")
+vector = PineconeVectorStore(index_name="repo-index", embedding=embeddings)
 retriever = vector.as_retriever()
 retriever_tool = create_retriever_tool(
     retriever,
@@ -105,7 +104,7 @@ from langchain_openai import ChatOpenAI
 # Process chat input and generate response
 if prompt_str := st.chat_input(placeholder="Who won the Women's U.S. Open in 2018?"):
     st.chat_message("user").write(prompt_str)
-    llm = ChatOpenAI(model="gpt-4-turbo-preview", streaming=True)
+    llm = ChatOpenAI(model="gpt-4o", streaming=True)
     prompt = DOT_BOT_PROMPT
     chat_agent = create_react_agent(llm=llm, prompt=prompt, tools=tools)
     executor = AgentExecutor.from_agent_and_tools(

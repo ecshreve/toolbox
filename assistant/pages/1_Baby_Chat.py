@@ -87,7 +87,7 @@ from langchain_openai import ChatOpenAI
 # Process chat input and generate response
 if prompt_str := st.chat_input(placeholder="Who won the Women's U.S. Open in 2018?"):
     st.chat_message("user").write(prompt_str)
-    llm = ChatOpenAI(model="gpt-4-turbo-preview", streaming=True)
+    llm = ChatOpenAI(model="gpt-4o", streaming=True)
     prompt = "hello"
     chat_agent = create_react_agent(llm=llm, prompt=prompt, tools=tools)
     executor = AgentExecutor.from_agent_and_tools(

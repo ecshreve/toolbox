@@ -77,7 +77,7 @@ p10k_version: 35833ea15f14b71dbcebc7e54c104d8d56ca5268
 ##########################
 #   Golang + Go Tools
 ##########################
-go_version_target: 1.22.2
+go_version_target: 1.22.4
 
 go_root: "/usr/local/go"
 go_bin: "/usr/local/go/bin"
@@ -111,7 +111,10 @@ golang_checksums:
       amd64: 5901c52b7a78002aeff14a21f93e0f064f74ce1360fce51c6ee68cd471216a17
     darwin:
       arm64: 660298be38648723e783ba0398e90431de1cb288c637880cdb124f39bd977f0d
-
+  '1.22.4':
+    darwin:
+      arm64: 242b78dc4c8f3d5435d28a0d2cec9b4c1aa999b601fb8aa59fb4e5a1364bf827
+      
 ##########################
 #   Python + Pip
 ##########################

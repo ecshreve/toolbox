@@ -15,13 +15,13 @@
 - name: Configure golang and go tools
   tags: [stable, golang]
   hosts: 127.0.0.1
+  become: true
   vars_files:
     - config_vars.yml
   roles:
-    - base
     - golang
   vars:
-    go_version_target: 1.22.2
+    go_version_target: 1.22.4
   ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Configure python

@@ -1,0 +1,10 @@
+python-dotenv 
+langchain 
+langchain-openai 
+langchain-pinecone
+langchain-community 
+pinecone-client
+streamlit
+wikipedia
+GitPython
+unstructured
