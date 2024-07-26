@@ -156,6 +156,23 @@ These aren't fully integrated yet, some are just for fun, some are planned to be
 - hashi: install terraform and packer
 - python: install pyenv and pyenv-virtualenv
 
+## Local Git Server
+
+- I'm running a local git server on my network to act as a backup and remote repository 
+  for my projects. This repo is setup to mirror to that local server via a 
+  post-update hook.
+
+```
+#!/bin/bash
+# Navigate to the repository
+cd /Users/eric/repos/toolbox
+
+# Make sure the local copy is up to date.
+git fetch origin
+
+# Push changes to the Soft Serve Git server
+git push --mirror local
+```
 ## Links
 
 - [charmbracelet](https://charm.sh/)
