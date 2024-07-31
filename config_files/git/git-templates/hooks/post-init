@@ -1,0 +1,14 @@
+#!/bin/bash
+#
+# This assumes a Host entry in ~/.ssh/config for the Soft Serve Git server
+# and that the repository is named the same as the directory it is in.
+
+# Navigate to the repository (assume the current working directory is the repository)
+REPO_DIR=$(git rev-parse --show-toplevel)
+cd "$REPO_DIR"
+
+# Add GitHub as a remote
+git remote add origin git@github.com:ecshreve/${basename "$REPO_DIR"}.git
+
+# Add the Soft Serve Git server as a remote
+git remote add sslocal soft:/soft-serve/repos/$(basename "$REPO_DIR").git

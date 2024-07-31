@@ -1,4 +1,15 @@
 [[task]]
+  id = "play-dot"
+  description = "Run the playbook for Dotfiles"
+  type = "short"
+  env = { ANSIBLE_LOG_PATH = "./logs/play-dot.log" }
+  cmd = """
+    cd ansible
+    ansible-playbook playbook.yml --tags dotfiles -vv --check | tee ./logs/play-dot.log
+    echo "Done with Dotfiles setup"
+  """
+  
+[[task]]
   id = "play-go"
   description = "Run the playbook for Go"
   type = "short"

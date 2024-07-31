@@ -1,37 +1,33 @@
 ---
 - name: Configure environment
-  tags: [stable, base]
+  tags: [stable, base, dotfiles]
   hosts: localhost
   connection: local
   vars_files:
     - config_vars.yml
   roles:
-    - base
-    - zsh
-    - fzf
     - dotfiles
   ignore_errors: "{{ ansible_check_mode }}"
 
-- name: Configure golang and go tools
-  tags: [stable, golang]
-  hosts: 127.0.0.1
-  vars_files:
-    - config_vars.yml
-  roles:
-    - base
-    - golang
-  vars:
-    go_version_target: 1.22.2
-  ignore_errors: "{{ ansible_check_mode }}"
+# - name: Configure golang and go tools
+#   tags: [stable, golang]
+#   hosts: 127.0.0.1
+#   vars_files:
+#     - config_vars.yml
+#   roles:
+#     - base
+#     - golang
+#   vars:
+#     go_version_target: 1.22.2
+#   ignore_errors: "{{ ansible_check_mode }}"
 
-- name: Configure python
-  tags: [stable, python]
-  hosts: 127.0.0.1
-  vars_files:
-    - config_vars.yml
-  roles:
-    - python
-  vars:
-    python_version_target: 3.11.8
-  ignore_errors: "{{ ansible_check_mode }}"
-  
+# - name: Configure python
+#   tags: [stable, python]
+#   hosts: 127.0.0.1
+#   vars_files:
+#     - config_vars.yml
+#   roles:
+#     - python
+#   vars:
+#     python_version_target: 3.11.8
+#   ignore_errors: "{{ ansible_check_mode }}"

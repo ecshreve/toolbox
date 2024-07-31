@@ -1,18 +1,17 @@
 ---
-- name: Extract general dotfile config files from config_files
+- name: Extract git config files from config_files
   ansible.builtin.find:
-    paths: "{{ toolbox_dir }}/config_files/dotfiles"
+    paths: "{{ toolbox_dir }}/config_files/git"
     file_type: any
-    hidden: true
-  register: general_config_files
+  register: git_config_files
 
-- name: Check for existing symlinks
+- name: Check for existing symlinks for git config files
   ansible.builtin.command: "ls -F {{ home_dir }}{{ item.path | basename }}"
   register: existing_info
   failed_when: false
   check_mode: false
   changed_when: false
-  loop: "{{ general_config_files.files }}"
+  loop: "{{ git_config_files }}"
 
 - name: Remove file if replacement is being linked
   ansible.builtin.file:
@@ -24,8 +23,9 @@
 - name: Create symlinks for files
   ansible.builtin.file:
     src: "{{ item.path }}"
-    dest: "{{ home_dir }}{{ item.path | basename }}"
+    dest: "{{ home_dir }}.{{ item.path | basename }}"
     state: link
     force: true
     mode: "0644"
-  loop: "{{ general_config_files.files }}"
+  when: "'@' not in item.stdout"
+  loop: "{{ git_config_files.results }}"
