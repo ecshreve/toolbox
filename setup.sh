@@ -30,6 +30,7 @@ if [ -z $OS_ID ]; then
     echo "Can't determine OS, exiting"
     exit 1
 fi
+export PATH=:$PATH:$PYTHON_LOCATION
 
 export PATH=:$PATH:$PYTHON_LOCATION
 mkdir -p $HOME/.local/bin
@@ -45,12 +46,6 @@ if [ -z "$(which ansible)" ]; then
     pip install ansible 
 fi
 export ANSIBLE_CONFIG="$TOOLBOX_DIR/ansible/ansible.cfg"
-
-echo "debug"
-echo $PYTHON_LOCATION
-echo $OS_ID
-echo $TOOLBOX_DIR
-echo $ANSIBLE_CONFIG
 
 echo "Done setting up the environment."
 echo "Ready for Ansible playbook execution."
