@@ -27,7 +27,7 @@ dotfile_names:
 apt_packages:
   - zsh
   - tmux
-  - exa
+  - eza
   - bat
   - fd-find
   - ripgrep

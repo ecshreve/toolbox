@@ -6,6 +6,9 @@
   vars_files:
     - config_vars.yml
   roles:
+    - base
+    - zsh
+    - fzf
     - dotfiles
   ignore_errors: "{{ ansible_check_mode }}"
 
