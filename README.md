@@ -12,18 +12,17 @@ Used on local machines and docker based development containers.
 
 How I currently run the `toolbox` setup locally:
 
-    $ git clone https://github.com/ecshreve/toolbox.git ~/.toolbox
+    $ git clone https://github.com/ecshreve/toolbox.git ~/repos/toolbox
 
     $ cd ~/.toolbox
 
     $ ./setup.sh
 
-    $ ansible-playbook ansible/playbook.yml --tags base -v --check | tee ansible/logs/ansible.log 
+Most of the time the setup script is triggered from a Coder workspace build or Github codespace build. 
+
 
 > [!NOTE]
 > Probably don't run the install script unless you're me. But, I'm not the boss of you.
-
-The `setup.sh` script installs the necessary dependencies to run the `ansible` playbook. The `ansible` playbook is run separately to configure the development environment in pieces.
 
 ## Why Toolbox?
 
@@ -77,18 +76,6 @@ The `setup.sh` script installs the necessary dependencies to run the `ansible` p
 - `wishlist` - An SSH directory app
 
 ## Environment Setup and Configuration
-
-
-### Secrets Helper Script
-
-    $ ./scripts/secrets.sh
-
-This script is designed to streamline setting up secrets in my development environment for this project, but can be generally used to dump secrets from a `skate` database to a local file.
-
-<div align="center">
-  <img src="./assets/secrets.gif" width="70%">
-</div>
-
 
 ### Playbook
 
@@ -156,23 +143,17 @@ These aren't fully integrated yet, some are just for fun, some are planned to be
 - hashi: install terraform and packer
 - python: install pyenv and pyenv-virtualenv
 
-## Local Git Server
+### Secrets Helper Script
 
-- I'm running a local git server on my network to act as a backup and remote repository 
-  for my projects. This repo is setup to mirror to that local server via a 
-  post-update hook.
+    $ ./scripts/secrets.sh
 
-```
-#!/bin/bash
-# Navigate to the repository
-cd /Users/eric/repos/toolbox
+This script is designed to streamline setting up secrets in my development environment for this project, but can be generally used to dump secrets from a `skate` database to a local file.
 
-# Make sure the local copy is up to date.
-git fetch origin
+<div align="center">
+  <img src="./assets/secrets.gif" width="70%">
+</div>
 
-# Push changes to the Soft Serve Git server
-git push --mirror local
-```
+
 ## Links
 
 - [charmbracelet](https://charm.sh/)
