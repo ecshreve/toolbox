@@ -8,3 +8,4 @@ artifacts/*
 logs/
 .python-version
 .env
+ansible-venv/
