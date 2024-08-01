@@ -1,5 +1,5 @@
 export PATH="$HOME/.local/bin:$HOME/go/bin:/usr/local/go/bin:$PATH"
-export TOOLBOX_DIR="$HOME/github.com/ecshreve/toolbox"
+export TOOLBOX_DIR="$HOME/repos/toolbox"
 
 export FZF_BASE="$HOME/.fzf/bin/fzf"
 export ZSH="$HOME/.oh-my-zsh"
@@ -66,11 +66,11 @@ setopt HIST_REDUCE_BLANKS  # Trim excessive whitespace from commands before addi
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
 
 # nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+# [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
-# pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+# # pyenv
+# export PYENV_ROOT="$HOME/.pyenv"
+# export PATH="$PYENV_ROOT/bin:$PATH"
+# eval "$(pyenv init -)"

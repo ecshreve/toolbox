@@ -60,4 +60,4 @@ fi
 
 
 echo "Executing Ansible playbook: $PLAYBOOK"
-ansible-playbook $PLAYBOOK --tags stable,base -vv --check
+ansible-playbook $PLAYBOOK --tags stable,base -vv 
