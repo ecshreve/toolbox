@@ -2,22 +2,13 @@
 #   System Configuration
 ##########################
 clean: false
-ansible_user: eric #"{{ lookup('env', 'HOME') | basename }}"
-home_dir: ~/
-toolbox_dir: ~/repos/toolbox
+ansible_user: "{{ lookup('env', 'HOME') | basename }}"
+home_dir: "{{ lookup('env', 'HOME') }}"
+toolbox_dir: "{{ lookup('env', 'PWD') }}"
 
 dirs_to_own:
   - "{{ home_dir }}/.config"
   - "{{ go_root }}"
-
-##########################
-#   Dotfiles to Copy
-##########################
-dotfile_names:
-  - .zshrc
-  - .tmux.conf
-  - .tmux.conf.local
-  - .p10k.zsh
 
 ##########################
 # Packages and Symlinks
@@ -53,7 +44,7 @@ brew_packages:
 #   FZF
 ##########################
 fzf_version: "0.49.0 (62963dc)"
-fzf_root: "{{ home_dir }}.fzf"
+fzf_root: "{{ home_dir }}/.fzf"
 fzf_bin: "{{ fzf_root }}/bin/fzf"
 
 ##########################

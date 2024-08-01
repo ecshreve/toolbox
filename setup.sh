@@ -17,7 +17,7 @@ if [ -n "$(which apt-get)" ]; then
 
     # Install python3 and pip
     echo "Installing required packages..."
-    sudo apt-get install -y python3 python3-pip python3-apt
+    sudo apt-get install -y python3-full python3-pip python3-apt
 
 # !FIX
 elif [ -n "$(which brew)" ]; then

@@ -15,7 +15,7 @@
 
 - name: Remove file if replacement is being linked
   ansible.builtin.file:
-    path: "{{ home_dir }}{{ item.path | basename }}"
+    path: "{{ home_dir }}/{{ item.path | basename }}"
     state: absent
   when: "'@' not in item.stdout"
   loop: "{{ existing_info.results }}"
@@ -23,7 +23,7 @@
 - name: Create symlinks for files
   ansible.builtin.file:
     src: "{{ item.path }}"
-    dest: "{{ home_dir }}.{{ item.path | basename }}"
+    dest: "{{ home_dir }}/{{ item.path | basename }}"
     state: link
     force: true
     mode: "0644"

@@ -11,7 +11,8 @@
   ansible.builtin.apt:
    name: fzf
    state: absent
-   
+  become: true
+
 - name: Download FZF via git
   ansible.builtin.git:
     repo: https://github.com/junegunn/fzf.git
