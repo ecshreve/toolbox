@@ -19,9 +19,16 @@ data "coder_provisioner" "me" {
 provider "docker" {
 }
 
-data "coder_workspace" "me" {
-}
+data "coder_workspace" "me" {}
 data "coder_workspace_owner" "me" {}
+data "coder_parameter" "force_rebuild" {
+  name         = "force_rebuild"
+  type         = "bool"
+  description  = "Rebuild the Docker image rather than use the cached one."
+  mutable      = true
+  default      = false
+  ephemeral    = true
+}
 
 variable "dotfiles_uri" {
   description = <<-EOF
