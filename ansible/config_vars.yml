@@ -43,7 +43,7 @@ brew_packages:
 ##########################
 #   FZF
 ##########################
-fzf_version: "0.49.0 (62963dc)"
+fzf_version: "0.49.0"
 fzf_root: "{{ home_dir }}/.fzf"
 fzf_bin: "{{ fzf_root }}/bin/fzf"
 

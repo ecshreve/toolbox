@@ -1,22 +1,14 @@
 ---
-- name: Check for existing install
-  ansible.builtin.command: fzf --version
-  register: current_fzf_version
-
-- name: Check existing version
-  set_fact:
-    fzf_needs_update: "{{ current_fzf_version != fzf_version }}"
-
 - name: Remove system fzf
   ansible.builtin.apt:
-   name: fzf
-   state: absent
+    name: fzf
+    state: absent
   become: true
 
 - name: Download FZF via git
   ansible.builtin.git:
     repo: https://github.com/junegunn/fzf.git
-    version: "{{ fzf_version.split(' ')[0]  }}"
+    version: "{{ fzf_version }}"
     dest: "{{ fzf_root }}"
     depth: 1
     update: false

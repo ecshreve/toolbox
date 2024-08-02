@@ -7,7 +7,7 @@
   register: general_config_files
 
 - name: Check for existing symlinks
-  ansible.builtin.command: "ls -F {{ home_dir }}{{ item.path | basename }}"
+  ansible.builtin.command: "ls -F {{ home_dir }}/{{ item.path | basename }}"
   register: existing_info
   failed_when: false
   check_mode: false

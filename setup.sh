@@ -26,13 +26,12 @@ elif [ -n "$(which brew)" ]; then
     echo "EXITING"
     exit 1
 fi
+# If neither apt-get nor brew is found, exit with an error message
 if [ -z $OS_ID ]; then
     echo "Can't determine OS, exiting"
     exit 1
 fi
-export PATH=:$PATH:$PYTHON_LOCATION
 
-export PATH=:$PATH:$PYTHON_LOCATION
 mkdir -p $HOME/.local/bin
 export PATH=$PATH:$HOME/.local/bin
 
@@ -50,14 +49,7 @@ export ANSIBLE_CONFIG="$TOOLBOX_DIR/ansible/ansible.cfg"
 echo "Done setting up the environment."
 echo "Ready for Ansible playbook execution."
 
-# Execute Ansible playbook
-# Example usage: ./setup.sh playbook.yml
-PLAYBOOK=$1
-if [ -z "$1" ]; then
-    echo "No playbook specified. Executing default playbook."
-    PLAYBOOK="$TOOLBOX_DIR/ansible/playbook.yml"
-fi
+PLAYBOOK=$TOOLBOX_DIR/ansible/playbook.yml
+echo "Executing Ansible playbook: ansible/playbook.yml"
 
-
-echo "Executing Ansible playbook: $PLAYBOOK"
-ansible-playbook $PLAYBOOK --tags stable,base -vv 
+ansible-playbook $PLAYBOOK --tags stable,base -vv
