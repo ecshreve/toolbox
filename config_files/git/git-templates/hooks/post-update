@@ -1,0 +1,13 @@
+#!/bin/bash
+#
+# This assumes a remote named sslocal configured to point at the soft serve server.
+
+# Navigate to the repository (assume the current working directory is the repository)
+REPO_DIR=$(git rev-parse --show-toplevel)
+cd "$REPO_DIR"
+
+# Fetch changes from GitHub to ensure the local repository is up-to-date
+git fetch origin
+
+# Push all changes (branches, tags, refs, etc.) to the Soft Serve Git server, mirroring the GitHub repo
+git push --mirror sslocal

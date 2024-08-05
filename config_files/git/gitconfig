@@ -13,3 +13,4 @@
 
 [init]
     defaultBranch = main
+	templateDir = ~/.git-templates
