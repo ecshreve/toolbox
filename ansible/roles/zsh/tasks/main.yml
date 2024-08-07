@@ -1,23 +1,23 @@
-- name: check if oh-my-zsh is installed
-  stat:
+- name: Check if oh-my-zsh is installed
+  ansible.builtin.stat:
     path: "{{ omz_root }}"
   register: ohmyzsh
 
-- name: install oh-my-zsh
+- name: Install oh-my-zsh
+  when: not ohmyzsh.stat.exista
   block:
-    - name: download oh-my-zsh
-      get_url:
+    - name: Download oh-my-zsh
+      ansible.builtin.get_url:
         url: https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh
         dest: /tmp/install.sh
         mode: '+x'
-    - name: install oh-my-zsh
-      command: sh /tmp/install.sh
+    - name: Run oh-my-zsh installer
+      ansible.builtin.command: sh /tmp/install.sh
   always:
-    - name: delete oh-my-zsh
-      file:
+    - name: Delete oh-my-zsh installer
+      ansible.builtin.file:
         path: /tmp/install.sh
         state: absent
-  when: ohmyzsh.stat.exists == False
 
 - name: Install omz plugins
   ansible.builtin.git:
@@ -25,7 +25,7 @@
     dest: "{{ omz_root }}/custom/plugins/{{ item.repo | basename }}"
     version: "{{ item.version }}"
   loop: "{{ omz_plugins }}"
-  
+
 - name: Install powerlevel prompt
   ansible.builtin.git:
     repo: https://github.com/romkatv/powerlevel10k.git
