@@ -12,14 +12,16 @@ Projects:
 Todos:
 
   Next:
-    ☐ figure out a better way to handle ansible config path
-    ☐ should I use homebrew to install ansible?
+    ☐ cleanup branches and add notess
+    ☐ decide on separation between toolbox and slab
+    ☐ figure out how to sync extension settings in vscode
 
   Later:
     ☐ redo devcontainer setup / ci / docker
     ☐ how to integrate skate effectively
     ☐ iterate on setup flow
-    ☐ add `soft serve` git server config?
+    ✔ add `soft serve` git server config? @done(24-08-07 17:04)
+      - nice for quickly viewing repos, but using gitea for mirrors/backups
     ☐ play around with tmux config
     ☐ fzf run tasks helper
     ☐ add mods roles and helper scripts
@@ -31,6 +33,10 @@ Todos:
     ☐ Rethink python install
 
 Archive:
+  ✔ figure out a better way to handle ansible config path @done(24-08-07 17:03) @project(Todos.Next)
+  - this seems fine now that i'm getting the TOOLBOX_DIR from pwd
+  ✔ should I use homebrew to install ansible? @done(24-08-07 17:03) @project(Todos.Next)
+  - no just use linux wherever possible
   ✔ add global git config @done(24-06-27 05:33) @project(Projects.Configuration)
   ✔ add global gitignore @done(24-06-27 05:33) @project(Projects.Configuration)
   ✔ update readme @done(24-06-27 05:07) @project(Todos.Next)

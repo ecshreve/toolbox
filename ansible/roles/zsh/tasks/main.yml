@@ -1,10 +1,10 @@
 - name: Check if oh-my-zsh is installed
   ansible.builtin.stat:
-    path: "{{ omz_root }}"
+    path: "{{ omz_root }}/oh_my_zsh.sh"
   register: ohmyzsh
 
 - name: Install oh-my-zsh
-  when: not ohmyzsh.stat.exista
+  when: not ohmyzsh.stat.exists
   block:
     - name: Download oh-my-zsh
       ansible.builtin.get_url:

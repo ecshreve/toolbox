@@ -6,20 +6,20 @@
     hidden: true
   register: git_config_files
 
-- name: Check for existing symlinks for git config files
-  ansible.builtin.command: "ls -F {{ home_dir }}/{{ item.path | basename }}"
-  register: existing_info
-  failed_when: false
-  check_mode: false
-  changed_when: false
-  loop: "{{ git_config_files }}"
+# - name: Check for existing symlinks for git config files
+#   ansible.builtin.command: "ls -F {{ home_dir }}/{{ item.path | basename }}"
+#   register: existing_info
+#   failed_when: false
+#   check_mode: false
+#   changed_when: false
+#   loop: "{{ git_config_files.files }}"
 
-- name: Remove file if replacement is being linked
-  ansible.builtin.file:
-    path: "{{ home_dir }}/{{ item.path | basename }}"
-    state: absent
-  when: "'@' not in item.stdout"
-  loop: "{{ existing_info.results }}"
+# - name: Remove file if replacement is being linked
+#   ansible.builtin.file:
+#     path: "{{ home_dir }}/{{ item.path | basename }}"
+#     state: absent
+#   when: "'@' not in item.stdout"
+#   loop: "{{ existing_info.results }}"
 
 - name: Create symlinks for files
   ansible.builtin.file:
@@ -28,5 +28,5 @@
     state: link
     force: true
     mode: "0644"
-  when: "'@' not in item.stdout"
-  loop: "{{ git_config_files.results }}"
+  # when: "'@' not in item.stdout"
+  loop: "{{ git_config_files.files }}"

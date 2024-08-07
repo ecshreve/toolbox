@@ -10,7 +10,7 @@ dirs_to_own:
   - "{{ home_dir }}/.config"
   - "{{ go_root }}"
 
-##########################
+##########################./
 # Packages and Symlinks
 ##########################
 
@@ -18,7 +18,8 @@ dirs_to_own:
 apt_packages:
   - zsh
   - tmux
-  - eza
+  # - eza
+  - exa
   - bat
   - fd-find
   - ripgrep
