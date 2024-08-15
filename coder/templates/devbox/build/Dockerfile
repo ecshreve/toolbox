@@ -21,6 +21,9 @@ RUN apt-get update && apt-get install -y \
 	ripgrep \
 	&& rm -rf /var/lib/apt/lists/*
 
+COPY ./locale_fix.sh /tmp/locale_fix.sh
+RUN /tmp/locale_fix.sh
+
 ARG USER=coder
 RUN useradd --groups sudo --no-create-home --shell /bin/bash ${USER} \
 	&& echo "${USER} ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/${USER} \

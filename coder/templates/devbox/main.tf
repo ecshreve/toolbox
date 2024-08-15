@@ -34,6 +34,7 @@ resource "coder_agent" "main" {
       touch ~/.init_done
     fi
     
+    echo "Installing toolbox dotfiles..."
     coder dotfiles -y https://github.com/ecshreve/toolbox.git
 
     # install and start code-server
@@ -50,6 +51,13 @@ resource "coder_agent" "main" {
     GIT_AUTHOR_EMAIL    = "${data.coder_workspace_owner.me.email}"
     GIT_COMMITTER_NAME  = coalesce(data.coder_workspace_owner.me.full_name, data.coder_workspace_owner.me.name)
     GIT_COMMITTER_EMAIL = "${data.coder_workspace_owner.me.email}"
+  }
+
+  display_apps {
+    vscode          = false
+    vscode_insiders = true
+    web_terminal    = true
+    ssh_helper      = true
   }
 
   # The following metadata blocks are optional. They are used to display

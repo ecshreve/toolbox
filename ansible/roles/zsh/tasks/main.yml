@@ -4,7 +4,7 @@
   register: ohmyzsh
 
 - name: Install oh-my-zsh
-  when: not ohmyzsh.stat.exista
+  when: not ohmyzsh.stat.exists
   block:
     - name: Download oh-my-zsh
       ansible.builtin.get_url:
