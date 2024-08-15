@@ -4,6 +4,7 @@
 
 [core]
 	excludesfile = ~/.global_gitignore
+	editor = vim
 
 [filter "lfs"]
 	clean = git-lfs clean -- %f
@@ -13,4 +14,4 @@
 
 [init]
     defaultBranch = main
-	templateDir = ~/.git-templates
+	# templateDir = ~/.git-templates

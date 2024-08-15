@@ -12,7 +12,7 @@
   failed_when: false
   check_mode: false
   changed_when: false
-  loop: "{{ git_config_files }}"
+  loop: "{{ git_config_files.files }}"
 
 - name: Remove file if replacement is being linked
   ansible.builtin.file:
@@ -29,4 +29,4 @@
     force: true
     mode: "0644"
   when: "'@' not in item.stdout"
-  loop: "{{ git_config_files.results }}"
+  loop: "{{ git_config_files.files }}"
