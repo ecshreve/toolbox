@@ -30,7 +30,7 @@ bindkey -M viins '^ff' fzf-file-widget
 # TODO: should these be moved?
 # General
 alias cat='bat'
-alias ls='eza --icons'
+alias lse='eza --icons'
 alias ll='ls -alF'
 alias cl='clear -x'
 alias cll='clear -x && ls -alF'

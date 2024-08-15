@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 export DEBIAN_FRONTEND="noninteractive"
-
 # This should be ~/repos/toolbox but maybe not
 export TOOLBOX_DIR="$(pwd)"
 
@@ -13,11 +12,11 @@ if [ -n "$(which apt-get)" ]; then
     echo "Detected package manager: apt-get"
     echo "Updating package list..."
     OS_ID="debian"
-    sudo apt-get update
+    sudo DEBIAN_FRONTEND=noninteractive apt-get update
 
     # Install python3 and pip
     echo "Installing required packages..."
-    sudo apt-get install -y python3-full python3-pip python3-apt
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python3-full python3-pip python3-apt
 
 # !FIX
 elif [ -n "$(which brew)" ]; then

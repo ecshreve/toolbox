@@ -18,7 +18,6 @@ dirs_to_own:
 apt_packages:
   - zsh
   - tmux
-  - eza
   - bat
   - fd-find
   - ripgrep
