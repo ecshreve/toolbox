@@ -2,6 +2,7 @@ Projects:
 
   Configuration:
     ☐ add ssh config file
+    ☐ install nvm in setup.sh
 
   Assistant:
     ☐ refactor and clean up
@@ -18,12 +19,9 @@ Todos:
   Later:
     ☐ redo devcontainer setup / ci / docker
     ☐ how to integrate skate effectively
-    ☐ iterate on setup flow
-    ☐ add `soft serve` git server config?
     ☐ play around with tmux config
     ☐ fzf run tasks helper
     ☐ add mods roles and helper scripts
-    ☐ move logic to clone toolbox into install.sh
     ☐ reindex pinecone on push to main?
     ☐ demo the assistant in the readme
     ☐ Add `run` configuration
@@ -31,6 +29,9 @@ Todos:
     ☐ Rethink python install
 
 Archive:
+  ✔ iterate on setup flow @done(24-08-15 10:32) @project(Todos.Later)
+  ✘ add `soft serve` git server config? @cancelled(24-08-15 10:32) @project(Todos.Later)
+  ✘ move logic to clone toolbox into install.sh @cancelled(24-08-15 10:32) @project(Todos.Later)
   ✔ add global git config @done(24-06-27 05:33) @project(Projects.Configuration)
   ✔ add global gitignore @done(24-06-27 05:33) @project(Projects.Configuration)
   ✔ update readme @done(24-06-27 05:07) @project(Todos.Next)

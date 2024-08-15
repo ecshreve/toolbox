@@ -9,3 +9,4 @@ logs/
 .python-version
 .env
 ansible-venv/
+.DS_Store

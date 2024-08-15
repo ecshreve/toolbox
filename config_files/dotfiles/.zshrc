@@ -54,6 +54,11 @@ alias snett='sudo netstat -tulnp | grep LISTEN'
 alias nav-play='ansible-navigator run'
 alias nav-ans='ansible-navigator'
 
+# Docker
+alias dockdo='docker context use remote-do'
+alias docksl='docker context use remote-slabsrv'
+alias dockdf='docker context use default'
+
 # Configure history size and options
 HISTSIZE=70000
 SAVEHIST=70000
@@ -65,11 +70,12 @@ setopt HIST_REDUCE_BLANKS  # Trim excessive whitespace from commands before addi
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
 
 # nvm
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-# [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 # # pyenv
 # export PYENV_ROOT="$HOME/.pyenv"
 # export PATH="$PYENV_ROOT/bin:$PATH"
 # eval "$(pyenv init -)"
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"

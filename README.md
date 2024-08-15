@@ -2,11 +2,11 @@
 
 A collection of tools and configurations for my development environment.
 
-I use this repository to manage my development environment across different machines, operating systems, containers, and cloud workspaces. The repository is designed to be cloned and run on a Ubuntu or MacOS system (only tested on my computers, ymmv).
+I use this repository to manage my development environment across different machines, operating systems, containers, and cloud workspaces.
 
 ## Usage
 
-Used on local machines and docker based development containers.
+Used on my macbook, coder workspaces, and other docker or linux based development containers.
 
 ### Local
 
@@ -91,7 +91,7 @@ I tend go update this file as needed to configure whatever piece of the environm
   
 _environment variables_
 
-`TOOLBOX_DIR`: `~/.toolbox`
+`TOOLBOX_DIR`: `~/repos/toolbox` or `~/dotfiles`
   - The directory where the toolbox repository is cloned.
 
 `ANSIBLE_HOME`: `$TOOLBOX_DIR/ansible`
@@ -142,6 +142,10 @@ These aren't fully integrated yet, some are just for fun, some are planned to be
 - cleanup: check ownership of files and directories
 - hashi: install terraform and packer
 - python: install pyenv and pyenv-virtualenv
+
+### Coder Templates
+
+The `coder/templates/devbox` directory contains a template for setting up a Coder workspace with the `toolbox` configuration. I'm currently running workspaces on a DigitalOcean droplet.
 
 ### Secrets Helper Script
 
