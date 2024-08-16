@@ -18,6 +18,7 @@ dirs_to_own:
 apt_packages:
   - zsh
   - tmux
+  # - exa #TODO: settle on a ubuntu version and figure out the exa/eza thing
   - bat
   - fd-find
   - ripgrep

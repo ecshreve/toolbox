@@ -15,6 +15,7 @@ Todos:
   Next:
     ☐ figure out a better way to handle ansible config path
     ☐ should I use homebrew to install ansible?
+    ☐ embed the list of aliases in the readme from .zshrc
 
   Later:
     ☐ redo devcontainer setup / ci / docker

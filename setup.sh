@@ -16,9 +16,9 @@ if [ -n "$(which apt-get)" ]; then
 
     # Install python3 and pip
     echo "Installing required packages..."
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python3-full python3-pip python3-apt
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python3-full python3-pip python3-apt python3-venv
 
-# !FIX
+# !FIXME!
 elif [ -n "$(which brew)" ]; then
     echo "Detected package manager: Homebrew"
     OS_ID="darwin"

@@ -145,7 +145,7 @@ These aren't fully integrated yet, some are just for fun, some are planned to be
 
 ### Coder Templates
 
-The `coder/templates/devbox` directory contains a template for setting up a Coder workspace with the `toolbox` configuration. I'm currently running workspaces on a DigitalOcean droplet.
+The `coder/templates/devbox` directory contains a template for setting up a Coder workspace with the `toolbox` configuration. I'm currently running workspaces locally and occasionally on a DigitalOcean droplet.
 
 ### Secrets Helper Script
 
