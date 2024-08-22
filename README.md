@@ -1,44 +1,43 @@
 #  toolbox 
 
-A collection of tools and configurations for my development environment.
+A collection of tools, configuration files, notes, and scripts.
 
-I use this repository to manage my development environment across different machines, operating systems, containers, and cloud workspaces.
+Used to manage development environment(s) and tools across machines, operating systems, containers, and virtual machines.
 
 ## Usage
 
-Used on my macbook, coder workspaces, and other docker or linux based development containers.
+During active development I run the `ansible` playbook either locally or in a container to configure my development environment.
 
-### Local
+Most often the setup script runs in a Ubuntu docker container on my macbook during the build of a Coder workspace. It is called by the coder agent's startup_script.
 
-How I currently run the `toolbox` setup locally:
-
-    $ git clone https://github.com/ecshreve/toolbox.git ~/repos/toolbox
-
-    $ cd ~/.toolbox
-
-    $ ./setup.sh
-
-Most of the time the setup script is triggered from a Coder workspace build or Github codespace build. 
+```hcl
+resource "coder_agent" "main" {
+  arch           = data.coder_provisioner.me.arch
+  os             = "linux"
+  startup_script = <<-EOT
+    set -e
+    ...
+    
+    echo "Installing toolbox dotfiles..."
+    coder dotfiles -y https://github.com/ecshreve/toolbox.git
+    
+    ...
+    echo "Done."
+  EOT
+```
 
 
 > [!NOTE]
-> Probably don't run the install script unless you're me. But, I'm not the boss of you.
+> Probably don't run the install script, it does a lot of things.
 
-## Why Toolbox?
 
-- I was tired of having do extra work to integrate things with my old `fish` setup. 
-- Wanted to update some tools and look at new ones.
-- Move setup definition to Ansible for better control and organization.
-- Possibly look at other tools and configuration management systems.
-- Its fun.
-
-### Highlights
+## Highlights / Fun Stuff
 - reliable `zsh` configuration, with plugins and utilities covering almost all of what `fish` was doing for me.
 - chatbot to interact with the repository via OpenAI Embeddings, LangChain, and Pinecone
 - `gencom` to generate commit messages based on currently staged changes (powered by `mods`)
 
 <!-- TODO: source these from the vars file? -->
-## Aliases and Commands to Remember
+### Aliases and Commands to Remember
 
 - `CTRL+ff` - fuzzy search for files
 - `gaa` - add all files to git
@@ -75,48 +74,43 @@ Most of the time the setup script is triggered from a Coder workspace build or G
 - `vhs` - A tool to create gifs from the terminal
 - `wishlist` - An SSH directory app
 
-## Environment Setup and Configuration
+## Ansible
 
 ### Playbook
 
 The `playbook.yml` file is the main entry point for the `ansible` configuration. It handles running the roles defined in the `ansible/roles` directory with the variables defined in `config_vars.yml`.
 
-I tend go update this file as needed to configure whatever piece of the environment I'm working on at the time, it's not in a "ready-to-run" state.
-
-### Configuration
+### Variables
 
 `./ansible/config_vars.yml` 
-  - Contains configuration variables that define the environment.
-  - Things like packages to install, language and tool versions, etc.
+  - Contains configuration variables defining packages to install, versions, and paths to target, among other things.
   
-_environment variables_
-
-`TOOLBOX_DIR`: `~/repos/toolbox` or `~/dotfiles`
-  - The directory where the toolbox repository is cloned.
-
-`ANSIBLE_HOME`: `$TOOLBOX_DIR/ansible`
-  - Overrides the default ansible home directory.
-  
-### Ansible Roles
+### Roles
 
 **`base`**
-- Installs packages (apt packages on debian/ubuntu) (macports ports on darwin).
+- Determines the operating system and package manager.
+- Install packages (apt-get on debian/ubuntu) (brew on darwin/macos).
 
 **`zsh`**:
-- Handles the installation and configuration of `zsh` and `oh-my-zsh`, as well 
-  as plugins and utilities.
-- Uses `powerlevel10k` for prompt styling.
-- Installs `zsh-autosuggestions`, `zsh-completions`, `zsh-syntax-highlighting`,
-  `forgit` and `fzf` plugins for enhanced shell functionality.
+- Install and configure of `zsh` and `oh-my-zsh`, plugins, and utilities.
+  - `zsh-autosuggestions`, `zsh-completions`, `zsh-syntax-highlighting`, `forgit` and `fzf` plugins for enhanced shell functionality.
+  - `powerlevel10k` for prompt styling.
 
 **`fzf`**:
-- Installs `fzf` from git repository.
+- Install `fzf` from git repository.
+
+**`gitenv`**:
+- Symlink `git` configuration files in `config_files/` to `$HOME`.
 
 **`dotfiles`**:
-- Symlinks dotfiles in `config_files/` to `$HOME`.
+- Symlink shell configuration files in `config_files/` to `$HOME`.
 
 > [!IMPORTANT]
 > The `.zshrc` configuration defines a keybinding override to use `^ff` instead of `^t` to trigger `fzf` from the command line.
+  
+### _dev roles
+
+These aren't fully integrated or tested yet, some are just for fun.
 
 **`golang`**:
 
@@ -124,10 +118,6 @@ _environment variables_
 - Installs `go` under `/usr/local/go`
 - Installs executables under `/home/eric/go/bin` <!--is this true?-->
 - Install path is defined in `config_vars.yml`
-  
-### _dev roles
-
-These aren't fully integrated yet, some are just for fun, some are planned to be integrated into the main playbook.
 
 **`ansible-navigator`**
 
@@ -143,7 +133,9 @@ These aren't fully integrated yet, some are just for fun, some are planned to be
 - hashi: install terraform and packer
 - python: install pyenv and pyenv-virtualenv
 
-### Coder Templates
+## Coder
+
+### Devbox Template
 
 The `coder/templates/devbox` directory contains a template for setting up a Coder workspace with the `toolbox` configuration. I'm currently running workspaces locally and occasionally on a DigitalOcean droplet.
 

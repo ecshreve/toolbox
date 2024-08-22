@@ -13,7 +13,6 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get update && apt-get install -y \
 	apt-utils \
 	bat \
-	eza \
 	fd-find \
 	htop \
 	net-tools \

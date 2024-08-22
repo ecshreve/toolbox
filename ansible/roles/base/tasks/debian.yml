@@ -12,6 +12,22 @@
   become: true
   loop: "{{ apt_packages }}"
 
+- name: Install exa if Ubuntu version less than 24
+  ansible.builtin.apt:
+    name: exa
+    state: present
+  become: true
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version | version_compare('24', '<')
+  tags: [exa]
+
+- name: Install eza if Ubuntu version greater than 24
+  ansible.builtin.apt:
+    name: eza
+    state: present
+  become: true
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version | version_compare('24', '>')
+  tags: [eza]
+
 - name: Create symbolic links
   ansible.builtin.file:
     src: "{{ item.value }}"
