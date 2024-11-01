@@ -30,7 +30,7 @@ bindkey -M viins '^ff' fzf-file-widget
 # TODO: should these be moved?
 # General
 alias cat='bat'
-alias ll='$LS_REPLACEMENT --icons=always -alF'
+alias ll='eza --icons=always -alF'
 alias ls='ls -alF'
 alias cl='clear -x'
 alias cll='clear -x && ls -alF'
@@ -66,12 +66,12 @@ setopt HIST_REDUCE_BLANKS  # Trim excessive whitespace from commands before addi
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
 
 # nvm
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-# [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
-# # pyenv
-# export PYENV_ROOT="$HOME/.pyenv"
-# export PATH="$PYENV_ROOT/bin:$PATH"
-# eval "$(pyenv init -)"
-# export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+# pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"

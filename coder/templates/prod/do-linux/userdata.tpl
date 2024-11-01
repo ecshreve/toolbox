@@ -1,23 +1,20 @@
 #cloud-config
 users:
-  - name: ${username}
+  - name: eric
+    ssh-authorized-keys:
+      - ${ssh_authorized_key}
     sudo: ["ALL=(ALL) NOPASSWD:ALL"]
     groups: sudo
     shell: /bin/bash
-apt:
-  sources:
-    tailscale.list:
-      source: deb https://pkgs.tailscale.com/stable/ubuntu focal main
-      keyid: 2596A99EAAB33821893C0A79458CA832957F5868
-packages: 
-  - tailscale
+packages:
+  - curl
   - git
 mounts:
   - [
       "LABEL=${home_volume_label}",
-      "/home/${username}",
-      auto,
-      "defaults,uid=1000,gid=1000",
+      "/home/eric",
+      "auto",
+      "defaults,uid=1000,gid=1000"
     ]
 write_files:
   - path: /opt/coder/init
@@ -33,7 +30,7 @@ write_files:
       Wants=network-online.target
 
       [Service]
-      User=${username}
+      User=eric
       ExecStart=/opt/coder/init
       Environment=CODER_AGENT_TOKEN=${coder_agent_token}
       Restart=always
@@ -47,8 +44,9 @@ write_files:
       [Install]
       WantedBy=multi-user.target
 runcmd:
-  - chown ${username}:${username} /home/${username}
-  - tailscale up --auth-key=${tailscale_key} --accept-routes --accept-dns
+  - chown eric:eric /home/eric
+  - curl -fsSL https://tailscale.com/install.sh | sh
+  - tailscale up --auth-key="${ts_auth}" --accept-routes --accept-dns
   - systemctl enable coder-agent
   - systemctl start coder-agent
 

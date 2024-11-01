@@ -131,7 +131,7 @@ data "coder_parameter" "droplet_size" {
   name         = "droplet_size"
   display_name = "Droplet size"
   description  = "Which Droplet configuration would you like to use?"
-  default      = "s-2vcpu-2gb"
+  default      = "s-2vcpu-4gb"
   type         = "string"
   icon         = "/icon/memory.svg"
   mutable      = false
@@ -178,7 +178,7 @@ data "coder_parameter" "region" {
   description  = "This is the region where your workspace will be created."
   icon         = "/emojis/1f30e.png"
   type         = "string"
-  default      = "sfo2"
+  default      = "sfo3"
   mutable      = false
   # nyc1, sfo1, and ams2 regions were excluded because they do not support volumes, which are used to persist data while decreasing cost
   option {
@@ -252,6 +252,12 @@ data "coder_workspace_owner" "me" {}
 resource "coder_agent" "main" {
   os   = "linux"
   arch = "amd64"
+  startup_script = <<EOT
+  set -e
+
+  coder dotfiles -y https://github.com/ecshreve/toolbox.git
+
+  EOT
 
   metadata {
     key          = "cpu"
@@ -281,6 +287,7 @@ resource "coder_agent" "main" {
     vscode_insiders = true
     web_terminal    = true
     ssh_helper      = true
+    port_forwarding_helper = true
   }
 }
 
@@ -297,25 +304,30 @@ resource "digitalocean_volume" "home_volume" {
   }
 }
 
-variable "ts_token" {
+variable "ts_auth_tok" {
+  type = string
+  sensitive = true
+}
+
+variable "ssh_pub" {
   type = string
   sensitive = true
 }
 
 resource "digitalocean_droplet" "workspace" {
   region = data.coder_parameter.region.value
-  count  = data.coder_workspace.me.start_count
+  # count  = data.coder_workspace.me.start_count
   name   = "coder-${lower(data.coder_workspace_owner.me.name)}-${lower(data.coder_workspace.me.name)}"
   image  = data.coder_parameter.droplet_image.value
   size   = data.coder_parameter.droplet_size.value
 
   volume_ids = [digitalocean_volume.home_volume.id]
   user_data = templatefile("userdata.tpl", {
-    username          = lower(data.coder_workspace_owner.me.name)
     home_volume_label = digitalocean_volume.home_volume.initial_filesystem_label
     init_script       = base64encode(coder_agent.main.init_script)
     coder_agent_token = coder_agent.main.token
-    tailscale_key = var.ts_token
+    ssh_authorized_key = var.ssh_pub
+    ts_auth = var.ts_auth_tok
   })
   # Required to provision Fedora.
   ssh_keys = var.step2_do_admin_ssh_key > 0 ? [var.step2_do_admin_ssh_key] : []

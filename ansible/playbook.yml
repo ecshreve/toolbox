@@ -6,11 +6,12 @@
   vars_files:
     - config_vars.yml
   roles:
-    - base
-    - zsh
-    - fzf
-    - gitenv
-    - dotfiles
+    # - base
+    # - zsh
+    # - fzf
+    # - gitenv
+    # - dotfiles
+    - apps
   ignore_errors: "{{ ansible_check_mode }}"
 
 # - name: Configure golang and go tools
