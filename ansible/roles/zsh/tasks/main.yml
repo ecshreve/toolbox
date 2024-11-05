@@ -3,22 +3,6 @@
     path: "{{ omz_root }}"
   register: ohmyzsh
 
-- name: Install oh-my-zsh
-  when: not ohmyzsh.stat.exists
-  block:
-    - name: Download oh-my-zsh
-      ansible.builtin.get_url:
-        url: https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh
-        dest: /tmp/install.sh
-        mode: '+x'
-    - name: Run oh-my-zsh installer
-      ansible.builtin.command: sh /tmp/install.sh
-  always:
-    - name: Delete oh-my-zsh installer
-      ansible.builtin.file:
-        path: /tmp/install.sh
-        state: absent
-
 - name: Install omz plugins
   ansible.builtin.git:
     repo: "https://github.com/{{ item.repo }}.git"

@@ -18,7 +18,7 @@ dirs_to_own:
 apt_packages:
   - zsh
   - tmux
-  # - exa #TODO: settle on a ubuntu version and figure out the exa/eza thing
+  - eza
   - bat
   - fd-find
   - ripgrep
@@ -66,7 +66,7 @@ p10k_version: 35833ea15f14b71dbcebc7e54c104d8d56ca5268
 ##########################
 #   Golang + Go Tools
 ##########################
-go_version_target: 1.22.2
+go_version_target: 1.23.2
 
 go_root: "/usr/local/go"
 go_bin: "/usr/local/go/bin"
@@ -88,6 +88,11 @@ charm_packages:
   wishlist: github.com/charmbracelet/wishlist/cmd/wishlist@latest
 
 golang_checksums:
+  '1.23.2':
+    linux:
+      arm64: f626cdd92fc21a88b31c1251f419c17782933a42903db87a174ce74eeecc66a9
+    darwin:
+      arm64: d87031194fe3e01abdcaf3c7302148ade97a7add6eac3fec26765bcb3207b80f
   '1.21.8':
     linux:
       arm64: 3c19113c686ffa142e9159de1594c952dee64d5464965142d222eab3a81f1270
@@ -131,7 +136,6 @@ python_build_deps:
   - libreadline-dev 
   - libsqlite3-dev
   - libncursesw5-dev 
-  - xz-utils tk-dev 
   - libxml2-dev 
   - libxmlsec1-dev 
   - libffi-dev 

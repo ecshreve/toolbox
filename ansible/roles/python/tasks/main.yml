@@ -1,4 +1,12 @@
 ---
+- name: Install python build dependencies
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  become: true
+  loop: "{{ python_build_deps }}"
+
 - name: Remove pyenv
   ansible.builtin.file:
     path: "{{ pyenv_root }}"

@@ -5,6 +5,7 @@
   register: go_stat
 
 - name: Checks
+  when: go_stat.stat.exists
   block:
     - name: Check installed Go version.
       ansible.builtin.command:
@@ -19,7 +20,6 @@
     - name: Check if installed Go version matches target version.
       set_fact:
         go_version_needs_upgrade: "{{ go_version_installed != go_version_target }}"
-  when: go_stat.stat.exists
 
 - name: Install target Go version if not already installed.
   block:
