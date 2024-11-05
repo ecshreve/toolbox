@@ -11,17 +11,21 @@
       ansible.builtin.command:
         cmd: "{{ go_root }}/bin/go version"
       register: go_version
+      changed_when: false
       ignore_errors: "{{ ansible_check_mode }}"
 
     - name: Extract the installed Go version.
-      set_fact:
+      ansible.builtin.set_fact:
         go_version_installed: "{{ go_version.stdout | regex_replace('^go version go([0-9]+\\.[0-9]+\\.[0-9]+) .*', '\\1') }}"
 
     - name: Check if installed Go version matches target version.
-      set_fact:
+      ansible.builtin.set_fact:
         go_version_needs_upgrade: "{{ go_version_installed != go_version_target }}"
 
 - name: Install target Go version if not already installed.
+  when:
+    - not ansible_check_mode
+    - not go_stat.stat.exists or go_version_needs_upgrade | default(false)
   block:
     - name: Remove current installation if version does not match.
       ansible.builtin.file:
@@ -45,9 +49,6 @@
         remote_src: true
         owner: "{{ ansible_user }}"
       ignore_errors: "{{ ansible_check_mode }}"
-  when: 
-    - not ansible_check_mode  
-    - not go_stat.stat.exists or go_version_needs_upgrade | default(false)
 
 - name: Install go packages with go install.
   ansible.builtin.command:

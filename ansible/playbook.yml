@@ -19,7 +19,6 @@
   vars_files:
     - config_vars.yml
   roles:
-    - base
     - golang
   vars:
     go_version_target: 1.23.2

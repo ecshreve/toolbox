@@ -11,7 +11,8 @@
     path: "{{ home_dir }}/{{ item.path | basename }}"
     state: absent
   loop: "{{ git_config_files.files }}"
-  ignore_errors: "{{ ansible_check_mode }}"
+  when: not ansible_check_mode
+
 - name: Create symlinks for files
   ansible.builtin.file:
     src: "{{ item.path }}"
