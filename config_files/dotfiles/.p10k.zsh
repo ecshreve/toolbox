@@ -113,12 +113,12 @@
     newline                 # \n
     ip                    # ip address and bandwidth usage for a specified network interface
     public_ip             # public IP address
-    proxy                 # system-wide http/https/ftp proxy
-    battery               # internal battery
+    # proxy                 # system-wide http/https/ftp proxy
+    # battery               # internal battery
     wifi                  # wifi speed
-    load                  # CPU load
+    # load                  # CPU load
     # disk_usage            # disk usage
-    ram                   # free RAM
+    # ram                   # free RAM
     # example               # example user-defined segment (see prompt_example function below)
   )
 

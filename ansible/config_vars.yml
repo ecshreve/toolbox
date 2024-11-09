@@ -5,14 +5,14 @@ clean: false
 
 ansible_user: "{{ lookup('env', 'HOME') | basename }}"
 home_dir: "{{ lookup('env', 'HOME') }}"
-toolbox_dir: "{{ lookup('env', 'PWD') }}"
+toolbox_dir: "{{ home_dir }}/github.com/ecshreve/toolbox"
 
 dirs_to_own:
   - "{{ home_dir }}/.config"
   - "{{ go_root }}"
 
 ##########################
-# Packages and Symlinks
+# Packages
 ##########################
 
 # Ubuntu - Debian
@@ -30,7 +30,7 @@ symlinks:
   fd: /usr/bin/fdfind
 
 # MacOS - Darwin
-brew_packages:
+base_packages:
   - zsh
   - tmux
   - eza
@@ -38,119 +38,4 @@ brew_packages:
   - fd
   - ripgrep
   - git
-  - gnu-tar
-
-
-##########################
-#   FZF
-##########################
-fzf_version: "0.49.0"
-fzf_root: "{{ home_dir }}/.fzf"
-fzf_bin: "{{ fzf_root }}/bin/fzf"
-
-##########################
-#   Zsh + Oh-My-Zsh
-##########################
-omz_version: 038931039030911852d456215d6f39385d5b7a6e
-omz_root: "{{ home_dir }}/.oh-my-zsh"
-omz_plugins:
-  - repo: "zsh-users/zsh-autosuggestions"
-    version: a411ef3e0992d4839f0732ebeb9823024afaaaa8
-  - repo: "zsh-users/zsh-syntax-highlighting"
-    version: db085e4661f6aafd24e5acb5b2e17e4dd5dddf3e
-  - repo: "zsh-users/zsh-completions"
-    version: 67921bc12502c1e7b0f156533fbac2cb51f6943d
-  - repo: "wfxr/forgit"
-    version: d582f2aa0b5bf7948d78aca05c55a974e68f4884
-p10k_version: 35833ea15f14b71dbcebc7e54c104d8d56ca5268
-
-##########################
-#   Golang + Go Tools
-##########################
-go_version_target: 1.23.2
-
-go_root: "/usr/local/go"
-go_bin: "/usr/local/go/bin"
-go_platform: "{{ ansible_os_family | lower | regex_replace('macos', 'darwin') | regex_replace('debian', 'linux') }}"
-go_arch: "{{ ansible_machine | lower | regex_replace('aarch64', 'arm64') | regex_replace('x86_64', 'amd64') }}"
-go_tarball: "go{{ go_version_target }}.{{ go_platform }}-{{ go_arch }}.tar.gz"
-go_tarball_url: "https://golang.org/dl/{{ go_tarball }}"
-
-go_packages:
-  run: github.com/amonks/run/cmd/run@v1.0.0-beta.24
-
-charm_packages:
-  glow: github.com/charmbracelet/glow@latest
-  mods: github.com/charmbracelet/mods@latest
-  skate: github.com/charmbracelet/skate@latest
-  gum: github.com/charmbracelet/gum@latest
-  freeze: github.com/charmbracelet/freeze@latest
-  vhs: github.com/charmbracelet/vhs@latest
-  wishlist: github.com/charmbracelet/wishlist/cmd/wishlist@latest
-
-golang_checksums:
-  '1.23.2':
-    linux:
-      arm64: f626cdd92fc21a88b31c1251f419c17782933a42903db87a174ce74eeecc66a9
-    darwin:
-      arm64: d87031194fe3e01abdcaf3c7302148ade97a7add6eac3fec26765bcb3207b80f
-  '1.21.8':
-    linux:
-      arm64: 3c19113c686ffa142e9159de1594c952dee64d5464965142d222eab3a81f1270
-  '1.22.1':
-    linux:
-      amd64: aab8e15785c997ae20f9c88422ee35d962c4562212bb0f879d052a35c8307c7f
-  '1.22.2':
-    linux:
-      arm64: 36e720b2d564980c162a48c7e97da2e407dfcc4239e1e58d98082dfa2486a0c1
-      amd64: 5901c52b7a78002aeff14a21f93e0f064f74ce1360fce51c6ee68cd471216a17
-    darwin:
-      arm64: 660298be38648723e783ba0398e90431de1cb288c637880cdb124f39bd977f0d
-
-##########################
-#   Python + Pip
-##########################
-# Installation paths
-pyenv_home: "{{ ansible_env.HOME }}"
-pyenv_root: "{{ ansible_env.HOME }}/.pyenv"
-pyenv_install_shell: "zsh"
-
-# Versions to install
-pyenv_version: "v2.3.36"
-pyenv_virtualenv_version: "v1.2.1"
-
-# Python versions
-pyenv_python311_version: "3.11.8"
-
-# Python versions to install
-pyenv_python_versions:
-  - "{{ pyenv_python311_version }}"
-
-# Set global pyenv version
-pyenv_global: "{{ python_version_target }}"
-
-python_build_deps:
-  - build-essential 
-  - libssl-dev 
-  - zlib1g-dev
-  - libbz2-dev 
-  - libreadline-dev 
-  - libsqlite3-dev
-  - libncursesw5-dev 
-  - libxml2-dev 
-  - libxmlsec1-dev 
-  - libffi-dev 
-  - liblzma-dev
-  
-##########################
-#   HashiCorp Tools
-##########################
-hashicorp_tools:
-  - terraform
-  - packer
-
-##########################
-#  Misc Tools
-##########################
-binary_releases:
-  ttyd: https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.aarch64
+  - gnutar
