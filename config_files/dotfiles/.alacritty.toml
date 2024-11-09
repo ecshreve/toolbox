@@ -5,7 +5,7 @@ TERM = "xterm-256color"
 history = 100000
 
 [font]
-normal = { family = "SauceCodePro NF", style = "Regular" }
+normal = { family = "Hack Nerd Font", style = "Regular" }
 size = 12.0
 offset = { y = 2 }
 
@@ -23,7 +23,7 @@ title = "Alacritty"
 # general = "Alacritty"
 
 [terminal]
-shell = { program = "/opt/homebrew/bin/zsh", args = ["-l"] }
+shell = { program = "/opt/local/bin/zsh", args = ["-l"] }
 
 
 # Colors (Gruvbox dark)

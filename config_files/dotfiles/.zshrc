@@ -1,7 +1,6 @@
-export PATH="$HOME/.local/bin:$HOME/go/bin:/usr/local/go/bin:$PATH"
-
-export FZF_BASE="$HOME/.fzf/bin/fzf"
+export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 export ZSH="$HOME/.oh-my-zsh"
+export FZF_BASE="$HOME/.fzf/bin/fzf"
 export FZF_DEFAULT_OPTS='--cycle --layout=reverse --border --height=80% --preview="bat --style=numbers --color=always --line-range :500 {}" --preview-window=nowrap --marker="*"'
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
@@ -9,12 +8,11 @@ DISABLE_AUTO_UPDATE="true"
 
 plugins=(
     direnv
+    fzf
     git
-    forgit
     zsh-autosuggestions
     zsh-completions
     zsh-syntax-highlighting
-    fzf
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -43,8 +41,6 @@ alias gup='git pull --rebase'
 alias gdoof='git add --all && git commit --amend --no-edit'
 alias goops='git reset --soft HEAD~1 && git status'
 alias gll='git diff --cached | wc -l'
-alias gbb='forgit::checkout::branch'
-alias gcp='forgit::cherry::pick::from::branch'
 
 # Network
 alias nett='netstat -tulnp | grep LISTEN'
@@ -64,14 +60,3 @@ setopt HIST_REDUCE_BLANKS  # Trim excessive whitespace from commands before addi
 # Source theme and other scripts
 [ -f $HOME/.p10k.zsh ] && source $HOME/.p10k.zsh
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
-
-# nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
-# pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-export PATH="/opt/homebrew/opt/ruby/bin:$PATH"

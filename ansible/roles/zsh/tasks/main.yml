@@ -1,7 +1,9 @@
-- name: Check if oh-my-zsh is installed
-  ansible.builtin.stat:
-    path: "{{ omz_root }}"
-  register: ohmyzsh
+---
+- name:  Install oh-my-zsh
+  ansible.builtin.git:
+    repo: https://github.com/ohmyzsh/ohmyzsh.git
+    dest: "{{ omz_root }}"
+    version: "{{ omz_version }}"
 
 - name: Install omz plugins
   ansible.builtin.git:

@@ -1,17 +1,10 @@
 ---
-- name: Extract general dotfile config files from config_files
+- name: Extract dotfile names from config_files
   ansible.builtin.find:
     paths: "{{ toolbox_dir }}/config_files/dotfiles"
     file_type: any
     hidden: true
   register: general_config_files
-
-- name: Remove file if replacement is being linked
-  ansible.builtin.file:
-    path: "{{ home_dir }}/{{ item.path | basename }}"
-    state: absent
-  loop: "{{ general_config_files.files }}"
-  when: not ansible_check_mode
 
 - name: Create symlinks for files
   ansible.builtin.file:
