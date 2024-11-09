@@ -7,6 +7,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 DISABLE_AUTO_UPDATE="true"
 
 plugins=(
+    asdf
     direnv
     fzf
     git

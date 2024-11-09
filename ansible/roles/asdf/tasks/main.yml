@@ -1,0 +1,47 @@
+---
+- name: Install dependencies
+  community.general.macports:
+    name: "{{ item }}"
+  become: true
+  loop: "{{ asdf_dependencies }}"
+
+- name: Install dependencies with variants
+  community.general.macports:
+    name: "{{ item.name }}"
+    variant: "{{ item.variant }}"
+  become: true
+  loop: "{{ asdf_dependencies_variants }}"
+
+
+- name: Check for existing asdf install
+  ansible.builtin.git:
+    repo: "{{ asdf_repo }}"
+    dest: "{{ asdf_root }}"
+    version: "{{ asdf_version }}"
+    clone: no
+  register: asdf_results
+
+- name: Install asdf
+  ansible.builtin.git:
+    repo: "{{ asdf_repo }}"
+    dest: "{{ asdf_root }}"
+    version: "{{ asdf_version }}"
+  when: not asdf_results.before
+
+- name: Set asdf_source Variable
+  ansible.builtin.set_fact:
+    asdf_source: "{{ asdf_root }}/asdf.sh"
+
+- name: Install asdf plugins
+  ansible.builtin.shell:
+    cmd: "source {{ asdf_source }}; asdf plugin add {{ item.name }}"
+    creates: "{{ asdf_root }}/plugins/{{ item.name }}"
+    executable: /bin/sh
+  loop: "{{ asdf_plugins }}"
+
+- name: Install asdf apps 
+  ansible.builtin.shell:
+    cmd: "source {{ asdf_source }}; asdf install {{ item.name }} {{ item.version }}"
+    creates: "{{ asdf_root }}/installs/{{ item.name }}/{{ item.version }}"
+    executable: /bin/sh
+  loop: "{{ asdf_plugins }}"

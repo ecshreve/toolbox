@@ -1,0 +1,31 @@
+---
+asdf_root: "{{ ansible_env.HOME }}/.asdf"
+asdf_repo: "https://github.com/asdf-vm/asdf.git"
+asdf_version: "v0.14.1"
+asdf_dependencies:
+  - coreutils
+  - openssl
+  - readline
+  - curl
+  - gdbm
+  - git
+  - gnupg2
+  - gawk
+  - pkgconfig
+  - sqlite3
+  - sqlite3-tcl
+  - tcl
+  - xz
+  - zlib
+
+asdf_dependencies_variants:
+  - name: tk
+    variant: +quartz
+
+asdf_plugins:
+  - name: nodejs
+    version: "20.18.0"
+  - name: python
+    version: "3.12.7"
+  - name: golang
+    version: "1.23.3"
