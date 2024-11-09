@@ -11,3 +11,12 @@
     - fzf
     - dotfiles
   ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Configure asdf
+  tags: [dev]
+  hosts: localhost
+  connection: local
+  roles:
+    - asdf
+  vars_files:
+    - config_vars.yml
