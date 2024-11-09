@@ -1,17 +1,26 @@
 ---
-- name: Install dependencies
+- name: Install dependencies with macports
   community.general.macports:
     name: "{{ item }}"
   become: true
-  loop: "{{ asdf_dependencies }}"
+  loop: "{{ asdf_mac_dependencies }}"
+  when: ansible_os_family == "Darwin"
 
 - name: Install dependencies with variants
   community.general.macports:
     name: "{{ item.name }}"
     variant: "{{ item.variant }}"
   become: true
-  loop: "{{ asdf_dependencies_variants }}"
+  loop: "{{ asdf_mac_dependencies_variants }}"
+  when: ansible_os_family == "Darwin"
 
+- name: Install dependencies with apt
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  become: true
+  loop: "{{ asdf_apt_dependencies }}"
+  when: ansible_os_family == "Debian"
 
 - name: Check for existing asdf install
   ansible.builtin.git:

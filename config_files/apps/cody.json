@@ -1,0 +1,10 @@
+{
+    "commit-message": {
+        "description": "Commit message for current changes",
+        "prompt": "Suggest an informative commit message by summarizing code changes from the shared command output. The commit message should follow the conventional commit format and provide meaningful context for future readers. Remember: the subject line should be no more than 50 characters and the body should be no more than 72 characters per line. The commit message should be in the present tense, active voice, and describe what the code does, not just identify changes.",
+        "context": {
+            "selection": false,
+            "command": "git diff --cached"
+        }
+    }
+}
