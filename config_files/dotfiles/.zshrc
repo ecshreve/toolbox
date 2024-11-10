@@ -30,7 +30,7 @@ bindkey -M viins '^ff' fzf-file-widget
 # General
 alias cat='bat'
 alias ll='eza --icons=always -alF'
-alias ls='ls -alF'
+alias ls='eza --icons=always'
 alias cl='clear -x'
 alias cll='clear -x && ls -alF'
 alias clear='clear -x'

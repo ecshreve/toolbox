@@ -53,4 +53,4 @@ export ANSIBLE_CONFIG="$TOOLBOX_DIR/ansible/ansible.cfg"
 PLAYBOOK=$TOOLBOX_DIR/ansible/playbook.yml
 
 echo "Executing Ansible playbook: $PLAYBOOK"
-ansible-playbook $PLAYBOOK --tags base,dev --check
+ansible-playbook $PLAYBOOK --tags stable -vvv
