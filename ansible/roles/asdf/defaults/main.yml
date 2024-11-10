@@ -62,3 +62,11 @@ asdf_plugins:
     version: "3.12.7"
   - name: golang
     version: "1.23.3"
+
+asdf_hashi_plugins:
+  - name: terraform
+    repo: "https://github.com/asdf-community/asdf-hashicorp.git"
+    version: "1.9.8"
+  - name: packer
+    repo: "https://github.com/asdf-community/asdf-hashicorp.git"
+    version: "1.11.2"

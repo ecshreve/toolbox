@@ -1,0 +1,12 @@
+---
+- name: Install asdf hashi plugins
+  ansible.builtin.shell:
+    cmd: "source {{ asdf_source }}; asdf plugin add {{ item.name }} {{ item.repo}}"
+    creates: "{{ asdf_root }}/plugins/{{ item.name }}"
+  loop: "{{ asdf_hashi_plugins }}"
+
+- name: Install asdf apps 
+  ansible.builtin.shell:
+    cmd: "source {{ asdf_source }}; asdf install {{ item.name }} {{ item.version }}"
+    creates: "{{ asdf_root }}/installs/{{ item.name }}/{{ item.version }}"
+  loop: "{{ asdf_hashi_plugins }}"
