@@ -1,7 +1,27 @@
 ---
-- name: Extract dotfile names from config_files
+- name: Create ghrepo directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/github.com/ecshreve"
+    state: directory
+    mode: "0755"
+    owner: "{{ ansible_user }}"
+  register: ghrepo_dir
+
+- name: Check for existing toolbox repo
+  ansible.builtin.stat:
+    path: "{{ ghrepo_dir.path }}/toolbox"
+  register: toolbox_repo
+
+- name: Clone toolbox
+  ansible.builtin.git:
+    repo: "https://github.com/ecshreve/toolbox.git"
+    dest: "{{ ghrepo_dir.path }}/toolbox"
+    version: "main"
+  when: not toolbox_repo.stat.exists
+
+- name: Extract dotfile names from config_files dir
   ansible.builtin.find:
-    paths: "{{ toolbox_dir }}/config_files/dotfiles"
+    paths: "{{ ghrepo_dir.path }}/toolbox/config_files/dotfiles"
     file_type: any
     hidden: true
   register: general_config_files
@@ -9,7 +29,7 @@
 - name: Create symlinks for files
   ansible.builtin.file:
     src: "{{ item.path }}"
-    dest: "{{ home_dir }}/{{ item.path | basename }}"
+    dest: "~/{{ item.path | basename }}"
     state: link
     force: true
     mode: "0644"

@@ -2,7 +2,7 @@
 - name: Install dependencies with macports
   community.general.macports:
     name: "{{ item }}"
-  become: true
+  # become: true
   loop: "{{ asdf_mac_dependencies }}"
   when: ansible_os_family == "Darwin"
 
@@ -10,7 +10,7 @@
   community.general.macports:
     name: "{{ item.name }}"
     variant: "{{ item.variant }}"
-  become: true
+  # become: true
   loop: "{{ asdf_mac_dependencies_variants }}"
   when: ansible_os_family == "Darwin"
 
@@ -35,7 +35,7 @@
     repo: "{{ asdf_repo }}"
     dest: "{{ asdf_root }}"
     version: "{{ asdf_version }}"
-    clone: no
+    clone: false
   register: asdf_results
 
 - name: Install asdf
@@ -45,21 +45,15 @@
     version: "{{ asdf_version }}"
   when: not asdf_results.before
 
-- name: Set asdf_source Variable
-  ansible.builtin.set_fact:
-    asdf_source: "{{ asdf_root }}/asdf.sh"
-
 - name: Install asdf plugins
-  ansible.builtin.shell:
-    cmd: "source {{ asdf_source }}; asdf plugin add {{ item.name }}"
-    creates: "{{ asdf_root }}/plugins/{{ item.name }}"
-  loop: "{{ asdf_plugins }}"
+  ansible.builtin.shell: |
+    export ASDF_DIR="{{ asdf_root }}"; 
+    . "{{ asdf_root }}/asdf.sh"
 
-- name: Install asdf apps 
-  ansible.builtin.shell:
-    cmd: "source {{ asdf_source }}; asdf install {{ item.name }} {{ item.version }}"
+    asdf plugin add "{{ item.name }} {{ item.repo }}"
+    asdf install "{{ item.name }} {{ item.version }}"
+    asdf install "{{ item.name }}" latest
+  args:
     creates: "{{ asdf_root }}/installs/{{ item.name }}/{{ item.version }}"
-  loop: "{{ asdf_plugins }}"
-
-- name: Install asdf hashi plugins
-  ansible.builtin.include_tasks: hashi.yml
+    executable: /bin/sh
+  loop: "{{ asdf_apps }}"

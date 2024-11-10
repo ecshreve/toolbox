@@ -1,5 +1,5 @@
 ---
-omz_root: "{{ lookup('env', 'HOME') }}/.oh-my-zsh"
+omz_root: "~/.oh-my-zsh"
 omz_version: 7ed475cb589c9e82211f71b3a5d7083b69cea93c
 omz_plugins:
   - repo: "zsh-users/zsh-autosuggestions"
