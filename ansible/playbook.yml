@@ -1,6 +1,6 @@
 ---
-- name: Configure environment
-  tags: [stable, base]
+- name: Configure local environment
+  tags: [stable]
   hosts: localhost
   connection: local
   vars_files:
@@ -10,13 +10,18 @@
     - zsh
     - fzf
     - dotfiles
+    - asdf
   ignore_errors: "{{ ansible_check_mode }}"
 
-- name: Configure asdf
+- name: Configure local multipass instance
   tags: [dev]
-  hosts: localhost
-  connection: local
+  hosts: localbox
   roles:
+    - base
+    - zsh
+    - fzf
+    - dotfiles
     - asdf
   vars_files:
     - config_vars.yml
+  ignore_errors: "{{ ansible_check_mode }}"

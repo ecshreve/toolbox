@@ -1,5 +1,5 @@
 ---
-asdf_root: "{{ ansible_env.HOME }}/.asdf"
+asdf_root: "{{ ansible_user_dir }}/.asdf"
 asdf_repo: "https://github.com/asdf-vm/asdf.git"
 asdf_version: "v0.14.1"
 asdf_apt_dependencies: 
@@ -55,15 +55,16 @@ asdf_mac_dependencies_variants:
   - name: tk
     variant: +quartz
 
-asdf_plugins:
+asdf_apps:
   - name: nodejs
+    repo: "https://github.com/asdf-vm/asdf-nodejs.git"
     version: "20.18.0"
   - name: python
+    repo: "https://github.com/danhper/asdf-python.git"
     version: "3.12.7"
   - name: golang
+    repo: "https://github.com/asdf-community/asdf-golang.git"
     version: "1.23.3"
-
-asdf_hashi_plugins:
   - name: terraform
     repo: "https://github.com/asdf-community/asdf-hashicorp.git"
     version: "1.9.8"

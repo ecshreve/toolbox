@@ -1,4 +1,4 @@
 ---
-fzf_root: "{{ lookup('env', 'HOME') }}/.fzf"
+fzf_root: "~/.fzf"
 fzf_bin: "{{ fzf_root }}/bin/fzf"
 fzf_version: "0.49.0"
