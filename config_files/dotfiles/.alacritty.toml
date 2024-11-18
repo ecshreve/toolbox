@@ -22,8 +22,9 @@ title = "Alacritty"
 # instance = "Alacritty"
 # general = "Alacritty"
 
-[terminal]
-shell = { program = "/opt/local/bin/zsh", args = ["-l"] }
+[terminal.shell]
+program = "/bin/zsh"
+args = ["-l"] 
 
 
 # Colors (Gruvbox dark)

@@ -5,6 +5,7 @@ export FZF_DEFAULT_OPTS='--cycle --layout=reverse --border --height=80% --previe
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
 DISABLE_AUTO_UPDATE="true"
+ZSH_DISABLE_COMPFIX="true"
 
 plugins=(
     asdf
@@ -29,8 +30,9 @@ bindkey -M viins '^ff' fzf-file-widget
 # TODO: should these be moved?
 # General
 alias cat='bat'
-alias ll='eza --icons=always -alF'
-alias ls='eza --icons=always'
+# alias ll='eza --icons=always -alF'
+# alias ls='eza --icons=always'
+alias ll='ls -alF'
 alias cl='clear -x'
 alias cll='clear -x && ls -alF'
 alias clear='clear -x'
