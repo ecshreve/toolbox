@@ -7,9 +7,9 @@ terraform {
   }
 }
 
-resource "multipass_instance" "localbox" {
+resource "multipass_instance" "devbox" {
     count = 1
-    name  = "localbox"
+    name  = "devbox"
     image = "noble"
     cpus  = 4
     memory = "8gb"
