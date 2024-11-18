@@ -1,27 +1,28 @@
 ---
-- name: Configure local environment
-  tags: [stable]
-  hosts: localhost
-  connection: local
-  vars_files:
-    - config_vars.yml
-  roles:
-    - base
-    - zsh
-    - fzf
-    - dotfiles
-    - asdf
-  ignore_errors: "{{ ansible_check_mode }}"
+# - name: Configure local environment
+#   tags: [stable]
+#   hosts: localhost
+#   connection: local
+#   vars_files:
+#     - config_vars.yml
+#   roles:
+#     - base
+#     - zsh
+#     - fzf
+#     - dotfiles
+#     - asdf
+#   ignore_errors: "{{ ansible_check_mode }}"
 
-- name: Configure local multipass instance
+- name: Configure ubuntu desktop
   tags: [dev]
-  hosts: localbox
+  hosts: tpad
   roles:
-    - base
-    - zsh
-    - fzf
-    - dotfiles
-    - asdf
+    - docker
+    # - base
+    # - zsh
+    # - fzf
+    # - dotfiles
+    # - asdf
   vars_files:
     - config_vars.yml
   ignore_errors: "{{ ansible_check_mode }}"

@@ -13,5 +13,5 @@ ansible-venv/
 # Terraform
 .terraform/
 tfplan
-terraform.tfstate
+terraform.tfstate*
 .terraform.lock.hcl

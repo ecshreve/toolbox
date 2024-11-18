@@ -1,6 +1,6 @@
 ---
 - name: Ensure old versions of Docker are NOT installed
-  ansible.builtin.package:
+  ansible.builtin.apt:
     name:
       - docker
       - docker-engine
@@ -10,9 +10,11 @@
       - runc
     state: absent
     update-cache: true
+  become: true
+
 
 - name: Ensure dependencies ARE installed
-  ansible.builtin.package:
+  ansible.builtin.apt:
     name:
       - apt-transport-https
       - ca-certificates
@@ -22,17 +24,20 @@
       - python3-pip
     state: present
     update-cache: true
+  become: true
 
 - name: Add Docker GPG apt Key
   ansible.builtin.apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
+  become: true
   ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Add Docker Repository
   ansible.builtin.apt_repository:
     repo: deb https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
     state: present
+  become: true
   ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Update apt and install docker-ce
@@ -43,17 +48,22 @@
       - docker-compose-plugin
     state: present
     update_cache: true
+  become: true
   notify: Restart docker
   ignore_errors: "{{ ansible_check_mode }}"
 
-- name: Install Docker Module for Python
-  ansible.builtin.pip:
-    executable: pip3
-    name: docker
-  ignore_errors: "{{ ansible_check_mode }}"
+# - name: Install Docker Module for Python
+#   ansible.builtin.pip:
+#     executable: pip3
+#     name: 
+#       - docker
+#       - docker-compose
+#   ignore_errors: "{{ ansible_check_mode }}"
 
-- name: Add user to docker group
+- name: Setup user for docker
   ansible.builtin.user:
-    name: "{{ docker_user }}"
+    name: "{{ ansible_user }}"
     groups: docker
+    shell: /usr/bin/zsh
     append: true
+  become: true

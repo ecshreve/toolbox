@@ -2,7 +2,7 @@
 - name: Install dependencies with macports
   community.general.macports:
     name: "{{ item }}"
-  # become: true
+  become: true
   loop: "{{ asdf_mac_dependencies }}"
   when: ansible_os_family == "Darwin"
 
@@ -10,7 +10,7 @@
   community.general.macports:
     name: "{{ item.name }}"
     variant: "{{ item.variant }}"
-  # become: true
+  become: true
   loop: "{{ asdf_mac_dependencies_variants }}"
   when: ansible_os_family == "Darwin"
 
