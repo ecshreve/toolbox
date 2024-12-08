@@ -60,8 +60,8 @@ asdf_apps:
     repo: "https://github.com/asdf-vm/asdf-nodejs.git"
     version: "20.18.0"
   - name: python
-    repo: "https://github.com/danhper/asdf-python.git"
-    version: "3.12.7"
+    repo: "https://github.com/asdf-community/asdf-python.git"
+    version: "3.11.9"
   - name: golang
     repo: "https://github.com/asdf-community/asdf-golang.git"
     version: "1.23.3"

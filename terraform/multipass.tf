@@ -16,3 +16,15 @@ resource "multipass_instance" "devbox" {
     disk = "20gb"
     cloudinit_file = "userdata.cfg"
 }
+
+data "multipass_instance" "devbox" {
+    name = "devbox"
+    depends_on = [multipass_instance.devbox]
+}
+
+resource "local_file" "multipass_inventory" {
+  content = templatefile("${path.module}/hosts_multipass.tpl", {
+    ip_address = data.multipass_instance.devbox.ipv4
+  })
+  filename = "${path.module}/../ansible/hosts_multipass.yml"
+}

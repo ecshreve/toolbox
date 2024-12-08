@@ -1,4 +1,4 @@
-export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$HOME/go/bin:$PATH
 export ZSH="$HOME/.oh-my-zsh"
 export FZF_BASE="$HOME/.fzf/bin/fzf"
 export FZF_DEFAULT_OPTS='--cycle --layout=reverse --border --height=80% --preview="bat --style=numbers --color=always --line-range :500 {}" --preview-window=nowrap --marker="*"'
@@ -10,6 +10,7 @@ ZSH_DISABLE_COMPFIX="true"
 plugins=(
     asdf
     direnv
+    eza
     fzf
     git
     zsh-autosuggestions
@@ -30,9 +31,6 @@ bindkey -M viins '^ff' fzf-file-widget
 # TODO: should these be moved?
 # General
 alias cat='bat'
-# alias ll='eza --icons=always -alF'
-# alias ls='eza --icons=always'
-alias ll='ls -alF'
 alias cl='clear -x'
 alias cll='clear -x && ls -alF'
 alias clear='clear -x'
@@ -48,11 +46,6 @@ alias gll='git diff --cached | wc -l'
 # Network
 alias nett='netstat -tulnp | grep LISTEN'
 alias snett='sudo netstat -tulnp | grep LISTEN'
-
-# Docker
-alias dockdo='docker context use remote-do'
-alias docksl='docker context use remote-slabsrv'
-alias dockdf='docker context use default'
 
 # Configure history size and options
 HISTSIZE=70000

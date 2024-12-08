@@ -1,12 +1,12 @@
 ---
-- name: Install dependencies with macports
+- name: Install MacOS dependencies with macports
   community.general.macports:
     name: "{{ item }}"
   become: true
   loop: "{{ asdf_mac_dependencies }}"
   when: ansible_os_family == "Darwin"
 
-- name: Install dependencies with variants
+- name: Install MacOS dependencies with variants with macports
   community.general.macports:
     name: "{{ item.name }}"
     variant: "{{ item.variant }}"
@@ -45,15 +45,22 @@
     version: "{{ asdf_version }}"
   when: not asdf_results.before
 
-- name: Install asdf plugins
+- name: Add asdf plugins
   ansible.builtin.shell: |
     export ASDF_DIR="{{ asdf_root }}"; 
     . "{{ asdf_root }}/asdf.sh"
 
-    asdf plugin add "{{ item.name }} {{ item.repo }}"
-    asdf install "{{ item.name }} {{ item.version }}"
-    asdf install "{{ item.name }}" latest
+    asdf plugin add {{ item.name }} {{ item.repo }}
+  args:
+    creates: "{{ asdf_root }}/plugins/{{ item.name }}"
+  loop: "{{ asdf_apps }}"
+
+- name: Install asdf apps
+  ansible.builtin.shell: |
+    export ASDF_DIR="{{ asdf_root }}"; 
+    . "{{ asdf_root }}/asdf.sh"
+
+    asdf install {{ item.name }} {{ item.version }}
   args:
     creates: "{{ asdf_root }}/installs/{{ item.name }}/{{ item.version }}"
-    executable: /bin/sh
   loop: "{{ asdf_apps }}"
