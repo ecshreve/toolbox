@@ -12,7 +12,6 @@
     update-cache: true
   become: true
 
-
 - name: Ensure dependencies ARE installed
   ansible.builtin.apt:
     name:
@@ -64,6 +63,5 @@
   ansible.builtin.user:
     name: "{{ ansible_user }}"
     groups: docker
-    shell: /usr/bin/zsh
     append: true
   become: true

@@ -12,7 +12,6 @@
         disk: 10G
         image: noble
         state: started
-        recreate: true
       register: multipass_vm
     - name: Add the VM to the inventory
       ansible.builtin.add_host:
@@ -30,6 +29,7 @@
     - zsh
     - fzf
     - asdf
+    - docker
   vars_files:
     - config_vars.yml
   vars:
