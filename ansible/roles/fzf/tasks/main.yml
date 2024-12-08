@@ -7,7 +7,7 @@
     depth: 1
     update: false
 
-- name: Run fzf installation script
+- name: Install fzf
   ansible.builtin.command:
-    cmd: "{{ fzf_root }}/install"
+    cmd: "{{ fzf_root }}/install --bin"
     creates: "{{ fzf_bin }}"

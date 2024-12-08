@@ -17,3 +17,9 @@
     repo: https://github.com/romkatv/powerlevel10k.git
     dest: "{{ omz_root }}/custom/themes/powerlevel10k"
     version: "{{ p10k_version }}"
+
+- name: Set login shell to zsh
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    shell: /bin/zsh
+  become: true

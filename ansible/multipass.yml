@@ -1,0 +1,43 @@
+---
+- name: Prepare
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Create a Multipass VM
+      theko2fi.multipass.multipass_vm:
+        name: devbox
+        cloud_init: files/multipass/userdata.cfg
+        cpus: 4
+        memory: 8G
+        disk: 10G
+        image: noble
+        state: started
+        recreate: true
+      register: multipass_vm
+    - name: Add the VM to the inventory
+      ansible.builtin.add_host:
+        name: devbox
+        ansible_host: "{{ multipass_vm.result.info.devbox.ipv4[0] }}"
+        ansible_connection: ssh
+        ansible_python_interpreter: '/usr/bin/python3'
+        ansible_user: eric
+
+- name: Provision with dotfiles
+  hosts: devbox
+  roles:
+    - base
+    - dotfiles
+    - zsh
+    - fzf
+    - asdf
+  vars_files:
+    - config_vars.yml
+  vars:
+    asdf_apps:
+      - name: nodejs
+        repo: "https://github.com/asdf-vm/asdf-nodejs.git"
+        version: "20.18.0"
+      - name: golang
+        repo: "https://github.com/asdf-community/asdf-golang.git"
+        version: "1.23.3"
+  ignore_errors: "{{ ansible_check_mode }}"
