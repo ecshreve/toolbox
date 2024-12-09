@@ -10,6 +10,12 @@
     - zsh
     - fzf
     - asdf
+  vars:
+    asdf_manage_apps: true
+    asdf_install_app_versions:
+      nodejs: "20.18.0"
+      golang: "1.23.3"
+      python: "3.11.9"
   post_tasks:
     - name: Install docker on linux
       ansible.builtin.include_role:

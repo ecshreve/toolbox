@@ -53,14 +53,16 @@
     asdf plugin add {{ item.name }} {{ item.repo }}
   args:
     creates: "{{ asdf_root }}/plugins/{{ item.name }}"
-  loop: "{{ asdf_apps }}"
+  loop: "{{ asdf_app_versions }}"
+  when: asdf_manage_apps
 
 - name: Install asdf versions
   ansible.builtin.shell: |
     export ASDF_DIR="{{ asdf_root }}";
     . "{{ asdf_root }}/asdf.sh"
 
-    asdf install {{ item.name }} {{ item.version }}
+    asdf install {{ item.key }} {{ item.value }}
   args:
-    creates: "{{ asdf_root }}/installs/{{ item.name }}/{{ item.version }}"
-  loop: "{{ asdf_apps }}"
+    creates: "{{ asdf_root }}/installs/{{ item.key }}/{{ item.value }}"
+  loop: "{{ asdf_install_app_versions | dict2items }}"
+  when: asdf_manage_apps

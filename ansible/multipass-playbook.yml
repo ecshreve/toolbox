@@ -34,20 +34,9 @@
   vars_files:
     - config_vars.yml
   vars:
-    asdf_apps:
-      - name: nodejs
-        repo: "https://github.com/asdf-vm/asdf-nodejs.git"
-        version: "20.18.0"
-      - name: golang
-        repo: "https://github.com/asdf-community/asdf-golang.git"
-        version: "1.23.3"
-      - name: python
-        repo: "https://github.com/asdf-community/asdf-python.git"
-        version: "3.11.9"
-      - name: consul
-        repo: "https://github.com/asdf-community/asdf-hashicorp.git"
-        version: "1.20.1"
-      - name: nomad
-        repo: "https://github.com/asdf-community/asdf-hashicorp.git"
-        version: "1.9.3"
+    asdf_manage_apps: true
+    asdf_install_app_versions:
+      nodejs: "20.18.0"
+      golang: "1.23.3"
+      python: "3.11.9"
   ignore_errors: "{{ ansible_check_mode }}"
