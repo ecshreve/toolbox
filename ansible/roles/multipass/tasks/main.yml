@@ -8,13 +8,16 @@
     disk: "{{ multipass_vm_disk }}"
     image: "{{ multipass_vm_image }}"
     state: started
-  register: multipass_vm
+  register: vm_info
   ignore_errors: "{{ ansible_check_mode }}"
 
+# We do this dynamically because the multipass instance gets its IP address
+# via DHCP, and I haven't found a clean way to statically set it. The IP
+# persists across reboots, so it only really comes into play on initial creation.
 - name: Add the VM to the inventory
   ansible.builtin.add_host:
     name: "{{ multipass_vm_name }}"
-    ansible_host: "{{ multipass_vm.result.info[multipass_vm_name].ipv4[0] }}"
+    ansible_host: "{{ vm_info.result.info[multipass_vm_name].ipv4[0] }}"
     ansible_connection: ssh
     ansible_python_interpreter: '/usr/bin/python3'
     ansible_user: "{{ multipass_vm_user }}"

@@ -1,27 +1,22 @@
 ---
-- name: Create ghrepo directory
-  ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/github.com/{{ dotfiles_gh_user }}"
-    state: directory
-    mode: "0755"
-    owner: "{{ ansible_user_id }}"
-  register: ghrepo_dir
-
 - name: Check for existing toolbox repo
-  ansible.builtin.stat:
-    path: "{{ ghrepo_dir.path }}/toolbox"
+  ansible.builtin.git:
+    repo: "{{ dotfiles_toolbox_repo }}"
+    dest: "{{ dotfiles_toolbox_dir }}"
+    version: "{{ dotfiles_toolbox_version }}"
+    clone: false
   register: toolbox_repo
 
 - name: Clone toolbox
   ansible.builtin.git:
-    repo: "https://github.com/ecshreve/toolbox.git"
-    dest: "{{ ghrepo_dir.path }}/toolbox"
-    version: "main"
-  when: not toolbox_repo.stat.exists
+    repo: "{{ dotfiles_toolbox_repo }}"
+    dest: "{{ dotfiles_toolbox_dir }}"
+    version: "{{ dotfiles_toolbox_version }}"
+  when: not toolbox_repo.before
 
 - name: Extract dotfile names from config_files dir
   ansible.builtin.find:
-    paths: "{{ ghrepo_dir.path }}/toolbox/config_files/dotfiles"
+    paths: "{{ dotfiles_toolbox_dir }}/config_files/dotfiles"
     file_type: any
     hidden: true
   register: general_config_files

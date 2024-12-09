@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# This script assumes it is being run from the root of the toolbox repo, which 
+# must match the dotfiles_toolbox_dir variable in the dotfiles ansible role. It 
+# defaults to ~/github.com/ecshreve/toolbox directory.
+
+set -e
+
 # func to check for ansible
 check_ansible() {
     # check for python3
@@ -30,8 +36,16 @@ check_ansible() {
 }
 check_ansible
 
+# If the first argument is --dry, run the playbook in check (dry-run) mode.
+PLAYBOOK_ARGS="-v"
+if [ "$1" == "--dry" ]; then
+    PLAYBOOK_ARGS="$PLAYBOOK_ARGS --check"
+    echo "Running in check (dry-run) mode..."
+fi
+
 # run local playbook
-ANSIBLE_CONFIG="$TOOLBOX_DIR/ansible/ansible.cfg" ansible-playbook ansible/local-playbook.yml -vv
+export ANSIBLE_CONFIG="$PWD/ansible/ansible.cfg"
+ansible-playbook ansible/localhost-playbook.yml $PLAYBOOK_ARGS
 
 
 

@@ -1,2 +1,5 @@
 ---
 dotfiles_gh_user: ecshreve
+dotfiles_toolbox_repo: "https://github.com/ecshreve/toolbox.git"
+dotfiles_toolbox_version: "main"
+dotfiles_toolbox_dir: "{{ ansible_user_dir }}/github.com/{{ dotfiles_gh_user }}/toolbox"
