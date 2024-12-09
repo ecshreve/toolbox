@@ -1,0 +1,19 @@
+---
+base_apt_packages:
+  - zsh
+  - tmux
+  - bat
+  - fd-find
+  - ripgrep
+  - git
+  - direnv
+
+base_mac_packages:
+  - zsh
+  - tmux
+  # - eza
+  - bat
+  - fd
+  - ripgrep
+  - git
+  - gnutar

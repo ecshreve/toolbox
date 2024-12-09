@@ -10,7 +10,7 @@
     name: "{{ item }}"
     state: present
   become: true
-  loop: "{{ apt_packages }}"
+  loop: "{{ base_apt_packages }}"
 
 - name: Install eza if Ubuntu version greater than 24
   ansible.builtin.apt:

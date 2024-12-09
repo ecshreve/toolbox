@@ -8,5 +8,5 @@
     name: "{{ item }}"
     state: present
   become: true
-  loop: "{{ base_packages }}"
+  loop: "{{ base_mac_packages }}"
   when: ansible_os_family == "Darwin"

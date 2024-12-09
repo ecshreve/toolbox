@@ -1,0 +1,19 @@
+---
+- name: Create a Multipass VM
+  theko2fi.multipass.multipass_vm:
+    name: "{{ multipass_vm_name }}"
+    cloud_init: "{{ multipass_vm_cloud_init }}"
+    cpus: "{{ multipass_vm_cpus }}"
+    memory: "{{ multipass_vm_memory }}"
+    disk: "{{ multipass_vm_disk }}"
+    image: "{{ multipass_vm_image }}"
+    state: started
+  register: multipass_vm
+
+- name: Add the VM to the inventory
+  ansible.builtin.add_host:
+    name: "{{ multipass_vm_name }}"
+    ansible_host: "{{ multipass_vm.result.info[multipass_vm_name].ipv4[0] }}"
+    ansible_connection: ssh
+    ansible_python_interpreter: '/usr/bin/python3'
+    ansible_user: "{{ multipass_vm_user }}"

@@ -2,28 +2,13 @@
 - name: Prepare multipass vm
   hosts: localhost
   connection: local
-  tasks:
-    - name: Create a Multipass VM
-      theko2fi.multipass.multipass_vm:
-        name: devbox
-        cloud_init: files/userdata.cfg
-        cpus: 4
-        memory: 8G
-        disk: 10G
-        image: noble
-        state: started
-      register: multipass_vm
-
-    - name: Add the VM to the inventory
-      ansible.builtin.add_host:
-        name: devbox
-        ansible_host: "{{ multipass_vm.result.info.devbox.ipv4[0] }}"
-        ansible_connection: ssh
-        ansible_python_interpreter: '/usr/bin/python3'
-        ansible_user: eric
+  roles:
+    - multipass
+  vars:
+    multipass_vm_name: devbox
 
 - name: Provision with toolbox roles
-  hosts: devbox
+  hosts: "{{ multipass_vm_name }}"
   roles:
     - base
     - dotfiles
@@ -31,9 +16,8 @@
     - fzf
     - asdf
     - docker
-  vars_files:
-    - config_vars.yml
   vars:
+    multipass_vm_name: devbox
     asdf_manage_apps: true
     asdf_install_app_versions:
       nodejs: "20.18.0"
