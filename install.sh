@@ -31,7 +31,7 @@ check_ansible() {
 check_ansible
 
 # run local playbook
-ansible-playbook ansible/local.yml -vv
+ANSIBLE_CONFIG="$TOOLBOX_DIR/ansible/ansible.cfg" ansible-playbook ansible/local-playbook.yml -vv
 
 
 
