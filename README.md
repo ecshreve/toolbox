@@ -2,14 +2,22 @@
 
 A collection of tools, configuration files, notes, and scripts.
 
-Used to manage development environment(s) and tools across machines, operating systems, containers, and virtual machines.
+Used to manage development environment(s) and tools across hardware, operating systems, containers, and virtual machines.
 
 ## Usage
 
-During active development I run the `ansible` playbook either locally or in a container to configure my development environment.
+On a fresh machine, clone the repo and run the `install.sh` script to configure the local environment. The script is a thin wrapper around an ansible playbook that targets localhost.
 
 > [!NOTE]
-> Probably don't run the install script, it does things.
+> Probably don't run the install script directly, it does a lot of things.
+
+While this was all tested against a macos host, most often I run some set of the ansible roles against a virtual machine or docker container remotely via ssh.
+
+## Devbox - multipass VM
+
+The `devbox-playbook.yml` file creates or starts a multipass VM and runs the ansible playbook on it. This has only been tested on multipass running on a macos host.
+
+## Configuration
 
 <!-- TODO: source these from the vars file? -->
 ### Aliases and Commands to Remember
@@ -35,14 +43,7 @@ During active development I run the `ansible` playbook either locally or in a co
 - `eza` - A modern replacement for `ls`
 - `fzf` - A fuzzy finder for the command line
 
-
-## Ansible
-
-### Playbook
-
-The `playbook.yml` file is the main entry point for the `ansible` configuration.
-
-### Roles
+## Ansible Roles
 
 **`base`**
 - Determines the operating system and package manager.
@@ -60,7 +61,19 @@ The `playbook.yml` file is the main entry point for the `ansible` configuration.
 
 > [!IMPORTANT]
 > The `.zshrc` configuration defines a keybinding override to use `^ff` instead of `^t` to trigger `fzf` from the command line.
-  
+
+**`multipass`**:
+- Create or start a multipass VM and add it to the inventory.
+
+**`docker`**:
+- Install docker and add the current user to the docker group.
+
+**`asdf`**:
+- Install and configure `asdf` and plugins.
+
+> [!IMPORTANT]
+> This is where installing different versions of languages and tools is managed.
+> For example, `golang`, `python`, `terraform`, etc...
 
 ## Links
 
@@ -68,3 +81,7 @@ The `playbook.yml` file is the main entry point for the `ansible` configuration.
 - [fzf](https://github.com/junegunn/fzf)
 - [zsh](https://www.zsh.org/)
 - [oh-my-zsh](https://ohmyz.sh/)
+- [multipass](https://multipass.run/)
+- [docker](https://docs.docker.com/)
+- [asdf](https://asdf-vm.com/)
+

@@ -6,7 +6,7 @@
 
 set -e
 
-# func to check for ansible
+# check_ansible() checks for python3, ansible-venv, and ansible.
 check_ansible() {
     # check for python3
     if ! command -v python3 &> /dev/null; then
@@ -34,6 +34,8 @@ check_ansible() {
     echo "Python version: $PYTHON_VER"
     echo "Ansible version: $ANSIBLE_VER"
 }
+
+echo "Checking for ansible and python3..."
 check_ansible
 
 # If the first argument is --dry, run the playbook in check (dry-run) mode.
@@ -43,7 +45,7 @@ if [ "$1" == "--dry" ]; then
     echo "Running in check (dry-run) mode..."
 fi
 
-# run local playbook
+echo "Running playbook..."
 export ANSIBLE_CONFIG="$PWD/ansible/ansible.cfg"
 ansible-playbook ansible/localhost-playbook.yml $PLAYBOOK_ARGS
 

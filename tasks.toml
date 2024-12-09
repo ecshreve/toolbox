@@ -1,25 +1,4 @@
 [[task]]
-  id = "play-dot"
-  description = "Run the playbook for Dotfiles"
-  type = "short"
-  env = { ANSIBLE_LOG_PATH = "./logs/play-dot.log" }
-  cmd = """
-    cd ansible
-    ansible-playbook playbook.yml --tags dotfiles -vv --check | tee ./logs/play-dot.log
-    echo "Done with Dotfiles setup"
-  """
-  
-[[task]]
-  id = "play-go"
-  description = "Run the playbook for Go"
-  type = "short"
-  cmd = """
-    cd ansible
-    ansible-playbook playbook.yml --tags golang -vv | tee ./logs/play-go.log
-    echo "Done with Go setup"
-  """
-
-[[task]]
   id = "clean:ansible"
   description = "Clean the project"
   type = "short"
@@ -29,39 +8,31 @@
     rm -rf ./ansible/log
   """
 
-[[task]]
-  id = "debug"
-  type = "short"
-  cmd = """
-    echo "TOOLBOX_DIR: $TOOLBOX_DIR"
-    echo "HOME: $HOME"
-  """
-
 #-------------------------------------------------------------------------------
 #  Go tasks -- these are general tasks for a Go project
 #-------------------------------------------------------------------------------
 [[task]]
-  id = "dev"
+  id = "go:dev"
   type = "long"
   description = "Run the Go application in development mode."
-  dependencies = ["start"]
+  dependencies = ["go:start"]
   cmd = """
     echo "Running development mode..."
     while true; do sleep 1; done
   """
 
 [[task]]
-  id = "start"
+  id = "go:start"
   type = "short"
   description = "Run the binary for the Go application."
-  dependencies = ["build"]
+  dependencies = ["go:build"]
   watch = ["bin/app"]
   cmd = """
     ./bin/app
   """
 
 [[task]]
-  id = "build"
+  id = "go:build"
   type = "short"
   description = "Build the binary for the Go application."
   watch = ["**/*.go"]
@@ -70,7 +41,7 @@
   """
 
 [[task]]
-  id = "test"
+  id = "go:test"
   type = "short"
   description = "Run all Go tests."
   cmd = """
@@ -79,7 +50,7 @@
   """
 
 [[task]]
-  id = "clean:go"
+  id = "go:clean"
   type = "short"
   description = "Remove the binary and clean the Go test and module cache."
   cmd = """

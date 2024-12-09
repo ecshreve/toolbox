@@ -1,8 +1,7 @@
 Projects:
-
+  
   Configuration:
     ☐ add ssh config file
-    ☐ install nvm in setup.sh
 
   Assistant:
     ☐ refactor and clean up
@@ -11,11 +10,6 @@ Projects:
     ☐ reindex pinecone @low
 
 Todos:
-
-  Next:
-    ☐ figure out a better way to handle ansible config path
-    ☐ should I use homebrew to install ansible?
-    ☐ embed the list of aliases in the readme from .zshrc
 
   Later:
     ☐ redo devcontainer setup / ci / docker
@@ -27,9 +21,22 @@ Todos:
     ☐ demo the assistant in the readme
     ☐ Add `run` configuration
     ☐ Use run in ci?
-    ☐ Rethink python install
+    ✔ Rethink python install @done(24-12-09 03:13)
 
 Archive:
+  ✔ figure out a better way to handle ansible config path @done(24-12-09 03:12) @project(Todos.Next)
+  ✔ set ANSIBLE_CONFIG in install.sh @done(24-12-09 03:12) @project(Todos.Next)
+  ✔ should I use homebrew to install ansible? @done(24-12-09 03:12) @project(Todos.Next)
+  ✔ no @done(24-12-09 03:12) @project(Todos.Next)
+  ✔ embed the list of aliases in the readme from .zshrc @done(24-12-09 03:12) @project(Todos.Next)
+  ✔ this has no real value @done(24-12-09 03:12) @project(Todos.Next)
+  ✔ reliable macos setup @done(24-12-09 03:11) @project(Projects.Dotfiles)
+  ✔ reliable linux setup @done(24-12-09 03:11) @project(Projects.Dotfiles)
+  ✔ install.sh script for vscode devcontainers @done(24-12-09 03:11) @project(Projects.Dotfiles)
+  ✔ provision multipass vm @done(24-12-09 03:11) @project(Projects.Devbox)
+  ✔ run ansible playbook on vm @done(24-12-09 03:11) @project(Projects.Devbox)
+  ✔ reliable environment setup @done(24-12-09 03:11) @project(Projects.Devbox)
+  ✘ install nvm in setup.sh @cancelled(24-12-09 03:08) @project(Projects.Configuration)
   ✔ iterate on setup flow @done(24-08-15 10:32) @project(Todos.Later)
   ✘ add `soft serve` git server config? @cancelled(24-08-15 10:32) @project(Todos.Later)
   ✘ move logic to clone toolbox into install.sh @cancelled(24-08-15 10:32) @project(Todos.Later)
