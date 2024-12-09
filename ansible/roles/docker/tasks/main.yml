@@ -51,17 +51,10 @@
   notify: Restart docker
   ignore_errors: "{{ ansible_check_mode }}"
 
-# - name: Install Docker Module for Python
-#   ansible.builtin.pip:
-#     executable: pip3
-#     name: 
-#       - docker
-#       - docker-compose
-#   ignore_errors: "{{ ansible_check_mode }}"
-
 - name: Setup user for docker
   ansible.builtin.user:
     name: "{{ ansible_user }}"
     groups: docker
     append: true
   become: true
+  ignore_errors: "{{ ansible_check_mode }}"
