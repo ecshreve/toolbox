@@ -1,10 +1,10 @@
 ---
 - name: Create ghrepo directory
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/github.com/ecshreve"
+    path: "{{ ansible_user_dir }}/github.com/{{ dotfiles_gh_user }}"
     state: directory
     mode: "0755"
-    owner: "{{ ansible_user }}"
+    owner: "{{ ansible_user_id }}"
   register: ghrepo_dir
 
 - name: Check for existing toolbox repo

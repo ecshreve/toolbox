@@ -9,6 +9,7 @@
     image: "{{ multipass_vm_image }}"
     state: started
   register: multipass_vm
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Add the VM to the inventory
   ansible.builtin.add_host:
@@ -17,3 +18,4 @@
     ansible_connection: ssh
     ansible_python_interpreter: '/usr/bin/python3'
     ansible_user: "{{ multipass_vm_user }}"
+  ignore_errors: "{{ ansible_check_mode }}"

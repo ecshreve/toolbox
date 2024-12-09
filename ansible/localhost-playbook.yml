@@ -1,9 +1,8 @@
 ---
-- name: Configure local environment
+- name: Configure the local environment
   hosts: localhost
   connection: local
-  vars_files:
-    - config_vars.yml
+  gather_facts: true
   roles:
     - base
     - dotfiles
