@@ -15,3 +15,4 @@ ansible-venv/
 tfplan
 terraform.tfstate*
 .terraform.lock.hcl
+.vscode/
