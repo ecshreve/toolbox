@@ -1,22 +1,22 @@
 ---
-- name:  Install oh-my-zsh
+- name: Install oh-my-zsh
   ansible.builtin.git:
     repo: https://github.com/ohmyzsh/ohmyzsh.git
-    dest: "{{ omz_root }}"
-    version: "{{ omz_version }}"
+    dest: "{{ zsh_omz_root }}"
+    version: "{{ zsh_omz_version }}"
 
 - name: Install omz plugins
   ansible.builtin.git:
     repo: "https://github.com/{{ item.repo }}.git"
-    dest: "{{ omz_root }}/custom/plugins/{{ item.repo | basename }}"
+    dest: "{{ zsh_omz_root }}/custom/plugins/{{ item.repo | basename }}"
     version: "{{ item.version }}"
-  loop: "{{ omz_plugins }}"
+  loop: "{{ zsh_omz_plugins }}"
 
 - name: Install powerlevel prompt
   ansible.builtin.git:
     repo: https://github.com/romkatv/powerlevel10k.git
-    dest: "{{ omz_root }}/custom/themes/powerlevel10k"
-    version: "{{ p10k_version }}"
+    dest: "{{ zsh_omz_root }}/custom/themes/powerlevel10k"
+    version: "{{ zsh_p10k_version }}"
 
 - name: Set login shell to zsh
   ansible.builtin.user:

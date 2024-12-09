@@ -24,15 +24,12 @@ apt_packages:
   - ripgrep
   - git
   - direnv
-symlinks:
-  bat: /usr/bin/batcat
-  fd: /usr/bin/fdfind
 
 # MacOS - Darwin
 base_packages:
   - zsh
   - tmux
-  - eza
+  # - eza
   - bat
   - fd
   - ripgrep

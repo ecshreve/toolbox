@@ -1,3 +1,12 @@
 ---
-- name: Include os specific installs
+- name: Include debian specific installs if debian
   ansible.builtin.include_tasks: "{{ ansible_os_family | lower }}.yml"
+  when: ansible_os_family == "Debian"
+
+- name: Install with macports if macos
+  community.general.macports:
+    name: "{{ item }}"
+    state: present
+  become: true
+  loop: "{{ base_packages }}"
+  when: ansible_os_family == "Darwin"

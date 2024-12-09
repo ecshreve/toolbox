@@ -1,18 +1,19 @@
 ---
-- name: Prepare
+- name: Prepare multipass vm
   hosts: localhost
   connection: local
   tasks:
     - name: Create a Multipass VM
       theko2fi.multipass.multipass_vm:
         name: devbox
-        cloud_init: files/multipass/userdata.cfg
+        cloud_init: files/userdata.cfg
         cpus: 4
         memory: 8G
         disk: 10G
         image: noble
         state: started
       register: multipass_vm
+
     - name: Add the VM to the inventory
       ansible.builtin.add_host:
         name: devbox
@@ -21,7 +22,7 @@
         ansible_python_interpreter: '/usr/bin/python3'
         ansible_user: eric
 
-- name: Provision with dotfiles
+- name: Provision with toolbox roles
   hosts: devbox
   roles:
     - base
@@ -40,4 +41,13 @@
       - name: golang
         repo: "https://github.com/asdf-community/asdf-golang.git"
         version: "1.23.3"
+      - name: python
+        repo: "https://github.com/asdf-community/asdf-python.git"
+        version: "3.11.9"
+      - name: consul
+        repo: "https://github.com/asdf-community/asdf-hashicorp.git"
+        version: "1.20.1"
+      - name: nomad
+        repo: "https://github.com/asdf-community/asdf-hashicorp.git"
+        version: "1.9.3"
   ignore_errors: "{{ ansible_check_mode }}"

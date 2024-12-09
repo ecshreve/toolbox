@@ -1,7 +1,0 @@
----
-- name: Macports installs
-  community.general.macports:
-    name: "{{ item }}"
-  become: true
-  loop: "{{ base_packages }}"
-  

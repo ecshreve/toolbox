@@ -2,8 +2,8 @@
 asdf_root: "{{ ansible_user_dir }}/.asdf"
 asdf_repo: "https://github.com/asdf-vm/asdf.git"
 asdf_version: "v0.14.1"
-asdf_apt_dependencies: 
-  - unzip 
+asdf_apt_dependencies:
+  - unzip
   - git
   - curl
   - autoconf
@@ -17,7 +17,7 @@ asdf_apt_dependencies:
   - libtool
   - bison
   - libreadline-dev
-  
+
 asdf_mac_dependencies:
   - coreutils
   - openssl
@@ -34,7 +34,7 @@ asdf_mac_dependencies:
   - xz
   - zlib
 
-python_build_dependencies:
+asdf_python_build_dependencies:
   - build-essential
   - libssl-dev
   - zlib1g-dev
@@ -50,7 +50,7 @@ python_build_dependencies:
   - libxmlsec1-dev
   - libffi-dev
   - liblzma-dev
-  
+
 asdf_mac_dependencies_variants:
   - name: tk
     variant: +quartz

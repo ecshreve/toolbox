@@ -27,7 +27,7 @@
     name: "{{ item }}"
     state: present
   become: true
-  loop: "{{ python_build_dependencies }}"
+  loop: "{{ asdf_python_build_dependencies }}"
   when: ansible_os_family == "Debian"
 
 - name: Check for existing asdf install
@@ -47,7 +47,7 @@
 
 - name: Add asdf plugins
   ansible.builtin.shell: |
-    export ASDF_DIR="{{ asdf_root }}"; 
+    export ASDF_DIR="{{ asdf_root }}";
     . "{{ asdf_root }}/asdf.sh"
 
     asdf plugin add {{ item.name }} {{ item.repo }}
@@ -55,9 +55,9 @@
     creates: "{{ asdf_root }}/plugins/{{ item.name }}"
   loop: "{{ asdf_apps }}"
 
-- name: Install asdf apps
+- name: Install asdf versions
   ansible.builtin.shell: |
-    export ASDF_DIR="{{ asdf_root }}"; 
+    export ASDF_DIR="{{ asdf_root }}";
     . "{{ asdf_root }}/asdf.sh"
 
     asdf install {{ item.name }} {{ item.version }}

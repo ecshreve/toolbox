@@ -1,9 +1,0 @@
-# Global versions, can be overridden per directory
-# by running `asdf local <language> <version>` in the directory.
-#
-# https://asdf-vm.com/guide/getting-started.html
-golang 1.23.3
-nodejs 20.18.0
-python 3.12.7
-terraform 1.9.8
-packer 1.11.2
